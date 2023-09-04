@@ -4,12 +4,14 @@ import conversationRouter from "./routes/conversationRouter.js";
 import userRouter from "./routes/userRouter.js";
 import testRouter from "./routes/testRouter.js";
 import cookieParser from "cookie-parser";
+import cors from "cors"
 import path from 'path'
 const app = express();
 
 app.use(express.json())
 app.use(cookieParser())
 app.use(express.static('public'))
+app.use(cors({origin: 'http://localhost:3000'}))
 
 app.use("/api/v1/users", userRouter)
 app.use("/api/v1/topics", topicRouter)

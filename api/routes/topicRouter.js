@@ -5,6 +5,7 @@ import { protect, restrictTo } from "../controllers/authController.js";
 const topicRouter = express.Router({mergeParams:true});
 
 topicRouter.use("/:topicId/conversations",conversationRouter)
+// topicRouter.use("/:topicId/:conversationId",conversationRouter)
 
 topicRouter.route("/")
     .get(getAllTopic)

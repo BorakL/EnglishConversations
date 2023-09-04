@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 import Conversation from "./../models/conversationModel.js";
 import { getOne, createOne, updateOne, deleteOne, getAll } from "./handlerFactory.js";
-import setSort from "../utils/setSort.js";
 
 export const setUser = (req,res,next)=>{
     if(!req.body.user){req.body.user = req.user.id}
@@ -15,6 +14,16 @@ const setQuery = (req)=>{
     return query
 }
 
+const lookupOptions = [
+    {$lookup: {
+        "from":"topics",
+        "localField": "topic",
+        "foreignField": "_id",
+        "as":"topic"
+    }},
+    {$unwind: '$topic'}
+]
+
 export const getConversation = getOne(Conversation)
 
 export const createConversation = createOne(Conversation)
@@ -23,4 +32,4 @@ export const updateConversation = updateOne(Conversation)
 
 export const deleteConversation = deleteOne(Conversation)
 
-export const getAllConversations = getAll(Conversation, setQuery, setSort)
+export const getAllConversations = getAll(Conversation, setQuery, lookupOptions)

@@ -1,11 +1,10 @@
-import logo from './logo.svg';
 import './App.css';
 import Home from './pages/home/home';
 import Topics from './pages/topics/topics';
-import Topic from './pages/topic/topic';
-import Learn from './pages/learn/learn';
-import Test from './pages/test/test';
-import { Route, Routes } from 'react-router';
+import Topic from './pages/topic/topic'; 
+import { Route, Routes } from 'react-router';  
+import Conversation from './pages/conversation/conversation';
+import TestConversation from './pages/test/test';
 
 function App() {
   return (
@@ -13,9 +12,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Home/>} />
         <Route path="topics" element={<Topics/>} />
-        <Route path="topics/:id" element={<Topic/>} />
-        <Route path="topics/:id/test" element={<Test/>} />
-        <Route path="topics/:id/learn" element={<Learn/>} />
+        <Route path="topics/:id" element={<Topic/>} /> 
+        <Route path="topics/:id/:conversation" element={<Conversation/>} />
+        <Route path="topics/:id/:conversation/test" element={<TestConversation/>} />
       </Routes>
     </div>
   );

@@ -46,39 +46,40 @@ export const deleteOne = Model =>
         })  
     })
 
-    export const getAll = (Model, setQuery) => catchAsync(async(req,res)=>{
-        let query = setQuery ? setQuery(req) : {};
-        const sort = {};
-        if(req.query.sort){
-            const sortBy = req.query.sort.trim();
-            sortBy.startsWith("-") ? sort[sortBy.slice(1)]=-1 : sort[sortBy]=1 
-        }else{
-            sort["_id"]=1
+export const getAll = (Model, setQuery, lookupOptions=[]) => catchAsync(async(req,res)=>{
+    let query = setQuery ? setQuery(req) : {};
+    const sort = {};
+    if(req.query.sort){
+        const sortBy = req.query.sort.trim();
+        sortBy.startsWith("-") ? sort[sortBy.slice(1)]=-1 : sort[sortBy]=1 
+    }else{
+        sort["_id"]=1
+    }
+    let limit = req.query.limit*1 || 12;
+    let skip = req.query.skip*1 || 0;
+    let lookup = lookupOptions.length>0 ? [...lookupOptions] : []
+
+    let data = await Model.aggregate([
+    {
+        $facet:{
+            docs: [
+                {$match: query},
+                {$sort: sort},
+                {$skip: skip},
+                {$limit: limit},
+                ...lookup
+            ],
+            total: [
+                {$match: query},
+                {$count: "count"}
+            ]
         }
-        let limit = req.query.limit*1 || 24;
-        let skip = req.query.skip*1 || 0;
-    
-        // if(req.query.title) query.title = {$regex: req.query.title.trim(), $options:"i"}
-        // if(req.params.topicId) query.topic = new mongoose.Types.ObjectId(req.params.topicId)
-    
-        const data = await Model.aggregate([
-        {
-            $facet:{
-                docs: [
-                    {$match: query},
-                    {$sort: sort},
-                    {$limit: limit},
-                    {$skip: skip}
-                ],
-                total: [
-                    {$match: query},
-                    {$count: "count"}
-                ]
-            }
-        }
-        ])
-        res.status(200).json({
-            status: "success",
-            data
-        })
+    }
+    ])
+
+    res.status(200).json({
+        status: "success",
+        data: data[0].docs,
+        total: data[0].total.length>0 ? data[0].total[0].count : 0
     })
+})

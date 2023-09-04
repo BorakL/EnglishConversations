@@ -29,6 +29,13 @@ const conversationSchema = new mongoose.Schema({
     toObject: {virtuals: true}
 })
 
+conversationSchema.pre(/^find/,function(){
+    this.populate({
+        path:"topic",
+        select:"title"
+    })
+})
+
 const Conversation = mongoose.model("Conversation", conversationSchema)
 
 export default  Conversation
