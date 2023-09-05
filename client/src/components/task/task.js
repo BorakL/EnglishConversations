@@ -1,13 +1,14 @@
-import { useMemo, useState } from "react";
-import useForm from "../../hooks/useForm";
+import { useState } from "react";
 import Input from "../input/input"
 import { VALIDATOR_TASK } from "../../utils/valid";
+import useTest from "../../hooks/useTest";
 
 const Task = (props)=>{
 
     const[isAnswered,setIsAnswered]=useState(false)
     const[answer,setAnswer]=useState("")
     const[isCorrect,setIsCorrect]=useState(false)
+    const[testItems,setTestItems]=useState([])
 
     const initValues = {
         [props.serb]: {
@@ -20,13 +21,23 @@ const Task = (props)=>{
         setAnswer(data?.inputs[props.serb].value)
         setIsAnswered(true)
         setIsCorrect(data?.inputs[props.serb].isValid)
+        setTestItems(
+            prev => [
+                ...prev,
+                {
+                    serb: props.serb,
+                    eng: props.eng,
+                    answer: data?.inputs[props.serb].value
+                }
+            ]
+        )
     }
 
     const {
-        formState,
+        testState,
         inputHandler,
         submitHandler
-    } = useForm(initValues,action)
+    } = useTest(initValues,action)
 
     const next = ()=>{
         setAnswer("")
@@ -34,7 +45,7 @@ const Task = (props)=>{
         setIsAnswered(false)
         props.nextQuestion()
     }
-    
+
     return(
         
             !isAnswered 
@@ -51,10 +62,7 @@ const Task = (props)=>{
                         errorMessage="Incorrect"
                         isTest
                     />
-                </div>
-                <div>
-                    
-                </div>        
+                </div>      
             </form>
             :
             !props.isLastQuestion ?
@@ -65,7 +73,22 @@ const Task = (props)=>{
                 <button onClick={next}>Next</button>
             </div>
             :
-            <div>Last Question</div>
+            <div>
+                <h2>Last Question</h2>
+                <p>Total question: {props.totalQuestions}</p>
+                <p>Correct answers: {testState.totalCorrectAnswers}</p>
+                <p>Poens: {testState.poens}</p>
+                <div>
+                    {testItems.map((item) => 
+                        <div key={item._id}>
+                            <div>Serb: {item.serb}</div>
+                            <div>Eng: {item.eng}</div>
+                            <div>Answer: {item.answer}</div>
+                            <hr/>
+                        </div>
+                    )}
+                </div>
+            </div>
     )
 }
 

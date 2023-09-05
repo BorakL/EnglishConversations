@@ -19,6 +19,10 @@ const TestConversation = () => {
     useEffect(()=>{
         loadConversation(params.conversation);
     },[params.id])
+
+    useEffect(()=>{
+        console.log("conversation",conversation)
+    },[conversation])
  
     const questions = conversation?.data?.doc?.conversation || [] 
 
@@ -37,7 +41,8 @@ const TestConversation = () => {
                 <Task 
                     {...questions[pointer]} 
                     isLastQuestion={isLastQuestion} 
-                    nextQuestion={nextQuestion} 
+                    nextQuestion={nextQuestion}
+                    totalQuestions={questions.length}
                 />
             </div> :
             <p>...loading</p>

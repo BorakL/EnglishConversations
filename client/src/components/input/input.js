@@ -7,8 +7,10 @@
 // change
 // touched
 
-import { useEffect, useReducer } from "react"
+import { useEffect, useReducer, useRef } from "react"
 import { valid } from "../../utils/valid"
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
+import Dictaphone from "../dictaphone/dictaphone"
 
 const initValue = {
     value:"",
@@ -35,6 +37,12 @@ const inputReducer = (state=initValue, action) => {
 
 const Input = (props)=>{
     const[inputState,dispatch] = useReducer(inputReducer, initValue)
+    const {
+        transcript,
+        listening,
+        resetTranscript,
+        browserSupportsSpeechRecognition
+      } = useSpeechRecognition();
 
     const changeHandler = (event)=>{
         dispatch({
@@ -62,6 +70,16 @@ const Input = (props)=>{
         props.onInput(props.id, value, isValid)
     },[value, isValid, isTouched, props.onInput, props.id])
 
+    useEffect(()=>{
+        dispatch({
+            type:"CHANGED",
+            payload: {
+                value: transcript,
+                validators: props.validators || []
+            }
+        })
+    },[transcript])
+
     const element = props.element === "textarea" ?
     <textarea
         value={value}
@@ -87,7 +105,24 @@ const Input = (props)=>{
         <label htmlFor={props.id}> {props.id} </label>
         {element} 
         <div>{!props.isTest && isTouched && !isValid ? props.errorMessage : ""}</div>
-        {props.isTest ? <input disabled={!value} type="submit" value="Answer"/> : null}        
+        {props.isTest ? 
+            <div>
+                <input 
+                    disabled={!value} 
+                    type="submit" 
+                    value="Answer"
+                />
+                <Dictaphone 
+                    transcript 
+                    listening 
+                    resetTranscript 
+                    browserSupportsSpeechRecognition
+                />
+            </div>
+             
+                : 
+            null
+        }        
         </>
     )
 }
