@@ -5,11 +5,12 @@ import Topic from './pages/topic/topic';
 import { Route, Routes } from 'react-router';  
 import Conversation from './pages/conversation/conversation';
 import TestConversation from './pages/test/test';
+import MainNavigation from './components/navigation/mainNavigation';
 
 function App() {
   return (
     <div className="App">
-
+      <MainNavigation/>
       <Routes>
         <Route path="/" element={<Home/>} />
         <Route path="topics" element={<Topics/>} />
