@@ -8,7 +8,7 @@ const ConversationItem = ({conversation})=>{
             </Link>        
             <div>
                 <button>
-                    <Link to={conversation._id}>Test</Link>
+                    <Link to={`${conversation._id}/test`}>Test</Link>
                 </button>
             </div>
         </div>

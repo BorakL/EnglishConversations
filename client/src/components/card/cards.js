@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Speech from 'react-text-to-speech'
 
 const Cards = ({conversation})=>{
 
@@ -18,7 +19,7 @@ const Cards = ({conversation})=>{
         }
     }
     const flipOver = ()=>{
-        setFlip(!flip)
+        setFlip(prev=>!prev)
     }
  
     return(
@@ -29,6 +30,7 @@ const Cards = ({conversation})=>{
                 <div onClick={prevCard}>prev</div>
                 <div onClick={nextCard}>next</div>
             </div>
+            {!flip && <Speech text={conversation[pointer].eng} /> }
         </div>
     )
 }
