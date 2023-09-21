@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Speech from 'react-text-to-speech'
 
-const Cards = ({conversation})=>{
+const Card = ({conversation})=>{
 
     const[pointer,setPointer]=useState(0)
     const[flip,setFlip] = useState(true)
@@ -35,4 +35,4 @@ const Cards = ({conversation})=>{
     )
 }
 
-export default Cards;
+export default Card;

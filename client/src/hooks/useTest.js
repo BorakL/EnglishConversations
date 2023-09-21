@@ -1,51 +1,31 @@
-import { useCallback, useReducer } from "react"
+import { useCallback } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { UPDATE_SINGLE_CONVERSATION } from "../reducers/conversations"
 
-const testReducer = (state, action)=>{
-    switch(action.type){
-        case "TASK_ANSWERED" : 
-            let inputs = {
-                ...state.inputs,
-                [action.payload.inputId]: {
-                    value: action.payload.value,
-                    isValid: action.payload.isValid
-                }
-            }
-            let totalCorrectAnswers = Object.values(inputs).filter(i=>i.isValid===true).length
-            return {
-                inputs,
-                totalCorrectAnswers,
-                poens: Math.floor(totalCorrectAnswers/Object.values(inputs).length*100)
-            }
-        default: return state
-    }
-}
 
-const useTest = (inputs,action)=>{
-    const initState = {
-        inputs,
-        totalCorrectAnswers:0,
-        poens:0
-    }
-    const[testState,dispatch] = useReducer(testReducer,initState)
+const useTest = (action) => {
 
-    const inputHandler = useCallback((id,value,isValid)=>{
+
+
+    const dispatch = useDispatch();
+
+    const inputHandler = useCallback((id,result,isCorrect)=>{ 
         dispatch({
-            type: "TASK_ANSWERED",
+            type: UPDATE_SINGLE_CONVERSATION,
             payload: {
                 inputId:id,
-                value,
-                isValid
+                result,
+                isCorrect
             }
         })
     },[])
 
-    const submitHandler = (e)=>{
+    const submitHandler = (e)=>{ 
         e.preventDefault();
-        action(testState);
+        action();
     }
 
     return {
-        testState,
         inputHandler,
         submitHandler
     }

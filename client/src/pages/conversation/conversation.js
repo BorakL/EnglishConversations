@@ -1,29 +1,40 @@
 import React, { useEffect, useState } from "react";
 import { getConversation } from "../../services/api";
 import { useParams } from "react-router";
-import Cards from "../../components/card/cards";
+import Card from "../../components/card/card";
+import {useSelector, useDispatch} from "react-redux"
+import { SET_SINGLE_CONVERSATION } from "../../reducers/conversations";
 
 const Conversation = ()=>{
-    const params = useParams();
-    const[conversation,setConversations]=useState({})
+    const {
+        conversation
+    } = useSelector(({ conversations }) => ({
+        conversation: conversations.singleConversation
+    }))
+
+    const dispatch = useDispatch();
+    const params = useParams();  
 
     const loadConversation = async(conversationId) => {
         try{
             const conversationData = await getConversation(conversationId);
-            setConversations(conversationData.data.doc)
+            dispatch({
+                type:SET_SINGLE_CONVERSATION,
+                payload: conversationData.data.doc
+            })
         }catch(error){
             console.log(error.message)
         }
     }
 
-    useEffect(()=>{ 
+    useEffect(()=>{
         loadConversation(params.conversation)
     },[])
 
     return(
         <div>
             <h1>{conversation.title}</h1>
-            {conversation.conversation ? <Cards conversation={conversation.conversation}/> : <p>Loading...</p>}
+            {conversation.conversation ? <Card conversation={conversation.conversation}/> : <p>Loading...</p>}
         </div>
     )
 }

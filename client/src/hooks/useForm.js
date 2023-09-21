@@ -46,7 +46,7 @@ const useForm = (inputs, action) => {
 
     const[formState,dispatch] = useReducer(formReducer, initState)
  
-    const inputHandler = useCallback((id,value,isValid)=>{
+    const inputHandler = useCallback((id,value,isValid) => {
         dispatch({
             type:"INPUT_CHANGE",
             payload: {

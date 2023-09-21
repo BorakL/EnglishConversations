@@ -8,36 +8,34 @@ const Task = (props)=>{
     const[isAnswered,setIsAnswered]=useState(false)
     const[answer,setAnswer]=useState("")
     const[isCorrect,setIsCorrect]=useState(false)
-    const[testItems,setTestItems]=useState([])
 
-    const initValues = {
-        [props.serb]: {
-            value: "",
-            isvalid: false
-        }
-    }
 
-    const action = (data)=>{
-        setAnswer(data?.inputs[props.serb].value)
+    // const initValues = {
+    //     [props.serb]: {
+    //         value: "",
+    //         isvalid: false
+    //     }
+    // }
+
+    const action = ()=>{
         setIsAnswered(true)
-        setIsCorrect(data?.inputs[props.serb].isValid)
-        setTestItems(
-            prev => [
-                ...prev,
-                {
-                    serb: props.serb,
-                    eng: props.eng,
-                    answer: data?.inputs[props.serb].value
-                }
-            ]
-        )
+        // setIsCorrect(data?.inputs[props.serb].isValid)
+        // setTestItems(
+        //     prev => [
+        //         ...prev,
+        //         {
+        //             serb: props.serb,
+        //             eng: props.eng,
+        //             answer: data?.inputs[props.serb].value
+        //         }
+        //     ]
+        // )
     }
 
     const {
-        testState,
         inputHandler,
         submitHandler
-    } = useTest(initValues,action)
+    } = useTest(action)
 
     const next = ()=>{
         setAnswer("")
@@ -46,9 +44,11 @@ const Task = (props)=>{
         props.nextQuestion()
     }
 
+    const testState={}
+
     return(
-        
-            !isAnswered 
+
+            !isAnswered
             ?
             <form onSubmit={submitHandler}>
                 <div>
@@ -62,7 +62,7 @@ const Task = (props)=>{
                         errorMessage="Incorrect"
                         isTest
                     />
-                </div>      
+                </div>
             </form>
             :
             !props.isLastQuestion ?
@@ -78,8 +78,8 @@ const Task = (props)=>{
                 <p>Total question: {props.totalQuestions}</p>
                 <p>Correct answers: {testState.totalCorrectAnswers}</p>
                 <p>Poens: {testState.poens}</p>
-                <div>
-                    {testItems.map((item) => 
+                {/* <div>
+                    {testItems.map((item) =>
                         <div key={item._id}>
                             <div>Serb: {item.serb}</div>
                             <div>Eng: {item.eng}</div>
@@ -87,7 +87,7 @@ const Task = (props)=>{
                             <hr/>
                         </div>
                     )}
-                </div>
+                </div> */}
             </div>
     )
 }
