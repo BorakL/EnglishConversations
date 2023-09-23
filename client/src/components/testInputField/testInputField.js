@@ -1,6 +1,8 @@
 
 import { useEffect, useReducer, useRef } from "react"
 import { valid } from "../../utils/valid"
+import { useSpeechRecognition } from 'react-speech-recognition'
+import Dictaphone from "../dictaphone/dictaphone"
 
 const initValue = {
     value:"",
@@ -25,8 +27,11 @@ const inputReducer = (state=initValue, action) => {
     }
 }
 
-const Input = (props)=>{
+const TestInputField = (props)=>{
     const[inputState,dispatch] = useReducer(inputReducer, initValue)
+    const {
+        transcript
+      } = useSpeechRecognition();
 
     const changeHandler = (event)=>{
         dispatch({
@@ -51,8 +56,14 @@ const Input = (props)=>{
     } = inputState
 
     useEffect(()=>{
-        props.onInput(props.id, value, isValid)
-    },[value, props.round, isTouched, props.onInput, props.id])
+        dispatch({
+            type:"CHANGED",
+            payload: {
+                value: transcript,
+                validators: props.validators || []
+            }
+        })
+    },[transcript])
 
     const element = props.element === "textarea" ?
     <textarea
@@ -75,12 +86,29 @@ const Input = (props)=>{
     />
     
     return(
-        <>
-        <label htmlFor={props.id}> {props.id} </label>
-        {element} 
-        <div>{isTouched && !isValid ? props.errorMessage : ""}</div>
-        </>
+        <form onSubmit={
+            (e)=>{
+                e.preventDefault();
+                props.submitHandler(props.id,value,isValid ? props.round : 0)
+            }
+        }>
+            <label htmlFor={props.id}> {props.id} </label>
+            {element}  
+            <div>
+                <input 
+                    disabled={!value} 
+                    type="submit" 
+                    value="Answer"
+                />
+                <Dictaphone 
+                    transcript 
+                    listening 
+                    resetTranscript 
+                    browserSupportsSpeechRecognition
+                />
+            </div>   
+        </form>
     )
 }
 
-export default Input;
+export default TestInputField;

@@ -1,94 +1,100 @@
-import { useState } from "react";
-import Input from "../input/input"
+import { useEffect, useState } from "react"; 
 import { VALIDATOR_TASK } from "../../utils/valid";
 import useTest from "../../hooks/useTest";
+import TestInputField from "../testInputField/testInputField";
 
 const Task = (props)=>{
 
-    const[isAnswered,setIsAnswered]=useState(false)
-    const[answer,setAnswer]=useState("")
-    const[isCorrect,setIsCorrect]=useState(false)
-
-
-    // const initValues = {
-    //     [props.serb]: {
-    //         value: "",
-    //         isvalid: false
-    //     }
-    // }
+    const[isAnswered,setIsAnswered]=useState(false) 
+    const[nextRoundMessage, setNextRoundMessage] = useState(false)
+    const[incorrectAnswersCount,setIncorrectAnswersCount] = useState(0)
+    const correctAnswersCount = props.results?.filter(r=>r.correctRound>props.round-1).length || 0
+    const correctAnswersTotal = props.results?.filter(r=>r.correctRound>0).length || 0
 
     const action = ()=>{
         setIsAnswered(true)
-        // setIsCorrect(data?.inputs[props.serb].isValid)
-        // setTestItems(
-        //     prev => [
-        //         ...prev,
-        //         {
-        //             serb: props.serb,
-        //             eng: props.eng,
-        //             answer: data?.inputs[props.serb].value
-        //         }
-        //     ]
-        // )
     }
 
     const {
-        inputHandler,
         submitHandler
     } = useTest(action)
 
     const next = ()=>{
-        setAnswer("")
-        setIsCorrect(false)
+        if(props.pointer===props.roundQuestionsCount-1) {
+            props.setRound(prev=>prev+1)
+            setNextRoundMessage(true) 
+        } 
         setIsAnswered(false)
         props.nextQuestion()
+    } 
+
+    const nextRound = ()=>{ 
+        setNextRoundMessage(false)
+        setIncorrectAnswersCount(0)
     }
 
-    const testState={}
+    useEffect(()=>{
+        if(isAnswered){
+            setIncorrectAnswersCount(prev=>props.currentQuestion.correctRound ? prev : prev+1)
+        } 
+    },[props.currentQuestion])
 
-    return(
+    console.log("props.results",props.results)
 
-            !isAnswered
-            ?
-            <form onSubmit={submitHandler}>
-                <div>
-                    <Input
-                        element="textarea"
-                        name={props.serb}
-                        id={props.serb}
-                        placeholder="Type the English"
-                        onInput={inputHandler}
-                        validators={[VALIDATOR_TASK(props.eng)]}
-                        errorMessage="Incorrect"
-                        isTest
-                    />
-                </div>
-            </form>
+    return( 
+        <>
+        {
+            !isAnswered && !nextRoundMessage
+            ? 
+            <TestInputField
+                element="textarea"
+                name={props.serb}
+                id={props.serb}
+                placeholder="Type the English"
+                submitHandler={submitHandler}
+                validators={[VALIDATOR_TASK(props.eng)]}
+                errorMessage="Incorrect"
+                isTest
+                round={props.round}
+            /> 
             :
-            !props.isLastQuestion ?
+            !nextRoundMessage ? 
             <div>
-                <p>{isCorrect ? "Correct" : "Wrong"}</p>
-                <p>Answered: {answer}</p>
+                <p>{props.currentQuestion.correctRound ? "Correct" : "Wrong"}</p>
+                <p>Answered: {props.currentQuestion.result}</p>
                 <p>Correct answer: {props.eng}</p>
                 <button onClick={next}>Next</button>
             </div>
             :
             <div>
-                <h2>Last Question</h2>
-                <p>Total question: {props.totalQuestions}</p>
-                <p>Correct answers: {testState.totalCorrectAnswers}</p>
-                <p>Poens: {testState.poens}</p>
-                {/* <div>
-                    {testItems.map((item) =>
-                        <div key={item._id}>
-                            <div>Serb: {item.serb}</div>
-                            <div>Eng: {item.eng}</div>
-                            <div>Answer: {item.answer}</div>
-                            <hr/>
-                        </div>
-                    )}
-                </div> */}
-            </div>
+                <h2>Last Question</h2> 
+                <p>Correct answers:</p>
+                <p>Poens:</p>
+                <button onClick={nextRound}>Next round</button>
+
+                <div>
+                {
+                    props.results.map(result => {  
+                        if(result.correctRound===0){ 
+                            return <div>Incorrect {result.serb} {result.eng} </div> 
+                        }else if(result.correctRound===props.round-1){
+                            return <div>True {result.serb} {result.eng} </div>  
+                        }else{
+                            return null
+                        } 
+                    })
+                }
+                </div>
+
+            </div> 
+
+        }
+        <div>
+            <p>Remaining: {props.roundQuestionsCount - correctAnswersCount}</p>
+            <p>Incorrect Answers: {incorrectAnswersCount}</p>
+            <p>Correct: {correctAnswersTotal }</p>
+        </div>
+        </>
     )
 }
 

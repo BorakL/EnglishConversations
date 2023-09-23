@@ -9,12 +9,16 @@ import { SET_SINGLE_CONVERSATION } from "../../reducers/conversations";
 const TestConversation = () => {
 
     const {
-        conversation
+        singleConversation        
     } = useSelector( ({conversations}) => ({
-        conversation: conversations.singleConversation
+        singleConversation: conversations.singleConversation
     }))
 
     const[pointer,setPointer] = useState(0)
+    const[roundQuestions, setRoundQuestions] = useState([])
+    const[round,setRound] = useState(1)
+    const[initLoad,setInitLoad] = useState(false)
+    const[currentQuestion,setCurrentQuestion] = useState({})
 
     const params = useParams();
     const dispatch = useDispatch();
@@ -25,35 +29,42 @@ const TestConversation = () => {
             type: SET_SINGLE_CONVERSATION,
             payload: covnersationData.data.doc
         })
+        setInitLoad(true)
     }
 
     useEffect(()=>{
         loadConversation(params.conversation);
-    },[params.id]) 
+    },[])
 
     useEffect(()=>{
-        console.log(conversation)
-    },[conversation.results])
- 
-    const questions = conversation.results || [] 
+        setRoundQuestions(singleConversation.results ? singleConversation.results.filter(q=>q.correctRound===0) : []) 
+    },[round,initLoad])
 
-    const nextQuestion = ()=>{
-        setPointer(prev => (prev+1)%questions.length )
+    useEffect(()=>{ 
+        if(roundQuestions.length){
+            setCurrentQuestion(singleConversation.results?.find(r=>r._id===roundQuestions[pointer]._id))
+        }
+    },[singleConversation.results])
+
+    const nextQuestion = ()=>{ 
+        setPointer(prev => (prev+1)%roundQuestions.length )
     }
-
-    const isLastQuestion = pointer===questions.length-1
 
     return (
         <>
-        <h1>Test</h1>
+        <h1>Round {round}</h1>
         {
-            questions.length ? 
+           singleConversation && singleConversation.results && singleConversation.results.length ? 
             <div>
                 <Task 
-                    {...questions[pointer]} 
-                    isLastQuestion={isLastQuestion} 
-                    nextQuestion={nextQuestion}
-                    totalQuestions={questions.length}
+                    {...roundQuestions[pointer]} 
+                    results={singleConversation.results} 
+                    currentQuestion={currentQuestion}
+                    nextQuestion={nextQuestion} 
+                    roundQuestionsCount={roundQuestions.length}
+                    pointer={pointer}
+                    round={round}
+                    setRound={setRound}
                 />
             </div> :
             <p>...loading</p>

@@ -19,7 +19,7 @@ export default (state=initialState, action) => {
         }
         case SET_SINGLE_CONVERSATION: {
             if(action.payload && action.payload.conversation){
-                let results = action.payload.conversation.map(c => {return {...c, result:"", isCorrect:false}})
+                let results = action.payload.conversation.map(c => {return {...c, result:"", correctRound:0}})
                 return {
                     ...state,
                     singleConversation: {
@@ -42,7 +42,7 @@ export default (state=initialState, action) => {
                         {
                             ...prev,
                             result: action.payload.result,
-                            isCorrect: action.payload.isCorrect
+                            correctRound: action.payload.correctRound
                         } :
                         prev
                 )

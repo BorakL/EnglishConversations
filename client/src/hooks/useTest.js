@@ -1,32 +1,24 @@
-import { useCallback } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 import { UPDATE_SINGLE_CONVERSATION } from "../reducers/conversations"
 
 
 const useTest = (action) => {
 
+    const dispatch = useDispatch(); 
 
-
-    const dispatch = useDispatch();
-
-    const inputHandler = useCallback((id,result,isCorrect)=>{ 
+    const submitHandler = (id,result,correctRound)=>{  
         dispatch({
             type: UPDATE_SINGLE_CONVERSATION,
             payload: {
                 inputId:id,
                 result,
-                isCorrect
+                correctRound
             }
         })
-    },[])
-
-    const submitHandler = (e)=>{ 
-        e.preventDefault();
         action();
     }
 
-    return {
-        inputHandler,
+    return { 
         submitHandler
     }
 
