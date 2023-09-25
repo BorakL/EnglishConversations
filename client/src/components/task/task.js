@@ -68,8 +68,7 @@ const Task = (props)=>{
             :
             <div>
                 <h2>Last Question</h2> 
-                <p>Correct answers:</p>
-                <p>Poens:</p>
+                <p>Overall Progress: {`${correctAnswersTotal}/${props.results.length}`}</p>
                 <button onClick={nextRound}>Next round</button>
 
                 <div>
@@ -90,9 +89,9 @@ const Task = (props)=>{
 
         }
         <div>
-            <p>Remaining: {props.roundQuestionsCount - correctAnswersCount}</p>
+            <p>Remaining: {props.roundQuestionsCount - correctAnswersCount - incorrectAnswersCount}</p>
             <p>Incorrect Answers: {incorrectAnswersCount}</p>
-            <p>Correct: {correctAnswersTotal }</p>
+            <p>Correct: {correctAnswersTotal}</p>
         </div>
         </>
     )
