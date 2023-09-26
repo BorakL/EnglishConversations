@@ -3,6 +3,8 @@ import { useEffect, useReducer, useRef } from "react"
 import { valid } from "../../utils/valid"
 import { useSpeechRecognition } from 'react-speech-recognition'
 import Dictaphone from "../dictaphone/dictaphone"
+import { useSpeechSynthesis } from 'react-speech-kit';
+
 
 const initValue = {
     value:"",
@@ -55,6 +57,8 @@ const TestInputField = (props)=>{
         isTouched
     } = inputState
 
+    const { speak } = useSpeechSynthesis();
+
     useEffect(()=>{
         dispatch({
             type:"CHANGED",
@@ -65,6 +69,18 @@ const TestInputField = (props)=>{
         })
     },[transcript])
 
+    const handleSubmit = (e)=>{
+        e.preventDefault();
+        props.submitHandler(props.id,value,isValid ? props.round : 0)
+        if(isValid)speak({ text: value })
+    }
+
+    const handleTextKeyDown = (e)=>{
+        if(e.key==='Enter' && !e.shiftKey){
+            handleSubmit(e)
+        }
+    }
+
     const element = props.element === "textarea" ?
     <textarea
         value={value}
@@ -74,6 +90,7 @@ const TestInputField = (props)=>{
         onChange = {changeHandler}
         onBlur = {touchHandler}
         autoFocus
+        onKeyDown={handleTextKeyDown}
     />
     :
     <input
@@ -86,12 +103,7 @@ const TestInputField = (props)=>{
     />
     
     return(
-        <form onSubmit={
-            (e)=>{
-                e.preventDefault();
-                props.submitHandler(props.id,value,isValid ? props.round : 0)
-            }
-        }>
+        <form onSubmit={handleSubmit}>
             <label htmlFor={props.id}> {props.id} </label>
             {element}  
             <div>

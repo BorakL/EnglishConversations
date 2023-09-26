@@ -27,17 +27,6 @@ const formReducer = (state, action) => {
 }
 
 const useForm = (inputs, action) => {
-    
-    // const initValues = {
-    //     name : {
-    //         value: "Pera",
-    //         isValid: true
-    //     },
-    //     age: {
-    //         value: 33,
-    //         isValid: true
-    //     }
-    // }
 
     const initState ={
         inputs,
