@@ -2,22 +2,28 @@ import { useEffect, useRef, useState } from "react";
 import { VALIDATOR_TASK } from "../../utils/valid";
 import useTest from "../../hooks/useTest";
 import TestInputField from "../testInputField/testInputField"; 
+import WrongAnswer from "./wrongAnswer";
+import FinishedRound from "./finishedRound";
+import FinishedTest from "./finishedTest";
 
 const Task = (props)=>{
 
     const[isAnswered,setIsAnswered]=useState(false)
     const[nextRoundMessage, setNextRoundMessage] = useState(false)
     const[incorrectAnswersCount,setIncorrectAnswersCount] = useState(0)
+    const[dontKnow, setDontKnow]=useState(false)
+    const[isOverride, setIsOverride]=useState(false)
     const correctAnswersCount = props.results?.filter(r=>r.correctRound>props.round-1).length || 0
     const correctAnswersTotal = props.results?.filter(r=>r.correctRound>0).length || 0
     const refNext = useRef()
 
     const action = ()=>{
         setIsAnswered(true)
+        setIsOverride(false)
     }
 
     const {
-        submitHandler
+        sendAnswer
     } = useTest(action)
 
     const next = ()=>{
@@ -26,6 +32,7 @@ const Task = (props)=>{
             setNextRoundMessage(true)
         }
         setIsAnswered(false)
+        setDontKnow(false)
         props.nextQuestion()
     }
 
@@ -37,6 +44,8 @@ const Task = (props)=>{
     useEffect(()=>{
         if(isAnswered){
             setIncorrectAnswersCount(prev=>props.currentQuestion.correctRound ? prev : prev+1)
+        }else if(isOverride){
+            setIncorrectAnswersCount(prev=>prev>=1 ? prev-1 : prev)
         }
     },[props.currentQuestion])
 
@@ -69,7 +78,16 @@ const Task = (props)=>{
         }
     }
 
-    console.log("props.results",props.results)
+    const dontKnowHandler = ()=>{
+        setIsAnswered(true);
+        setDontKnow(true)
+    }
+
+    const overrideHandler = ()=>{
+        sendAnswer(props.currentQuestion.serb, props.currentQuestion.eng, props.round);
+        next();
+        setIsOverride(true)
+    }
 
     return(
         <>
@@ -81,57 +99,39 @@ const Task = (props)=>{
                 name={props.serb}
                 id={props.serb}
                 placeholder="Type the English"
-                submitHandler={submitHandler}
+                submitHandler={sendAnswer}
+                dontKnowHandler={dontKnowHandler}
                 validators={[VALIDATOR_TASK(props.eng)]}
                 errorMessage="Incorrect"
                 isTest
                 round={props.round}
             />
             :
-            !nextRoundMessage ?
-            <div>
-                <p>{props.currentQuestion.correctRound ? "Correct" : "Wrong"}</p>
-                <p>Answered: {props.currentQuestion.result}</p>
-                <p>Correct answer: {props.eng}</p>
-                <button onClick={next} ref={refNext}>Next</button>
-            </div>
-            :
-            props.roundQuestionsCount ?
-            <div>
-                <h2>Last Question</h2>
-                <p>Overall Progress: {`${correctAnswersTotal}/${props.results.length}`}</p>
-                <button onClick={nextRound}>Next round</button>
-
-                <div>
-                {
-                    props.results.map(result => {
-                        if(result.correctRound===0){
-                            return <div>Incorrect {result.serb} {result.eng} </div>
-                        }else if(result.correctRound===props.round-1){
-                            return <div>True {result.serb} {result.eng} </div>
-                        }else{
-                            return null
-                        }
-                    })
-                }
-                </div>
-            </div>
-            :
-            <div>
-                <h1>The end</h1>
-                <div>
-                {
-                    getAllResults(props.results,props.round).map((result,i) =>
-                        <div key={i}>
-                            <h3>Round {i+1}</h3>
-                            {result}
-                        </div>
-                    )
-                }
-                </div>
-            </div>
-
+                !nextRoundMessage ?
+                    <WrongAnswer
+                        correctRound={props.currentQuestion.correctRound}
+                        eng={props.eng}
+                        next={next}
+                        refNext={refNext}
+                        dontKnow={dontKnow}
+                        overrideHandler={overrideHandler}
+                    />
+                    :
+                    props.roundQuestionsCount ? 
+                        <FinishedRound
+                            correctAnswersTotal={correctAnswersTotal}
+                            results={props.results}
+                            nextRound={nextRound}
+                        />
+                        : 
+                        <FinishedTest
+                            results={props.results}
+                            round={props.round}
+                            getAllResults={getAllResults}
+                        />
         }
+
+        {/* */}
         <div>
             <p>Remaining: {props.roundQuestionsCount - correctAnswersCount - incorrectAnswersCount}</p>
             <p>Incorrect Answers: {incorrectAnswersCount}</p>

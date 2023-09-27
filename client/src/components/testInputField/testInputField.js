@@ -118,7 +118,10 @@ const TestInputField = (props)=>{
                     resetTranscript 
                     browserSupportsSpeechRecognition
                 />
-            </div>   
+            </div>  
+            <div>
+                <button  type="button" onClick={props.dontKnowHandler}>Don't know</button> 
+            </div>
         </form>
     )
 }

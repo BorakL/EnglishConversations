@@ -44,6 +44,7 @@ const TestConversation = () => {
         if(roundQuestions.length){
             setCurrentQuestion(singleConversation.results?.find(r=>r._id===roundQuestions[pointer]._id))
         }
+        console.log("singleConversation.results",singleConversation.results)
     },[singleConversation.results])
 
     const nextQuestion = ()=>{ 

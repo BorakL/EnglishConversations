@@ -6,7 +6,7 @@ const useTest = (action) => {
 
     const dispatch = useDispatch(); 
 
-    const submitHandler = (id,result,correctRound)=>{  
+    const sendAnswer = (id,result,correctRound)=>{  
         dispatch({
             type: UPDATE_SINGLE_CONVERSATION,
             payload: {
@@ -19,7 +19,7 @@ const useTest = (action) => {
     }
 
     return { 
-        submitHandler
+        sendAnswer
     }
 
 }
