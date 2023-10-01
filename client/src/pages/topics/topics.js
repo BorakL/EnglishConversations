@@ -3,20 +3,37 @@ import { getTopics } from "../../services/api";
 import InfiniteScroll from 'react-infinite-scroller';
 import TopicItem from "../../components/topicItem/topicItem";
 import './topics.scss'
+import { useDispatch, useSelector } from "react-redux";
+import { SET_TOPICS } from "../../reducers/topics";
 
-const Topics = ()=>{
-    const[total,setTotal] = useState(0);
-    const[topics,setTopics] = useState([])
+const Topics = ()=>{ 
     const[query,setQuery] = useState({limit:24})
     const[loading,setLoading] = useState(false)
     const scrollParentref = useRef()
+    const dispatch = useDispatch()
+
+    const {
+        topics,
+        topicsTotal
+    } = useSelector(({topics})=>({
+        topics: topics.topics,
+        topicsTotal: topics.topicsTotal
+    }))
+
+    console.log("topicsssss",topics)
 
     const loadTopics = async(offset=0)=>{
         try{
             setLoading(true)
             const topicsData = await getTopics({...query, skip:offset});
-            setTopics(prev=>[...prev, ...topicsData.data.data])
-            if(offset===0) setTotal(topicsData.data.total);
+            console.log("topicsData",topicsData)
+            dispatch({
+                type: SET_TOPICS,
+                payload: {
+                    data: topicsData.data.data,
+                    total: topicsData.data.total
+                }
+            })
             setLoading(false)
         }catch(error){
             console.log("error",error.message)
@@ -30,13 +47,13 @@ const Topics = ()=>{
     },[query])
 
     return(
-        <div className="explorePageWrapper" style={{height:"100vh", overflow:"auto"}} ref={scrollParentref}>
+        <div className="explorePageWrapper" style={{height:"800px", overflow:"auto"}} ref={scrollParentref}>
             <h1>Topics</h1>
             <div >
                 <InfiniteScroll
                     pageStart={0}
                     loadMore={()=>loadTopics(topics.length)}
-                    hasMore={total>topics.length && !loading}
+                    hasMore={topicsTotal>topics.length && !loading}
                     style={{display:"flex", flexWrap:"wrap"}}
                     useWindow={false}
                     threshold={250} 

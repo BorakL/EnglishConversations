@@ -4,11 +4,20 @@ import { getTopicConversations } from "../../services/api";
 import InfiniteScroll from "react-infinite-scroller";
 import ConversationItem from "../../components/conversationItem/conversationItem";
 import './topic.scss';
+import { useDispatch, useSelector } from "react-redux"; 
+import { SET_CONVERSATIONS } from "../../reducers/conversations";
 
 const Topic = ()=>{
-    const[conversations,setConversations] = useState([]);
-    const[total,setTotal] = useState(0)
+    const {
+        conversations,
+        totalConversations
+    } = useSelector(({conversations}) => ({
+        conversations: conversations.conversations,
+        totalConversations: conversations.total
+    }))
+
     const[loading,setLoading] = useState(false)
+    const dispatch = useDispatch();
     const[query,setQuery] = useState({limit:12})
     const params = useParams(); 
     const scrollParentRef = useRef();
@@ -17,8 +26,13 @@ const Topic = ()=>{
         try{
             setLoading(true)
             const conversationsData = await getTopicConversations(params.id, {...query, skip:offset});
-            setConversations(prev=>[...prev,...conversationsData.data.data])
-            setTotal(conversationsData.data.total)
+            dispatch({
+                type: SET_CONVERSATIONS,
+                payload: {
+                    data: conversationsData.data.data,
+                    total: conversationsData.data.total
+                }
+            })
             setLoading(false)
         }catch(error){
             console.log(error.message)
@@ -36,7 +50,7 @@ const Topic = ()=>{
                 <InfiniteScroll
                     pageStart={0}
                     loadMore={()=>loadTopicConversations(conversations.length)}
-                    hasMore={total>conversations.length && !loading}
+                    hasMore={totalConversations>conversations.length && !loading}
                     useWindow={false}
                     threshold={250}
                     style={{display:"flex", flexWrap:"wrap"}}

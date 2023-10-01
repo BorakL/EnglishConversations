@@ -31,7 +31,6 @@ export default (state=initialState, action) => {
             return state
         }
         case UPDATE_SINGLE_CONVERSATION: {
-            console.log("action.payload.inputId",action.payload.inputId)
             if(
                 action.payload.inputId &&
                 state.singleConversation.results && 

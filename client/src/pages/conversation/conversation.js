@@ -4,6 +4,7 @@ import { useParams } from "react-router";
 import Card from "../../components/card/card";
 import {useSelector, useDispatch} from "react-redux"
 import { SET_SINGLE_CONVERSATION } from "../../reducers/conversations";
+import Button from "../../components/button/button";
 
 const Conversation = ()=>{
     const {
@@ -11,7 +12,7 @@ const Conversation = ()=>{
     } = useSelector(({ conversations }) => ({
         conversation: conversations.singleConversation
     }))
-
+    const[learn,setLearn] = useState(false)
     const dispatch = useDispatch();
     const params = useParams();  
 
@@ -34,7 +35,28 @@ const Conversation = ()=>{
     return(
         <div>
             <h1>{conversation.title}</h1>
-            {conversation.conversation ? <Card conversation={conversation.conversation}/> : <p>Loading...</p>}
+            <div className="conversationName">
+                <Button
+                    onClick={()=>setLearn(true)}
+                >
+                    Learn
+                </Button>
+                <Button
+                    onClick={()=>setLearn(false)}
+                >
+                    Flashcards
+                </Button>
+                <Button
+                    to="test"
+                >
+                    Test
+                </Button>
+            </div>
+            {conversation.conversation ? 
+                <Card conversation={conversation.conversation}/> : <p>Loading...</p>
+                :
+                // <List/>
+            }
         </div>
     )
 }
