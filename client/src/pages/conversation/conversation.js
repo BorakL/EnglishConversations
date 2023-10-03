@@ -5,6 +5,9 @@ import Card from "../../components/card/card";
 import {useSelector, useDispatch} from "react-redux"
 import { SET_SINGLE_CONVERSATION } from "../../reducers/conversations";
 import Button from "../../components/button/button";
+import List from "../../components/list/list";
+import "./conversation.scss"
+import ConversationNav from "../../components/conversationNav/conversationNav";
 
 const Conversation = ()=>{
     const {
@@ -12,7 +15,7 @@ const Conversation = ()=>{
     } = useSelector(({ conversations }) => ({
         conversation: conversations.singleConversation
     }))
-    const[learn,setLearn] = useState(false)
+    const[list,setList] = useState(false)
     const dispatch = useDispatch();
     const params = useParams();  
 
@@ -33,29 +36,15 @@ const Conversation = ()=>{
     },[])
 
     return(
-        <div>
+        <div className="conversationWrapper">
             <h1>{conversation.title}</h1>
-            <div className="conversationName">
-                <Button
-                    onClick={()=>setLearn(true)}
-                >
-                    Learn
-                </Button>
-                <Button
-                    onClick={()=>setLearn(false)}
-                >
-                    Flashcards
-                </Button>
-                <Button
-                    to="test"
-                >
-                    Test
-                </Button>
-            </div>
-            {conversation.conversation ? 
-                <Card conversation={conversation.conversation}/> : <p>Loading...</p>
+            <ConversationNav list={list} setList={setList}/>
+            {conversation.conversation ?
+                !list ?
+                <Card conversation={conversation.conversation}/>
                 :
-                // <List/>
+                <List conversation={conversation.conversation}/> 
+            : <p>Loading...</p>
             }
         </div>
     )

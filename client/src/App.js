@@ -1,4 +1,4 @@
-import './App.css';
+import './App.scss';
 import Home from './pages/home/home';
 import Topics from './pages/topics/topics';
 import Topic from './pages/topic/topic'; 
@@ -11,6 +11,7 @@ function App() {
   return (
     <div className="App">
       <MainNavigation/>
+      <main>
       <Routes>
         <Route path="/" element={<Home/>} />
         <Route path="topics" element={<Topics/>} />
@@ -18,6 +19,7 @@ function App() {
         <Route path="topics/:id/:conversation" element={<Conversation/>} />
         <Route path="topics/:id/:conversation/test" element={<TestConversation/>} />
       </Routes>
+      </main>
     </div>
   );
 }

@@ -1,4 +1,3 @@
-
 import { useEffect, useReducer, useRef } from "react"
 import { valid } from "../../utils/valid"
 
@@ -76,9 +75,9 @@ const Input = (props)=>{
     
     return(
         <>
-        <label htmlFor={props.id}> {props.id} </label>
+        {/* <label htmlFor={props.id}> {props.id} </label> */}
         {element} 
-        <div>{isTouched && !isValid ? props.errorMessage : ""}</div>
+        {/* <div>{isTouched && !isValid ? props.errorMessage : ""}</div> */}
         </>
     )
 }

@@ -1,7 +1,5 @@
-import { useEffect, useState } from "react";
-import Speech from 'react-text-to-speech'
-import {CSSTransition} from 'react-transition-group'
-import "./card.css"
+import { useEffect, useState } from "react"; 
+import "./card.scss"
 import Button from "../button/button";
 
 const Card = ({conversation})=>{
@@ -39,22 +37,27 @@ const Card = ({conversation})=>{
                     </div>
                 </div>
                 <div className="flashCardButtons">
-                    <div>
+                  
                         <Button 
                             type="button"
                             onClick={prevCard}
+                            disabled={pointer===0}
                         >
                             Prev
                         </Button>
-                    </div>
+            
                     <div>
+                        {`${pointer+1}/${conversation.length}`}
+                    </div>
+               
                         <Button 
                             type="button"
                             onClick={nextCard}
+                            disabled={pointer===conversation.length-1}
                         >
                             Next
                         </Button>
-                    </div>
+                  
                 </div>
             </div>
             

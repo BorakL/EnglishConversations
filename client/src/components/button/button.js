@@ -1,10 +1,17 @@
 import {Link} from 'react-router-dom'
 
 const Button = props => {
+
+    const classes = `${props.style || 'button'} 
+                     ${!props.style && props.size || ''}
+                     ${!props.style && props.danger && 'danger' || ''}
+                     ${!props.style && props.inverse && 'inverse' || ''}
+                     ${!props.style && props.disabled && 'disabled' || ''}`
+
     if(props.href){
         return (
             <a
-                className={`button button--${props.size} || 'default'`}
+                className={classes}                
                 href={props.href}
             >
                 {props.children}
@@ -13,16 +20,17 @@ const Button = props => {
     }
     if(props.to){
         return(<Link 
-            to={props.to}
-            exact={props.exact}
-            className={`button button--${props.size} || 'default'`}
-        >
+                to={props.to}
+                exact={props.exact}
+                className={classes}
+            >
             {props.children}
-        </Link>)
+            </Link>
+        )
     }
     return(
-        <button
-            className={`button button--${props.size} || 'default'`}
+        <button 
+            className={`${classes} ${props.active && 'active'}`}
             type={props.type}
             onClick={props.onClick}
             disabled={props.disabled}
