@@ -52,6 +52,17 @@
   background-color: brown;
 }
 
+.buttonIcon{
+  background-color: transparent;
+  border:none;
+  margin: 10px;
+  font-size: 1.2em;
+  cursor: pointer;
+}
+.buttonIconActive{
+  color: orange; 
+}
+
 a{
   color: inherit;
   background-color: inherit;
@@ -66,6 +77,18 @@ main{
   margin: auto;
 }
 
+.inputDefault{ 
+  textarea{
+    width:95%;
+    min-height:5px;
+    max-height:100px; 
+    overflow: visible;
+    border-color: transparent;
+    border-bottom: 2px solid grey;
+    outline: none;
+    resize: none;
+  } 
+}
 
 /* .explorePageWrapper{
   height:700px;

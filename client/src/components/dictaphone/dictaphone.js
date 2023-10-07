@@ -1,4 +1,6 @@
-import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import {HiOutlineMicrophone} from "react-icons/hi"
+import Button from "../button/button";
+
 
 const Dictaphone = (props) => {
 
@@ -6,11 +8,19 @@ const Dictaphone = (props) => {
         return <span>Browser doesn't support speech recognition.</span>;
     }
 
+    const handleMicrophone = ()=>{
+      props.setIsMicrophoneTurn(prev=>!prev)
+    } 
+
     return (
-        <div>
-          <p>Microphone: {props.listening ? 'on' : 'off'}</p>
-          <button type="button" onClick={SpeechRecognition.startListening}>Start</button>
-          <button type="button" onClick={SpeechRecognition.stopListening}>Stop</button>
+        <div className="dictaphone">
+          <Button
+            onClick={handleMicrophone}
+            type="button" 
+            style={`buttonIcon ${props.isMicrophoneTurn && "buttonIconActive"}`}
+          >
+            <HiOutlineMicrophone/>
+          </Button>
           <p>{props.transcript}</p>
         </div>
       );

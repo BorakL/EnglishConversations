@@ -16,11 +16,20 @@ const formReducer = (state, action) => {
                 inputs: {
                     ...state.inputs,
                     [action.payload.inputId]: {
-                        value: action.payload.value, 
+                        ...state.inputs[action.payload.inputId],
+                        [action.payload.name]: action.payload.value, 
                         isValid: action.payload.isValid
                     }
                 },
                 isValid: formIsValid
+            }
+        case "REMOVE_INPUT" :
+            const prevInputs = {...state.inputs}
+            delete prevInputs[action.payload.inputId]
+            return {
+                ...state,
+                inputs: prevInputs
+
             }
         default: return state
     }
@@ -35,16 +44,26 @@ const useForm = (inputs, action) => {
 
     const[formState,dispatch] = useReducer(formReducer, initState)
  
-    const inputHandler = useCallback((id,value,isValid) => {
+    const inputHandler = useCallback((id,name,value,isValid) => { 
         dispatch({
             type:"INPUT_CHANGE",
             payload: {
-                value,
-                isValid,
+                value: value,
+                isValid: isValid,
+                name: name,
                 inputId:id
             }
         })
     },[])
+
+    const removeHandler = (id)=>{
+        dispatch({
+            type: "REMOVE_INPUT",
+            payload: {
+                inputId:id
+            }
+        })
+    }
 
     const submitHandler = (e)=>{
         e.preventDefault();
@@ -54,6 +73,7 @@ const useForm = (inputs, action) => {
     return {
         formState, 
         inputHandler,
+        removeHandler,
         submitHandler
     }
 }

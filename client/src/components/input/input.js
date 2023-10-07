@@ -1,13 +1,13 @@
 import { useEffect, useReducer, useRef } from "react"
 import { valid } from "../../utils/valid"
 
-const initValue = {
+const initState = {
     value:"",
     isValid: false,
     isTouched: false
 }
 
-const inputReducer = (state=initValue, action) => {
+const inputReducer = (state=initState, action) => {
     switch(action.type){
         case "CHANGED" : 
             return {
@@ -25,7 +25,12 @@ const inputReducer = (state=initValue, action) => {
 }
 
 const Input = (props)=>{
-    const[inputState,dispatch] = useReducer(inputReducer, initValue)
+    const[inputState,dispatch] = useReducer(inputReducer, {
+                                                ...initState,
+                                                value: props.initValue,
+                                                name: props.name,
+                                                isValid: props.initValue ? true : false
+                                            })
 
     const changeHandler = (event)=>{
         dispatch({
@@ -37,9 +42,13 @@ const Input = (props)=>{
         })
     }
 
-    const touchHandler = () => {
+    const touchHandler = (event) => {
         dispatch({
-            type: "TOUCHED"
+            type: "TOUCHED",
+            payload: {
+                value: event.target.value,
+                validators: props.validators || []
+            }
         })
     }
 
@@ -49,23 +58,29 @@ const Input = (props)=>{
         isTouched
     } = inputState
 
-    useEffect(()=>{
-        props.onInput(props.id, value, isValid)
-    },[value, props.round, isTouched, props.onInput, props.id])
+    const expandTextArea = (e)=>{
+        e.target.style.height = "2em";
+        e.target.style.height = (e.target.scrollHeight) + "px"; 
+    }
 
-    const element = props.element === "textarea" ?
+    useEffect(()=>{
+        props.onInput(props.id, props.name, value, isValid)
+    },[value, props.round, props.name, isTouched, props.onInput, props.id])
+
+    const element = props.type === "textarea" ?
     <textarea
         value={value}
-        id={props.id}
+        id={props.id || props.name}
         name={props.name} 
         placeholder={props.placeholder}
         onChange = {changeHandler}
         onBlur = {touchHandler}
         autoFocus
+        onInput={expandTextArea} 
     />
     :
     <input
-        id={props.id}
+        id={props.id || props.name}
         name={props.name}
         value={value}
         placeholder={props.placeholder}
@@ -74,11 +89,11 @@ const Input = (props)=>{
     />
     
     return(
-        <>
-        {/* <label htmlFor={props.id}> {props.id} </label> */}
-        {element} 
-        {/* <div>{isTouched && !isValid ? props.errorMessage : ""}</div> */}
-        </>
+        <div className={props.class}>
+            {/* <label htmlFor={props.id}> {props.id} </label> */} 
+            {element} 
+            {isTouched && !isValid ? <div>{props.errorMessage}</div> : null}
+        </div>
     )
 }
 

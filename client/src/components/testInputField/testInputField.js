@@ -1,9 +1,9 @@
 
-import { useEffect, useReducer, useRef } from "react"
+import { useEffect, useReducer, useRef, useState } from "react"
 import { valid } from "../../utils/valid"
-import { useSpeechRecognition } from 'react-speech-recognition'
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
 import Dictaphone from "../dictaphone/dictaphone"
-import { useSpeechSynthesis } from 'react-speech-kit';
+import { useSpeechSynthesis } from 'react-speech-kit'; 
 
 
 const initValue = {
@@ -31,6 +31,7 @@ const inputReducer = (state=initValue, action) => {
 
 const TestInputField = (props)=>{
     const[inputState,dispatch] = useReducer(inputReducer, initValue)
+    const[isMicrophoneTurn,setIsMicrophoneTurn] = useState(false)
     const {
         transcript
       } = useSpeechRecognition();
@@ -69,6 +70,17 @@ const TestInputField = (props)=>{
         })
     },[transcript])
 
+    useEffect(()=>{
+        if(isMicrophoneTurn){
+            SpeechRecognition.startListening()
+        }else{
+            SpeechRecognition.stopListening()
+        }
+        return ()=>{
+            SpeechRecognition.stopListening();
+        }
+    },[isMicrophoneTurn])
+
     const handleSubmit = (e)=>{
         e.preventDefault();
         props.submitHandler(props.id,value,isValid ? props.round : 0)
@@ -80,48 +92,51 @@ const TestInputField = (props)=>{
             handleSubmit(e)
         }
     }
-
-    const element = props.element === "textarea" ?
-    <textarea
-        value={value}
-        id={props.id}
-        name={props.name} 
-        placeholder={props.placeholder}
-        onChange = {changeHandler}
-        onBlur = {touchHandler}
-        autoFocus
-        onKeyDown={handleTextKeyDown}
-    />
-    :
-    <input
-        id={props.id}
-        name={props.name}
-        value={value}
-        placeholder={props.placeholder}
-        onChange = {changeHandler}
-        onBlur = {touchHandler}
-    />
     
     return(
         <form onSubmit={handleSubmit}>
-            <label htmlFor={props.id}> {props.id} </label>
-            {element}  
+            <div className="questionContainer">
+                <div> {props.id} </div>
+                <div>
+                    <button  type="button" onClick={props.dontKnowHandler}>
+                        Don't know
+                    </button> 
+                </div>
+            </div>
+
+            <div className="answerContainer">
+                 
+                    <textarea
+                        value={value}
+                        id={props.id}
+                        name={props.name} 
+                        placeholder={props.placeholder}
+                        onChange = {changeHandler}
+                        onBlur = {touchHandler}
+                        autoFocus
+                        onKeyDown={handleTextKeyDown}
+                    />
+                
+                
+                <Dictaphone 
+                    transcript  
+                    setIsMicrophoneTurn={setIsMicrophoneTurn}
+                    isMicrophoneTurn={isMicrophoneTurn}
+                    browserSupportsSpeechRecognition
+                />
+            
+            </div>
             <div>
                 <input 
                     disabled={!value} 
                     type="submit" 
                     value="Answer"
                 />
-                <Dictaphone 
-                    transcript 
-                    listening 
-                    resetTranscript 
-                    browserSupportsSpeechRecognition
-                />
-            </div>  
-            <div>
-                <button  type="button" onClick={props.dontKnowHandler}>Don't know</button> 
             </div>
+                
+            
+
+            
         </form>
     )
 }

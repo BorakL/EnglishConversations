@@ -31,10 +31,10 @@ export const valid = (value, validators)=>{
     let isValid = true;
     for(const validator of validators){
         if(validator.type===VALIDATOR_TYPE_REQUIRE){
-            isValid = isValid && value.trim.length === 0
+            isValid = isValid && value.trim().length !== 0
         }
         if(validator.type===VALIDATOR_TYPE_MAXLENGTH){ 
-            isValid = isValid && value.trim.length < validator.value
+            isValid = isValid && value.trim().length < validator.value
         }
         if(validator.type===VALIDATOR_TYPE_MINLENGTH){ 
             isValid = isValid && value.trim().length > validator.value

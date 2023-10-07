@@ -57,18 +57,17 @@ const TestConversation = () => {
         <h1>Round {round}</h1>
         {
            singleConversation && singleConversation.results && singleConversation.results.length ? 
-            <div>
-                <Task 
-                    {...roundQuestions[pointer]} 
-                    results={singleConversation.results} 
-                    currentQuestion={currentQuestion}
-                    nextQuestion={nextQuestion} 
-                    roundQuestionsCount={roundQuestions.length}
-                    pointer={pointer}
-                    round={round}
-                    setRound={setRound}
-                />
-            </div> :
+            <Task 
+                {...roundQuestions[pointer]} 
+                results={singleConversation.results} 
+                currentQuestion={currentQuestion}
+                nextQuestion={nextQuestion} 
+                roundQuestionsCount={roundQuestions.length}
+                pointer={pointer}
+                round={round}
+                setRound={setRound}
+            />
+             :
             <p>...loading</p>
         }
         </>

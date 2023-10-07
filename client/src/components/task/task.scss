@@ -1,0 +1,43 @@
+.taskContainer{
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    gap: 10px;
+
+    .taskSidebar{
+        text-align: left;
+        width: 12rem;
+        border: 1px solid grey;
+    }
+    .taskMain{
+        box-sizing: border-box;
+        width: calc(100% - 12rem);
+        border: 1px solid grey;
+        padding: 2rem;
+
+        .questionContainer{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            min-height: 100px;
+        }
+        .answerContainer{
+            display: flex;
+            flex-direction: row; 
+            justify-content:flex-start;
+            .dictaphone{
+                width: 20px; 
+            }
+            textarea{  
+                border:none;
+                min-height: 20px;
+                padding:0;
+                resize: none;
+                width: 100%;
+                border-bottom: 2px solid grey;
+                background-color: transparent;
+                outline: none;
+            }
+        }
+    }
+}

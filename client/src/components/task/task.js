@@ -5,6 +5,7 @@ import TestInputField from "../testInputField/testInputField";
 import WrongAnswer from "./wrongAnswer";
 import FinishedRound from "./finishedRound";
 import FinishedTest from "./finishedTest";
+import "./task.scss";
 
 const Task = (props)=>{
 
@@ -90,54 +91,54 @@ const Task = (props)=>{
     }
 
     return(
-        <>
-        {
-            !isAnswered && !nextRoundMessage
-            ?
-            <TestInputField
-                element="textarea"
-                name={props.serb}
-                id={props.serb}
-                placeholder="Type the English"
-                submitHandler={sendAnswer}
-                dontKnowHandler={dontKnowHandler}
-                validators={[VALIDATOR_TASK(props.eng)]}
-                errorMessage="Incorrect"
-                isTest
-                round={props.round}
-            />
-            :
-                !nextRoundMessage ?
-                    <WrongAnswer
-                        correctRound={props.currentQuestion.correctRound}
-                        eng={props.eng}
-                        next={next}
-                        refNext={refNext}
-                        dontKnow={dontKnow}
-                        overrideHandler={overrideHandler}
-                    />
-                    :
-                    props.roundQuestionsCount ? 
-                        <FinishedRound
-                            correctAnswersTotal={correctAnswersTotal}
-                            results={props.results}
-                            nextRound={nextRound}
+        <div className="taskContainer">
+            <div className="taskMain">
+            {
+                !isAnswered && !nextRoundMessage
+                ?
+                <TestInputField
+                    name={props.serb}
+                    id={props.serb}
+                    placeholder="Type the English"
+                    submitHandler={sendAnswer}
+                    dontKnowHandler={dontKnowHandler}
+                    validators={[VALIDATOR_TASK(props.eng)]}
+                    errorMessage="Incorrect"
+                    isTest
+                    round={props.round}
+                    style="textareaDefault"
+                />
+                :
+                    !nextRoundMessage ?
+                        <WrongAnswer
+                            correctRound={props.currentQuestion.correctRound}
+                            eng={props.eng}
+                            next={next}
+                            refNext={refNext}
+                            dontKnow={dontKnow}
+                            overrideHandler={overrideHandler}
                         />
-                        : 
-                        <FinishedTest
-                            results={props.results}
-                            round={props.round}
-                            getAllResults={getAllResults}
-                        />
-        }
-
-        {/* */}
-        <div>
-            <p>Remaining: {props.roundQuestionsCount - correctAnswersCount - incorrectAnswersCount}</p>
-            <p>Incorrect Answers: {incorrectAnswersCount}</p>
-            <p>Correct: {correctAnswersTotal}</p>
+                        :
+                        props.roundQuestionsCount ? 
+                            <FinishedRound
+                                correctAnswersTotal={correctAnswersTotal}
+                                results={props.results}
+                                nextRound={nextRound}
+                            />
+                            : 
+                            <FinishedTest
+                                results={props.results}
+                                round={props.round}
+                                getAllResults={getAllResults}
+                            />
+            } 
+            </div>
+            <div className="taskSidebar">
+                <p>Remaining: {props.roundQuestionsCount - correctAnswersCount - incorrectAnswersCount}</p>
+                <p>Incorrect Answers: {incorrectAnswersCount}</p>
+                <p>Correct: {correctAnswersTotal}</p>
+            </div>
         </div>
-        </>
     )
 }
 
