@@ -2,10 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import { VALIDATOR_TASK } from "../../utils/valid";
 import useTest from "../../hooks/useTest";
 import TestInputField from "../testInputField/testInputField"; 
-import WrongAnswer from "./wrongAnswer";
 import FinishedRound from "./finishedRound";
 import FinishedTest from "./finishedTest";
 import "./task.scss";
+import ProgressBar from "../progressBar/progressBar";
+import Result from "./result";
 
 const Task = (props)=>{
 
@@ -90,6 +91,11 @@ const Task = (props)=>{
         setIsOverride(true)
     }
 
+    const remainingProgress = Math.ceil((props.roundQuestionsCount-correctAnswersCount-incorrectAnswersCount)/props.roundQuestionsCount*100)
+    const remainingProgressCount = props.roundQuestionsCount-(correctAnswersCount+incorrectAnswersCount)
+    const incorrectProgress = Math.ceil((incorrectAnswersCount/props.roundQuestionsCount)*100)
+    const correctProgress = Math.ceil((correctAnswersTotal/props.results.length)*100)
+
     return(
         <div className="taskContainer">
             <div className="taskMain">
@@ -110,9 +116,11 @@ const Task = (props)=>{
                 />
                 :
                     !nextRoundMessage ?
-                        <WrongAnswer
-                            correctRound={props.currentQuestion.correctRound}
+                        <Result
+                            currentQuestion={props.currentQuestion}
+                            answer={props.currentQuestion.result}
                             eng={props.eng}
+                            serb={props.serb}
                             next={next}
                             refNext={refNext}
                             dontKnow={dontKnow}
@@ -134,9 +142,21 @@ const Task = (props)=>{
             } 
             </div>
             <div className="taskSidebar">
-                <p>Remaining: {props.roundQuestionsCount - correctAnswersCount - incorrectAnswersCount}</p>
-                <p>Incorrect Answers: {incorrectAnswersCount}</p>
-                <p>Correct: {correctAnswersTotal}</p>
+                <ProgressBar 
+                    progress={remainingProgress}
+                    count={remainingProgressCount}
+                    title="Remaining"    
+                /> 
+                <ProgressBar 
+                    progress={incorrectProgress}
+                    count={incorrectAnswersCount}
+                    title="Incorrect"    
+                /> 
+                <ProgressBar 
+                    progress={correctProgress}
+                    count={correctAnswersCount}
+                    title="Correct"    
+                /> 
             </div>
         </div>
     )

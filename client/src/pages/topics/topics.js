@@ -20,13 +20,10 @@ const Topics = ()=>{
         topicsTotal: topics.topicsTotal
     }))
 
-    console.log("topicsssss",topics)
-
     const loadTopics = async(offset=0)=>{
         try{
             setLoading(true)
             const topicsData = await getTopics({...query, skip:offset});
-            console.log("topicsData",topicsData)
             dispatch({
                 type: SET_TOPICS,
                 payload: {

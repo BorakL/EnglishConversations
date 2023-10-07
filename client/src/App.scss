@@ -29,12 +29,14 @@
 .button{
   display: inline-block;
   font: inherit;
-  padding:0.5rem 1.5rem;
-  /* border: 1px solid #ff0055; */
-  border: 1px solid blue;
+  padding:0.5rem 1.5rem; 
   border-radius: 4px;
+  outline: none;
+  border:none;
+  color:white;
   width: 100%;
   margin: 10px;
+  background-color: #3ccfcf;
 }
 
 .button:focus {
@@ -42,23 +44,43 @@
 }
 
 .button:hover{
-  background-color: red;
+  background-color: #28a7a7;
   cursor: pointer;
 }
-.button:active, .button:focus, .button.active {
-  background: blue
-}
+// .button:active, .button:focus, .button.active {
+//   background: blue
+// }
 .button.disabled{
-  background-color: brown;
+  background-color: lightblue;
+} 
+.button.correct{
+  background-color: green;
+}
+.button.wrong{
+  background-color: red;
+}
+.button.sm{
+  width:100px;
+}
+.button.md{
+  width:150px;
 }
 
-.buttonIcon{
+.buttonIcon, .buttonText{
   background-color: transparent;
   border:none;
   margin: 10px;
   font-size: 1.2em;
   cursor: pointer;
 }
+.buttonText{
+  font-size: 1em;
+  text-decoration: underline;
+}
+.buttonText:hover{
+  color:orange
+}
+
 .buttonIconActive{
   color: orange; 
 }
@@ -69,7 +91,7 @@ a{
   padding:0;
   margin:0;
   text-decoration: none; 
-}
+} 
 
 
 main{

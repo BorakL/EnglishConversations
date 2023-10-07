@@ -4,6 +4,7 @@ import { valid } from "../../utils/valid"
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
 import Dictaphone from "../dictaphone/dictaphone"
 import { useSpeechSynthesis } from 'react-speech-kit'; 
+import Button from "../button/button";
 
 
 const initValue = {
@@ -92,32 +93,38 @@ const TestInputField = (props)=>{
             handleSubmit(e)
         }
     }
+
+    const expandTextArea = (e)=>{
+        e.target.style.height = "10px";
+        e.target.style.height = (e.target.scrollHeight) + "px"; 
+    }
     
     return(
         <form onSubmit={handleSubmit}>
             <div className="questionContainer">
-                <div> {props.id} </div>
-                <div>
-                    <button  type="button" onClick={props.dontKnowHandler}>
-                        Don't know
-                    </button> 
-                </div>
+                <div> {props.id} </div> 
+                <Button  
+                    type="button" 
+                    onClick={props.dontKnowHandler}
+                    style="buttonText"
+                >
+                    Don't know
+                </Button>  
             </div>
 
             <div className="answerContainer">
                  
-                    <textarea
-                        value={value}
-                        id={props.id}
-                        name={props.name} 
-                        placeholder={props.placeholder}
-                        onChange = {changeHandler}
-                        onBlur = {touchHandler}
-                        autoFocus
-                        onKeyDown={handleTextKeyDown}
-                    />
-                
-                
+                <textarea
+                    value={value}
+                    id={props.id}
+                    name={props.name} 
+                    placeholder={props.placeholder}
+                    onChange = {changeHandler}
+                    onBlur = {touchHandler}
+                    autoFocus
+                    onKeyDown={handleTextKeyDown}
+                    onInput={expandTextArea}
+                />  
                 <Dictaphone 
                     transcript  
                     setIsMicrophoneTurn={setIsMicrophoneTurn}
@@ -126,12 +133,14 @@ const TestInputField = (props)=>{
                 />
             
             </div>
-            <div>
-                <input 
-                    disabled={!value} 
-                    type="submit" 
-                    value="Answer"
-                />
+
+            <div className="answerButton"> 
+                <Button
+                    disabled={!value}
+                    type="submit"
+                >
+                    Answer
+                </Button>
             </div>
                 
             

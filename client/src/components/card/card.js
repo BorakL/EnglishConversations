@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"; 
 import "./card.scss"
 import Button from "../button/button";
+import {GrLinkNext,GrLinkPrevious} from "react-icons/gr"
 
 const Card = ({conversation})=>{
 
@@ -42,8 +43,9 @@ const Card = ({conversation})=>{
                             type="button"
                             onClick={prevCard}
                             disabled={pointer===0}
+                            style="buttonIcon"
                         >
-                            Prev
+                            <GrLinkPrevious/>
                         </Button>
             
                     <div>
@@ -54,8 +56,9 @@ const Card = ({conversation})=>{
                             type="button"
                             onClick={nextCard}
                             disabled={pointer===conversation.length-1}
+                            style="buttonIcon"
                         >
-                            Next
+                            <GrLinkNext/>
                         </Button>
                   
                 </div>

@@ -5,6 +5,8 @@ const Button = props => {
     const classes = `${props.style || 'button'} 
                      ${!props.style && props.size || ''}
                      ${!props.style && props.danger && 'danger' || ''}
+                     ${!props.style && props.correct && 'correct' || ''}
+                     ${!props.style && props.wrong && 'wrong' || ''}
                      ${!props.style && props.inverse && 'inverse' || ''}
                      ${!props.style && props.disabled && 'disabled' || ''}`
 
@@ -34,6 +36,7 @@ const Button = props => {
             type={props.type}
             onClick={props.onClick}
             disabled={props.disabled}
+            ref={props.refNext}
         >
             {props.children}
         </button>

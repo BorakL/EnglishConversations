@@ -2,18 +2,22 @@
     display: flex;
     flex-direction: row-reverse;
     justify-content: space-between;
-    gap: 10px;
+    gap: 20px;
 
     .taskSidebar{
         text-align: left;
-        width: 12rem;
-        border: 1px solid grey;
+        width: 12rem; 
+        background-color: white;
+        padding:20px;
+        .progressBar{
+            margin-bottom: 1.2em;
+        } 
     }
     .taskMain{
         box-sizing: border-box;
-        width: calc(100% - 12rem);
-        border: 1px solid grey;
+        width: calc(100% - 12rem); 
         padding: 2rem;
+        background-color: white;
 
         .questionContainer{
             display: flex;
@@ -29,14 +33,32 @@
                 width: 20px; 
             }
             textarea{  
-                border:none;
-                min-height: 20px;
-                padding:0;
+                border:none; 
+                height:20px;
                 resize: none;
                 width: 100%;
                 border-bottom: 2px solid grey;
                 background-color: transparent;
                 outline: none;
+            } 
+        }
+        .answerButton{
+            width: 200px;
+            margin: auto;
+        }
+
+        .resultContainer{
+            .resultsSection{
+                >div{
+                    border-bottom: 1px solid rgb(235, 235, 235);
+                }
+                margin-bottom: 3em;
+            }
+            .correctAnswer{
+                color:green;
+            }
+            .wrongAnswer{
+                color:red;
             }
         }
     }
