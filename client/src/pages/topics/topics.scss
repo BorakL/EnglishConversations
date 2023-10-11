@@ -5,3 +5,12 @@
     border:1px solid grey;
     margin:10px;
 }
+
+.explorePageWrapper{
+    >div{
+        display: flex;
+        flex-wrap: wrap; 
+    }
+    height:"800px"; 
+    overflow:"scroll"; 
+}

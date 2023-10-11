@@ -9,13 +9,24 @@ export const SET_SINGLE_TOPIC = "SET_SINGLE_TOPIC";
 
 export default (state=initState, action) => {
     switch(action.type){
-        case SET_TOPICS: 
+        case SET_TOPICS:
+            let update = [];
+            if(!action.payload.clear){
+                for(let i=0; i<action.payload.data.length; i++){
+                    let topic = action.payload.data[i]
+                    if(state.topics.find(t=>t.id===topic.id)){
+                        update.push(topic)
+                    }
+                }
+            }else{
+                update = action.payload.data
+            }
+            
             return {
                 ...state,
-                topics: [
-                    ...state.topics,
-                    ...action.payload.data
-                ],
+                topics: action.payload.clear
+                    ? action.payload.data
+                    : [...state.topics, ...update],
                 topicsTotal: action.payload.total
             }
         case SET_SINGLE_TOPIC:

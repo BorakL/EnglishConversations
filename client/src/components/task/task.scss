@@ -16,7 +16,7 @@
     .taskMain{
         box-sizing: border-box;
         width: calc(100% - 12rem); 
-        padding: 2rem;
+        padding: 1rem;
         background-color: white;
 
         .questionContainer{
@@ -29,9 +29,6 @@
             display: flex;
             flex-direction: row; 
             justify-content:flex-start;
-            .dictaphone{
-                width: 20px; 
-            }
             textarea{  
                 border:none; 
                 height:20px;

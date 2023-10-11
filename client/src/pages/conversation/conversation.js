@@ -15,6 +15,8 @@ const Conversation = ()=>{
     } = useSelector(({ conversations }) => ({
         conversation: conversations.singleConversation
     }))
+
+    const[initLoad,setInitLoad]=useState(false)
     const[list,setList] = useState(false)
     const dispatch = useDispatch();
     const params = useParams();  
@@ -29,24 +31,29 @@ const Conversation = ()=>{
         }catch(error){
             console.log(error.message)
         }
+        setInitLoad(true)
     }
 
     useEffect(()=>{
         loadConversation(params.conversation)
     },[])
 
-    return(
-        <div className="conversationWrapper">
-            <h1>{conversation.title}</h1>
-            <ConversationNav list={list} setList={setList}/>
-            {conversation.conversation ?
-                !list ?
-                <Card conversation={conversation.conversation}/>
-                :
-                <List conversation={conversation.conversation}/> 
-            : <p>Loading...</p>
-            }
-        </div>
+    return( 
+        initLoad ? 
+            <div className="conversationWrapper">
+                <h1>{conversation.title}</h1>
+                <ConversationNav list={list} setList={setList}/>
+                {conversation.conversation ?
+                    !list ?
+                    <Card conversation={conversation.conversation}/>
+                    :
+                    <List conversation={conversation.conversation}/> 
+                : <p>Loading...</p>
+                }
+            </div>
+        :
+        <p>Loading...</p> 
+        
     )
 }
 

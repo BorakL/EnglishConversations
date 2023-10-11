@@ -1,26 +1,30 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { getTopics } from "../../services/api";
 import InfiniteScroll from 'react-infinite-scroller';
 import TopicItem from "../../components/topicItem/topicItem";
 import './topics.scss'
 import { useDispatch, useSelector } from "react-redux";
 import { SET_TOPICS } from "../../reducers/topics";
+import { useNavigationType } from 'react-router-dom'; 
 
-const Topics = ()=>{ 
+const Topics = (props)=>{ 
     const[query,setQuery] = useState({limit:24})
     const[loading,setLoading] = useState(false)
-    const scrollParentref = useRef()
     const dispatch = useDispatch()
+    const navigationType = useNavigationType()
 
     const {
         topics,
-        topicsTotal
-    } = useSelector(({topics})=>({
+        topicsTotal,
+        initRender 
+    } = useSelector(({topics,app})=>({
         topics: topics.topics,
-        topicsTotal: topics.topicsTotal
+        topicsTotal: topics.topicsTotal,
+        initRender: app.initRender 
     }))
+ 
 
-    const loadTopics = async(offset=0)=>{
+    const loadTopics = async(clear=true, offset=0)=>{
         try{
             setLoading(true)
             const topicsData = await getTopics({...query, skip:offset});
@@ -28,37 +32,40 @@ const Topics = ()=>{
                 type: SET_TOPICS,
                 payload: {
                     data: topicsData.data.data,
-                    total: topicsData.data.total
+                    total: topicsData.data.total,
+                    clear: clear
                 }
             })
-            setLoading(false)
+			setLoading(false);
         }catch(error){
             console.log("error",error.message)
         }
     }
 
+ 
     useEffect(()=>{ 
-        if(!loading){
-            loadTopics();
-        }
-    },[query])
+        if(initRender){ 
+            loadTopics()  
+        }else{ 
+            if(navigationType!=="POP"){
+                loadTopics();
+            }
+        }  
+    },[query]) 
 
     return(
-        <div className="explorePageWrapper" style={{height:"800px", overflow:"auto"}} ref={scrollParentref}>
-            <h1>Topics</h1>
-            <div >
-                <InfiniteScroll
-                    pageStart={0}
-                    loadMore={()=>loadTopics(topics.length)}
-                    hasMore={topicsTotal>topics.length && !loading}
-                    style={{display:"flex", flexWrap:"wrap"}}
-                    useWindow={false}
-                    threshold={250} 
-                    getScrollParent={()=>scrollParentref.current}
-                >
-                    {topics.map( t=> <TopicItem key={t._id} topic={t}/> )}
-                </InfiniteScroll>
-            </div>
+        <div className="explorePageWrapper" >
+            <h1>Topics</h1> 
+            <InfiniteScroll
+                pageStart={0}
+                loadMore={() => loadTopics(false,topics.length)}
+                hasMore={topicsTotal>topics.length && !loading} 
+                useWindow={false}
+                threshold={250} 
+                getScrollParent={()=>props.scrollParentRef.current}
+            >
+                {topics.map( t=> <TopicItem key={t._id} topic={t}/> )}
+            </InfiniteScroll>
         </div>
     )
 }
