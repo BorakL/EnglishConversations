@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import Sentence from "../sentence/sentence";
 import useForm from "../../hooks/useForm";
 import Button from "../button/button";
+import { useOutletContext } from "react-router";
 
-const List = (props)=>{
+const List = ()=>{
+
+    const outletContext = useOutletContext()
 
     const {
-        formState,
         inputHandler,
         submitHandler,
         removeHandler
@@ -16,7 +18,7 @@ const List = (props)=>{
 
     // const isForm = Object.keys(formState.inputs).length>0;
 
-    const conversation = props.conversation.map(c => 
+    const conversation = outletContext.conversation.conversation.map(c => 
         <Sentence 
             serb={c.serb} 
             eng={c.eng} 
@@ -27,18 +29,6 @@ const List = (props)=>{
             setEditingFields={setEditingFields}
         />
     )
-
-    console.log("formState", formState)
-
-    // useEffect(()=>{
-    //     if(Object.keys(formState.inputs).length){
-    //         setIsEditing(true)
-    //     }else{
-    //         setIsEditing(false)
-    //     }
-    //     console.log("formstate",formState)
-    // },[formState.inputs])
-    
 
     return(
         <>

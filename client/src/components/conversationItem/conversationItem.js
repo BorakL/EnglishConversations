@@ -1,13 +1,11 @@
-import {Link} from 'react-router-dom'
+import {Link, useLocation} from 'react-router-dom'
 import Button from '../button/button'
 import {GrDocumentVerified} from "react-icons/gr"
 
 const ConversationItem = ({conversation})=>{
-    console.log("conversastionnn",conversation)
     return(
-        
-            <div className="conversationItem">
-                <Link to={conversation._id}>
+        <div className="conversationItem">
+            <Link to={conversation._id} >
                 <div className='infoSection'>
                     <span className="terms">{conversation.conversation?.length || 0} Terms</span>
                     <span className="users"></span>
@@ -22,9 +20,8 @@ const ConversationItem = ({conversation})=>{
                         <GrDocumentVerified/>
                     </Button> 
                 </div> 
-                </Link>
-            </div>  
-        
+            </Link>
+        </div>
     )
 }
 

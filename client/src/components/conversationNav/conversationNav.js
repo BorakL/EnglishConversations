@@ -1,28 +1,15 @@
-import { useState } from "react"
-import Button from "../../components/button/button"
+import Button from "../../components/button/button" 
+import Sentence from "../sentence/sentence";
 
 const ConversationNav = (props)=>{
-    const {setList,list} = props
     return(
-        <div className="conversationNav">
-            <Button
-                onClick={()=>setList(true)}
-                active={list}
-            >
-                Learn
-            </Button>
-            <Button
-                onClick={()=>setList(false)}
-                active={!list} 
-            >
-                Flashcards
-            </Button>
-            <Button
-                to="test"  
-            >
-                Test
-            </Button>
-        </div>
+        <nav>
+            <div className="conversationNav">
+                <Button element={"navLink"} to={`list`}>Learn</Button>
+                <Button element={"navLink"} to={`learn`}>Flashcards</Button>
+                <Button element={"navLink"} to={`test`}>Test</Button>
+            </div>
+        </nav>
     )
 }
 

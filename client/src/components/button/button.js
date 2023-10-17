@@ -1,4 +1,4 @@
-import {Link} from 'react-router-dom'
+import {Link, NavLink} from 'react-router-dom'
 
 const Button = props => {
 
@@ -21,15 +21,27 @@ const Button = props => {
         )
     }
     if(props.to){
-        return(<Link 
+        if(props.element==="navLink"){
+            return(<NavLink 
                 to={props.to}
                 exact={props.exact}
                 className={classes}
+                onClick={props.onClick}
             >
             {props.children}
-            </Link>
-        )
+            </NavLink>)
+        }else{
+            return(<Link 
+                to={props.to}
+                exact={props.exact}
+                className={classes}
+                onClick={props.onClick}
+            >
+            {props.children}
+            </Link>)   
+        }
     }
+
     return(
         <button 
             className={`${classes} ${props.active && 'active'}`}

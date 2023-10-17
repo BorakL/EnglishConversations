@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { getConversation } from "../../services/api";
-import { useParams } from "react-router";
-import Card from "../../components/card/card";
+import { Outlet, useLocation, useOutlet, useParams } from "react-router";
 import {useSelector, useDispatch} from "react-redux"
 import { SET_SINGLE_CONVERSATION } from "../../reducers/conversations";
-import Button from "../../components/button/button";
-import List from "../../components/list/list";
 import "./conversation.scss"
 import ConversationNav from "../../components/conversationNav/conversationNav";
+import Sentence from "../../components/sentence/sentence";
 
 const Conversation = ()=>{
     const {
@@ -17,9 +15,11 @@ const Conversation = ()=>{
     }))
 
     const[initLoad,setInitLoad]=useState(false)
-    const[list,setList] = useState(false)
     const dispatch = useDispatch();
     const params = useParams();  
+    const location = useLocation();
+    const host = "http://localhost:3001/img/topics/";
+    const outlet = useOutlet(); 
 
     const loadConversation = async(conversationId) => {
         try{
@@ -38,18 +38,32 @@ const Conversation = ()=>{
         loadConversation(params.conversation)
     },[])
 
+    const isInitPage = location.pathname.split("/")
+    console.log("isInitPage",isInitPage)
+
     return( 
         initLoad ? 
             <div className="conversationWrapper">
                 <h1>{conversation.title}</h1>
-                <ConversationNav list={list} setList={setList}/>
-                {conversation.conversation ?
-                    !list ?
-                    <Card conversation={conversation.conversation}/>
-                    :
-                    <List conversation={conversation.conversation}/> 
-                : <p>Loading...</p>
-                }
+                <ConversationNav conversation={conversation}/>
+                {!outlet ?
+                <>
+                <div>
+                    <img alt="topic" src={`${host}${conversation.topic.title}.jpg`}/>
+                </div>
+                <div>
+                    <ul>
+                        {conversation.conversation.map(c=><Sentence 
+                                                                id={c._id} 
+                                                                serb={c.serb}
+                                                                eng={c.eng}
+                                                            />)}
+                    </ul>
+                </div>
+                </>
+                :
+                null}
+                <Outlet context={{conversation: conversation}}/>
             </div>
         :
         <p>Loading...</p> 

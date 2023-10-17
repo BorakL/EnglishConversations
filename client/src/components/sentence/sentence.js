@@ -13,7 +13,7 @@ const Sentence = (props)=>{
     const { speak } = useSpeechSynthesis({
         onEnd: ()=>{setIsReading(false)}
     });
-    let indx = props.editingFields.findIndex(f=>f===props.id)
+    let indx = props.editingFields?.findIndex(f=>f===props.id)
 
     const editHandler = ()=>{  
         if(indx<0){
@@ -79,13 +79,18 @@ const Sentence = (props)=>{
                 >
                     <RxSpeakerLoud/>
                 </Button>
-                <Button
-                    onClick={editHandler}
-                    type="button"
-                    style={`buttonIcon ${indx>=0 && "buttonIconActive"}`}
-                >
-                    <FiEdit2/>
-                </Button>
+                {
+                    props.editingFields ? 
+                    <Button
+                        onClick={editHandler}
+                        type="button"
+                        style={`buttonIcon ${indx>=0 && "buttonIconActive"}`}
+                    >
+                        <FiEdit2/>
+                    </Button>
+                    : null
+                }
+                
             </div> 
         </div>
     )

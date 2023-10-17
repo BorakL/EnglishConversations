@@ -6,39 +6,48 @@ import { Route, Routes, useLocation } from 'react-router';
 import Conversation from './pages/conversation/conversation';
 import TestConversation from './pages/test/test';
 import MainNavigation from './components/navigation/mainNavigation';
-import { useRef } from 'react';
+import { useMemo, useRef } from 'react'; 
+import Card from './components/card/card';
+import List from './components/list/list';
+import {useNavigationType} from 'react-router-dom';
 
 function App() {
-  // const dispatch = useDispatch();
-  // const {
-  //   initRender
-  // } = useSelector(({app})=>({
-  //   initRender: app.inituseScrollRestoration Render
-  // }))
-
-  // useEffect(()=>{
-  //     if(initRender){
-  //       dispatch({
-  //         type:SET_INITIAL_RENDER,
-  //         payload:false
-  //       })
-  //     }
-  // },[]) 
 
   const scrollParentRef = useRef()
- 
+
+  const location = useLocation();
+  const navigationType = useNavigationType();
   
+  const getRoutes = (l)=> <Routes location={l}>
+                  <Route path="/" element={<Home/>} />
+                  <Route path="topics" element={<Topics scrollParentRef={scrollParentRef}/>} />
+                  <Route path="topics/:id" element={<Topic/>} /> 
+                  <Route path="topics/:id/:conversation" exact={false} element={<Conversation/>} >
+                    <Route path="learn" exact element={<Card/>}/>
+                    <Route path="list" exact element={<List/>}/>
+                    <Route path="test" exact element={<TestConversation/>}/>
+                  </Route>
+                </Routes>
+
+  const backgroundLocation = useMemo(()=>{
+    if(location.state && location.state.backgroundLocation && navigationType!=="POP")
+      return location.state.backgroundLocation
+    return null
+  },[location])
+
   return ( 
-      <div className="App" ref={scrollParentRef}>
+      <div className="App" >
         <MainNavigation/>
+        <div 
+          className={`layout ${backgroundLocation ? "hidden" : "visible"}`} 
+          ref={scrollParentRef}
+        > 
+          <main>
+            {getRoutes(backgroundLocation || location) }
+          </main>         
+        </div> 
         <main>
-        <Routes>
-          <Route path="/" element={<Home/>} />
-          <Route path="topics" element={<Topics scrollParentRef={scrollParentRef}/>} />
-          <Route path="topics/:id" element={<Topic/>} /> 
-          <Route path="topics/:id/:conversation" element={<Conversation/>} />
-          <Route path="topics/:id/:conversation/test" element={<TestConversation/>} />
-        </Routes>
+          { backgroundLocation && getRoutes(location) }
         </main>
       </div> 
   );

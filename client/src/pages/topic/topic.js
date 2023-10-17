@@ -47,19 +47,10 @@ const Topic = ()=>{
         <>
         {
         !loading ?
-        <div className="topicPage" style={{height:"700px", overflow:"auto"}} ref={scrollParentRef}>
+        <div className="topicPage" ref={scrollParentRef}>
             <h1>One Topic</h1>
             <div className="conversationsContainer">
-                <InfiniteScroll
-                    pageStart={0}
-                    loadMore={()=>loadTopicConversations(conversations.length)}
-                    hasMore={totalConversations>conversations.length && !loading}
-                    useWindow={false}
-                    threshold={250}
-                    getScrollParent = {()=>scrollParentRef.current} 
-                >
-                    {conversations.map(c=> <ConversationItem key={c._id} conversation={c} />)}
-                </InfiniteScroll>
+                {conversations.map(c=> <ConversationItem key={c._id} conversation={c} />)}
             </div>
         </div>
         : 

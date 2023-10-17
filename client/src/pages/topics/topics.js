@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { getTopics } from "../../services/api";
 import InfiniteScroll from 'react-infinite-scroller';
 import TopicItem from "../../components/topicItem/topicItem";
@@ -6,23 +6,26 @@ import './topics.scss'
 import { useDispatch, useSelector } from "react-redux";
 import { SET_TOPICS } from "../../reducers/topics";
 import { useNavigationType } from 'react-router-dom'; 
+import { SET_INITIAL_RENDER, SET_SCROLL_POSITION } from "../../reducers/app";
 
 const Topics = (props)=>{ 
     const[query,setQuery] = useState({limit:24})
     const[loading,setLoading] = useState(false)
     const dispatch = useDispatch()
     const navigationType = useNavigationType()
+    let timer = null
 
     const {
         topics,
         topicsTotal,
-        initRender 
+        initRender,
+        scrollPosition
     } = useSelector(({topics,app})=>({
         topics: topics.topics,
         topicsTotal: topics.topicsTotal,
-        initRender: app.initRender 
+        initRender: app.initRender,
+        scrollPosition: app.scrollPosition
     }))
- 
 
     const loadTopics = async(clear=true, offset=0)=>{
         try{
@@ -43,18 +46,46 @@ const Topics = (props)=>{
     }
 
  
-    useEffect(()=>{ 
+    useEffect(()=>{
+        loadTopics()  
         if(initRender){ 
-            loadTopics()  
+            // 
+            console.log("učitava se na init load")
         }else{ 
             if(navigationType!=="POP"){
-                loadTopics();
+                // loadTopics();
             }
-        }  
-    },[query]) 
+            // props.scrollParentRef.current.scrollTo(0,scrollPosition)
+        }
+        return ()=>{ 
+            dispatch({
+                type: SET_INITIAL_RENDER,
+                payload: false
+            })
+        }
+    },[query])
+    
+    // const handleScroll = function(e){
+    //     if(props.scrollParentRef.current.scrollTop>0){ 
+    //         if(timer!==null){
+    //             clearTimeout(timer)
+    //         }
+    //         timer = setTimeout(()=>{
+    //             dispatch({
+    //                 type: SET_SCROLL_POSITION,
+    //                 payload: props.scrollParentRef.current.scrollTop
+    //             })
+    //         },130)
+    //     }
+    // }
+
+    // useEffect(()=>{ 
+    //     props.scrollParentRef.current.addEventListener("scroll",handleScroll,false)
+    //     return ()=>{props.scrollParentRef.current.removeEventListener("scroll",handleScroll,false)}
+    // },[])
 
     return(
-        <div className="explorePageWrapper" >
+        <div className="explorePageWrapper">
             <h1>Topics</h1> 
             <InfiniteScroll
                 pageStart={0}
@@ -64,7 +95,7 @@ const Topics = (props)=>{
                 threshold={250} 
                 getScrollParent={()=>props.scrollParentRef.current}
             >
-                {topics.map( t=> <TopicItem key={t._id} topic={t}/> )}
+                {topics.map( t=> <TopicItem key={t._id} topic={t} /> )}
             </InfiniteScroll>
         </div>
     )

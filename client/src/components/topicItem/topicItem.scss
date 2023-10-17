@@ -1,0 +1,36 @@
+.topicItem{
+    width:300px; 
+    height:250px;
+    border-radius: 20px;
+    border:1px solid grey;
+    margin:10px;
+    position: relative;
+    .topicImg{
+        height:70%;
+        width: 100%;
+        img{
+            border-radius: 20px 20px 0 0;
+            width: 100%; 
+            height:100%;             
+        }
+    }
+    .topicTitle{
+        height: 30%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    ::before{
+        content:"";
+        position: absolute;
+        top:0;
+        left:0;
+        width:100%;
+        height: 100%;
+        transition: 0.3s;
+        border-radius: 20px;
+    }
+    :hover::before{
+        background-color: rgba(237, 160, 160, 0.312);  
+    }
+}

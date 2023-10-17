@@ -1,7 +1,7 @@
 .sentence{
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: center;
     margin: 20px 10px; 
     .sentenceContent{
         display: flex;
@@ -28,6 +28,7 @@
     .sentenceTools{
         display: flex;
         flex-direction: row;
+        margin-left: 1em;
         @media screen and (max-width: 1024px ) {
            flex-direction: row-reverse;
         }

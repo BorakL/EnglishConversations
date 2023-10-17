@@ -7,7 +7,6 @@ export const SET_INITIAL_RENDER = "SET_INITIAL_RENDER";
 export const SET_SCROLL_POSITION = "SET_SCROLL_POSITION";
 
 export default (state=initState,action)=>{
-    console.log("action",action)
     switch(action.type){
         case SET_INITIAL_RENDER:
             return {
