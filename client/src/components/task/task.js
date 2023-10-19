@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { VALIDATOR_TASK } from "../../utils/valid";
 import useTest from "../../hooks/useTest";
 import TestInputField from "../testInputField/testInputField"; 
@@ -7,14 +7,26 @@ import FinishedTest from "./finishedTest";
 import "./task.scss";
 import ProgressBar from "../progressBar/progressBar";
 import Result from "./result";
+import Button from "../button/button";  
+import Modal from "../uiElements/modal";
+import { AppContext } from "../../context/appContext";
+import { useDispatch, useSelector } from "react-redux";
+import { SET_INCORRECT_ANSWERS_COUNT } from "../../reducers/test";
 
 const Task = (props)=>{
 
+    // const[pointer,setPointer] = useState(0)
+    // const[round,setRound] = useState(1)
+    //props.incorrectAnswersCount,setIncorrectAnswersCount
+
     const[isAnswered,setIsAnswered]=useState(false)
     const[nextRoundMessage, setNextRoundMessage] = useState(false)
-    const[incorrectAnswersCount,setIncorrectAnswersCount] = useState(0)
     const[dontKnow, setDontKnow]=useState(false)
     const[isOverride, setIsOverride]=useState(false)
+    const[isModalOpen, setIsModalOpen]=useState(false)
+
+    const dispatch = useDispatch()
+
     const correctAnswersCount = props.results?.filter(r=>r.correctRound>props.round-1).length || 0
     const correctAnswersTotal = props.results?.filter(r=>r.correctRound>0).length || 0
     const refNext = useRef()
@@ -30,7 +42,7 @@ const Task = (props)=>{
 
     const next = ()=>{
         if(props.pointer===props.roundQuestionsCount-1) {
-            props.setRound(prev=>prev+1)
+            props.getNextRound()
             setNextRoundMessage(true)
         }
         setIsAnswered(false)
@@ -40,14 +52,26 @@ const Task = (props)=>{
 
     const nextRound = ()=>{
         setNextRoundMessage(false)
-        setIncorrectAnswersCount(0)
+        // setIncorrectAnswersCount(0)
+        dispatch({
+            type: SET_INCORRECT_ANSWERS_COUNT,
+            payload: 0
+        })
     }
 
     useEffect(()=>{
         if(isAnswered){
-            setIncorrectAnswersCount(prev=>props.currentQuestion.correctRound ? prev : prev+1)
+            // setIncorrectAnswersCount(prev=>props.currentQuestion.correctRound ? prev : prev+1)
+            dispatch({
+                type: SET_INCORRECT_ANSWERS_COUNT,
+                payload: props.currentQuestion.correctRound ? props.incorrectAnswersCount : props.incorrectAnswersCount+1
+            })
         }else if(isOverride){
-            setIncorrectAnswersCount(prev=>prev>=1 ? prev-1 : prev)
+            // setIncorrectAnswersCount(prev => prev>=1 ? prev-1 : prev)
+            dispatch({
+                type: SET_INCORRECT_ANSWERS_COUNT,
+                payload: props.incorrectAnswersCount>=1 ? props.incorrectAnswersCount-1 : props.incorrectAnswersCount
+            })
         }
     },[props.currentQuestion])
 
@@ -91,9 +115,18 @@ const Task = (props)=>{
         setIsOverride(true)
     }
 
-    const remainingProgress = Math.ceil((props.roundQuestionsCount-correctAnswersCount-incorrectAnswersCount)/props.roundQuestionsCount*100)
-    const remainingProgressCount = props.roundQuestionsCount-(correctAnswersCount+incorrectAnswersCount)
-    const incorrectProgress = Math.ceil((incorrectAnswersCount/props.roundQuestionsCount)*100)
+    const closeModalOptions = ()=>{
+        setIsModalOpen(false)
+    }
+    const openModalOptions = ()=>{
+        setIsModalOpen(true)
+    }
+    
+    const appContext = useContext(AppContext)
+
+    const remainingProgress = Math.ceil((props.roundQuestionsCount-correctAnswersCount-props.incorrectAnswersCount)/props.roundQuestionsCount*100)
+    const remainingProgressCount = props.roundQuestionsCount-(correctAnswersCount+props.incorrectAnswersCount)
+    const incorrectProgress = Math.ceil((props.incorrectAnswersCount/props.roundQuestionsCount)*100)
     const correctProgress = Math.ceil((correctAnswersTotal/props.results.length)*100)
 
     return(
@@ -142,22 +175,60 @@ const Task = (props)=>{
             } 
             </div>
             <div className="taskSidebar">
-                <ProgressBar 
-                    progress={remainingProgress}
-                    count={remainingProgressCount}
-                    title="Remaining"    
-                /> 
-                <ProgressBar 
-                    progress={incorrectProgress}
-                    count={incorrectAnswersCount}
-                    title="Incorrect"    
-                /> 
-                <ProgressBar 
-                    progress={correctProgress}
-                    count={correctAnswersCount}
-                    title="Correct"    
-                /> 
+                <div className="progressBars">
+                    <ProgressBar 
+                        progress={remainingProgress}
+                        count={remainingProgressCount}
+                        title="Remaining"    
+                    /> 
+                    <ProgressBar 
+                        progress={incorrectProgress}
+                        count={props.incorrectAnswersCount}
+                        title="Incorrect"    
+                    /> 
+                    <ProgressBar 
+                        progress={correctProgress}
+                        count={correctAnswersCount}
+                        title="Correct"    
+                    /> 
+                </div>
+                <div className="taskOptions">
+                    <Button 
+                        type="button" 
+                        style="buttonText"
+                        onClick={openModalOptions}
+                    >
+                        Options
+                    </Button>
+                </div>
+                
             </div>
+            {
+                <Modal 
+                    show={isModalOpen} 
+                    closeHandler={closeModalOptions}
+                    header={<h2>Options</h2>} 
+                >    
+                    <Button
+                        type="button"
+                        onClick={()=>{
+                            closeModalOptions();
+                            appContext.turnAudio();
+                        }}
+                    >
+                        Audio
+                    </Button>
+                    <Button 
+                        style="buttonText" 
+                        type="button"
+                        onClick={()=>{
+                            closeModalOptions();
+                        }}
+                    >
+                        Restart write
+                    </Button>
+                </Modal>
+            }
         </div>
     )
 }

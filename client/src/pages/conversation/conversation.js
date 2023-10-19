@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { getConversation } from "../../services/api";
-import { Outlet, useLocation, useOutlet, useParams } from "react-router";
+import { Outlet, useOutlet, useParams } from "react-router";
 import {useSelector, useDispatch} from "react-redux"
 import { SET_SINGLE_CONVERSATION } from "../../reducers/conversations";
 import "./conversation.scss"
 import ConversationNav from "../../components/conversationNav/conversationNav";
 import Sentence from "../../components/sentence/sentence";
+import generatePDF, { Resolution, Margin } from 'react-to-pdf';
+import Button from "../../components/button/button";
 
 const Conversation = ()=>{
     const {
@@ -16,10 +18,10 @@ const Conversation = ()=>{
 
     const[initLoad,setInitLoad]=useState(false)
     const dispatch = useDispatch();
-    const params = useParams();  
-    const location = useLocation();
+    const params = useParams();
     const host = "http://localhost:3001/img/topics/";
     const outlet = useOutlet(); 
+    const targetRef = useRef(); 
 
     const loadConversation = async(conversationId) => {
         try{
@@ -37,9 +39,23 @@ const Conversation = ()=>{
     useEffect(()=>{
         loadConversation(params.conversation)
     },[])
+ 
+    const options={
+        resolution: Resolution.HIGH,
+        page: {
+            margin: Margin.MEDIUM,
+            format: 'A4'
+        },
+        overrides: {
+            pdf: {
+               compress: true
+            }
+         }
+    } 
 
-    const isInitPage = location.pathname.split("/")
-    console.log("isInitPage",isInitPage)
+    const createPdf = ()=>{
+        generatePDF(targetRef,options) 
+    }
 
     return( 
         initLoad ? 
@@ -51,7 +67,7 @@ const Conversation = ()=>{
                 <div>
                     <img alt="topic" src={`${host}${conversation.topic.title}.jpg`}/>
                 </div>
-                <div>
+                <div ref={targetRef}>
                     <ul>
                         {conversation.conversation.map(c=><Sentence 
                                                                 id={c._id} 
@@ -60,6 +76,7 @@ const Conversation = ()=>{
                                                             />)}
                     </ul>
                 </div>
+                <Button onClick={createPdf}> Download PDF </Button>
                 </>
                 :
                 null}

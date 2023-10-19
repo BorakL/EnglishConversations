@@ -1,16 +1,33 @@
 import { useOutletContext } from "react-router";
 import { useEffect, useState } from "react"; 
 import Task from "../../components/task/task"; 
+import { useDispatch, useSelector } from "react-redux";
+import { SET_POINTER, SET_ROUND } from "../../reducers/test";
 
 
 const TestConversation = () => {
 
+    const{
+        pointer,
+        round,
+        incorrectAnswersCount
+    } = useSelector(({test})=>({
+        pointer: test.pointer,
+        round: test.round,
+        incorrectAnswersCount: test.incorrectAnswersCount
+    }))
+
     const outletContext = useOutletContext()
     const singleConversation = outletContext.conversation;
+    const dispatch = useDispatch()
 
-    const[pointer,setPointer] = useState(0)
+    // const[pointer,setPointer] = useState(0)
+    // const[round,setRound] = useState(1)
+    console.log("pointer",pointer)
+    console.log("round",round)
+    console.log("incorrectAnswers",incorrectAnswersCount)
+
     const[roundQuestions, setRoundQuestions] = useState([])
-    const[round,setRound] = useState(1)
     const[currentQuestion,setCurrentQuestion] = useState({})  
 
     useEffect(()=>{
@@ -24,7 +41,18 @@ const TestConversation = () => {
     },[singleConversation.results])
 
     const nextQuestion = ()=>{ 
-        setPointer(prev => (prev+1)%roundQuestions.length )
+        // setPointer(prev => (prev+1)%roundQuestions.length )
+        dispatch({
+            type: SET_POINTER,
+            payload: (pointer+1)%roundQuestions.length
+        })
+    }
+
+    const getNextRound = ()=>{
+        dispatch({
+            type: SET_ROUND,
+            payload: round+1
+        })
     }
     
 
@@ -40,7 +68,8 @@ const TestConversation = () => {
                     roundQuestionsCount={roundQuestions.length}
                     pointer={pointer}
                     round={round}
-                    setRound={setRound}
+                    getNextRound={getNextRound}
+                    incorrectAnswersCount={incorrectAnswersCount}
                 />
                 :
                 <p>...loading</p>

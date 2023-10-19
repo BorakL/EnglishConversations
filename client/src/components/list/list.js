@@ -16,8 +16,6 @@ const List = ()=>{
 
     const[editingFields,setEditingFields]=useState([])
 
-    // const isForm = Object.keys(formState.inputs).length>0;
-
     const conversation = outletContext.conversation.conversation.map(c => 
         <Sentence 
             serb={c.serb} 

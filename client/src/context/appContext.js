@@ -1,11 +1,20 @@
-import { createContext, useRef } from "react";
+import { createContext, useState } from "react";
 
 const AppContext = createContext();
 
 const AppContextProvider = ({children}) => { 
-    const data = {}
+    const defaultOptions = {
+        audio: true
+    }
+
+    const[globalOptions,setGlobalOptions]=useState(defaultOptions)
+
+    const turnAudio = ()=>{
+        setGlobalOptions(prev=>{return {...prev, audio: !globalOptions.audio}})
+    }
+
     return(
-        <AppContext.Provider value={data}> 
+        <AppContext.Provider value={{globalOptions, turnAudio}}> 
             {children}            
         </AppContext.Provider>
     )

@@ -1,7 +1,7 @@
 const ProgressBar = (props)=>{
 
     const progressBarContainerStyle={
-        "box-sizing":"border-box",
+        "boxSizing":"border-box",
         "width":`${props.width || 100}%`,
         "height":"20px",
         "border":"1px solid grey",
@@ -17,7 +17,7 @@ const ProgressBar = (props)=>{
     const progressBarTitleStyle = {
         "display":"flex",
         "flexDirection":"row",
-        "justify-content":"space-between"
+        "justifyContent":"spaceBetween"
     }
 
     return(

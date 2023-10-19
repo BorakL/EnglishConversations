@@ -1,10 +1,11 @@
 
-import { useEffect, useReducer, useRef, useState } from "react"
+import { useContext, useEffect, useReducer, useRef, useState } from "react"
 import { valid } from "../../utils/valid"
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
 import Dictaphone from "../dictaphone/dictaphone"
 import { useSpeechSynthesis } from 'react-speech-kit'; 
 import Button from "../button/button";
+import { AppContext } from "../../context/appContext";
 
 
 const initValue = {
@@ -60,6 +61,7 @@ const TestInputField = (props)=>{
     } = inputState
 
     const { speak } = useSpeechSynthesis();
+    const appContext = useContext(AppContext)
 
     useEffect(()=>{
         dispatch({
@@ -85,7 +87,7 @@ const TestInputField = (props)=>{
     const handleSubmit = (e)=>{
         e.preventDefault();
         props.submitHandler(props.id,value,isValid ? props.round : 0)
-        if(isValid)speak({ text: value })
+        if(isValid && appContext.globalOptions?.audio)speak({ text: value })
     }
 
     const handleTextKeyDown = (e)=>{

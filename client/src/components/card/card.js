@@ -4,10 +4,11 @@ import Button from "../button/button";
 import {GrLinkNext,GrLinkPrevious} from "react-icons/gr"
 import { useOutletContext } from "react-router";
 
-const Card = ()=>{
+const Card = (props)=>{
 
     const outletContext = useOutletContext();
-    console.log("conversation",outletContext.conversation.conversation)
+    console.log("outletContext",outletContext)
+    console.log("propssss",props)
 
     const[pointer,setPointer]=useState(0)
     const[flip,setFlip] = useState(false)

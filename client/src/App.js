@@ -10,6 +10,7 @@ import { useMemo, useRef } from 'react';
 import Card from './components/card/card';
 import List from './components/list/list';
 import {useNavigationType} from 'react-router-dom';
+import { AppContextProvider } from './context/appContext';
 
 function App() {
 
@@ -36,7 +37,8 @@ function App() {
   },[location])
 
   return ( 
-      <div className="App" >
+    <AppContextProvider>
+      <div className="App">
         <MainNavigation/>
         <div 
           className={`layout ${backgroundLocation ? "hidden" : "visible"}`} 
@@ -50,6 +52,7 @@ function App() {
           { backgroundLocation && getRoutes(location) }
         </main>
       </div> 
+    </AppContextProvider>
   );
 }
 
