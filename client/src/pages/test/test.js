@@ -10,22 +10,24 @@ const TestConversation = () => {
     const{
         pointer,
         round,
-        incorrectAnswersCount
+        incorrectAnswersCount,
+        isAnswered
     } = useSelector(({test})=>({
         pointer: test.pointer,
         round: test.round,
-        incorrectAnswersCount: test.incorrectAnswersCount
+        incorrectAnswersCount: test.incorrectAnswersCount,
+        // isAnswered: test.isAnswered,
+        // isDontKnow: test.isDontKnow,
+        // isOverride: test.isOverride
     }))
 
     const outletContext = useOutletContext()
     const singleConversation = outletContext.conversation;
     const dispatch = useDispatch()
-
-    // const[pointer,setPointer] = useState(0)
-    // const[round,setRound] = useState(1)
-    console.log("pointer",pointer)
-    console.log("round",round)
-    console.log("incorrectAnswers",incorrectAnswersCount)
+ 
+    // console.log("pointer",pointer)
+    // console.log("round",round)
+    // console.log("incorrectAnswers",incorrectAnswersCount)
 
     const[roundQuestions, setRoundQuestions] = useState([])
     const[currentQuestion,setCurrentQuestion] = useState({})  

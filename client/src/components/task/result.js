@@ -2,10 +2,7 @@ import { useEffect } from "react";
 import Button from "../button/button";
 
 const Result = (props)=>{
-
-    useEffect(()=>{
-        console.log("current",props.currentQuestion.correctRound)
-    },[props.currentQuestion])
+ 
 //correctRound
 //eng
 //next

@@ -13,11 +13,7 @@ import { AppContext } from "../../context/appContext";
 import { useDispatch, useSelector } from "react-redux";
 import { SET_INCORRECT_ANSWERS_COUNT } from "../../reducers/test";
 
-const Task = (props)=>{
-
-    // const[pointer,setPointer] = useState(0)
-    // const[round,setRound] = useState(1)
-    //props.incorrectAnswersCount,setIncorrectAnswersCount
+const Task = (props)=>{ 
 
     const[isAnswered,setIsAnswered]=useState(false)
     const[nextRoundMessage, setNextRoundMessage] = useState(false)
@@ -52,7 +48,6 @@ const Task = (props)=>{
 
     const nextRound = ()=>{
         setNextRoundMessage(false)
-        // setIncorrectAnswersCount(0)
         dispatch({
             type: SET_INCORRECT_ANSWERS_COUNT,
             payload: 0
@@ -105,6 +100,10 @@ const Task = (props)=>{
     }
 
     const dontKnowHandler = ()=>{
+        dispatch({
+            type: SET_INCORRECT_ANSWERS_COUNT,
+            payload: props.incorrectAnswersCount+1
+        })
         setIsAnswered(true);
         setDontKnow(true)
     }

@@ -91,7 +91,7 @@ const TestInputField = (props)=>{
     }
 
     const handleTextKeyDown = (e)=>{
-        if(e.key==='Enter' && !e.shiftKey){
+        if(e.key==='Enter' && !e.shiftKey && value){
             handleSubmit(e)
         }
     }
