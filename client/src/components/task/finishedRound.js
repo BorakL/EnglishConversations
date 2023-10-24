@@ -1,3 +1,5 @@
+import Modal from "../uiElements/modal"
+
 const FinishedRound = (props)=>{
     //correctAnswersTotal
     //results
@@ -6,7 +8,7 @@ const FinishedRound = (props)=>{
     //serb
     //eng
     return(
-        <>
+        <Modal>
             <h2>Last Question</h2>
             <p>Overall Progress: {`${props.correctAnswersTotal}/${props.results.length}`}</p>
             <button onClick={props.nextRound}>Next round</button>
@@ -24,7 +26,7 @@ const FinishedRound = (props)=>{
                 })
             }
             </div>
-        </>
+        </Modal>
     )
 }
 

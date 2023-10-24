@@ -86,7 +86,7 @@ const TestInputField = (props)=>{
 
     const handleSubmit = (e)=>{
         e.preventDefault();
-        props.submitHandler(props.id,value,isValid ? props.round : 0)
+        props.submitHandler(props.id, value, isValid ? props.round : 0)
         if(isValid && appContext.globalOptions?.audio)speak({ text: value })
     }
 

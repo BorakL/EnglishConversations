@@ -7,6 +7,7 @@ const initialState = {
 export const SET_CONVERSATIONS = "SET_CONVERSATIONS";
 export const SET_SINGLE_CONVERSATION = "SET_SINGLE_CONVERSATION";
 export const UPDATE_SINGLE_CONVERSATION = "UPDATE_SINGLE_CONVERSATION";
+export const RESET_SINGLE_CONVERSATION = "RESET_SINGLE_CONVERSATION";
 
 export default (state=initialState, action) => {
     switch(action.type){
@@ -42,7 +43,7 @@ export default (state=initialState, action) => {
                         {
                             ...prev,
                             result: action.payload.result,
-                            correctRound: action.payload.correctRound
+                            correctRound: action.payload.round
                         } :
                         prev
                 )
@@ -53,6 +54,22 @@ export default (state=initialState, action) => {
                 }
             }
             return state            
+        }
+        case RESET_SINGLE_CONVERSATION: {
+            if(
+                action.payload && 
+                state.singleConversation && 
+                state.singleConversation.results
+            ){
+                let update = state.singleConversation;
+                let results = state.singleConversation.results.map(prev=>{return{...prev, result:'', correctRound:0}})
+                update.results = results;
+                return {
+                    ...state,
+                    ...update
+                }
+            }
+            return state
         }
         default: return state
     }

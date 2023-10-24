@@ -9,7 +9,7 @@ const ProgressBar = (props)=>{
     }
 
     const progressBarInnerStyle = {
-        "width":`${props.progress}%`,
+        "width":`${props.progress || 0}%`,
         "height":"100%",
         "backgroundColor":`${props.color || "red"}`
     }

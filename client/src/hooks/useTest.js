@@ -6,13 +6,13 @@ const useTest = (action) => {
 
     const dispatch = useDispatch(); 
 
-    const sendAnswer = (id,result,correctRound)=>{  
+    const sendAnswer = (id,result,round)=>{
         dispatch({
             type: UPDATE_SINGLE_CONVERSATION,
             payload: {
                 inputId:id,
                 result,
-                correctRound
+                round
             }
         })
         action();

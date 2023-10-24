@@ -10,26 +10,35 @@ import Result from "./result";
 import Button from "../button/button";  
 import Modal from "../uiElements/modal";
 import { AppContext } from "../../context/appContext";
-import { useDispatch, useSelector } from "react-redux";
-import { SET_INCORRECT_ANSWERS_COUNT } from "../../reducers/test";
+import { useDispatch } from "react-redux";
+import { SET_INCORRECT_ANSWERS_COUNT, SET_POINTER, SET_ROUND } from "../../reducers/test";
 
 const Task = (props)=>{ 
 
     const[isAnswered,setIsAnswered]=useState(false)
+    const[isOverride, setIsOverride]=useState(false)
     const[nextRoundMessage, setNextRoundMessage] = useState(false)
     const[dontKnow, setDontKnow]=useState(false)
-    const[isOverride, setIsOverride]=useState(false)
     const[isModalOpen, setIsModalOpen]=useState(false)
+    const[isTestFinished, setIsTestFinished]=useState(false)
+    const[isShowResult, setIsShowResult]=useState(false)
 
     const dispatch = useDispatch()
 
-    const correctAnswersCount = props.results?.filter(r=>r.correctRound>props.round-1).length || 0
+    console.log("props.round",props.round)
+    console.log("props.pointerrrrrrrrrrrrrrrrrrr",props.pointer)
+    console.log("results",props.results)
+    console.log("props.incorrectAnswersCount",props.incorrectAnswersCount)
+    console.log("props.roundQuestionsCount",props.roundQuestionsCount)
+
+    const correctAnswersCount = props.results?.filter(r=>r.correctRound===props.round).length || 0
     const correctAnswersTotal = props.results?.filter(r=>r.correctRound>0).length || 0
     const refNext = useRef()
 
     const action = ()=>{
         setIsAnswered(true)
         setIsOverride(false)
+        setIsShowResult(true)
     }
 
     const {
@@ -37,38 +46,57 @@ const Task = (props)=>{
     } = useTest(action)
 
     const next = ()=>{
-        if(props.pointer===props.roundQuestionsCount-1) {
-            props.getNextRound()
-            setNextRoundMessage(true)
-        }
         setIsAnswered(false)
         setDontKnow(false)
-        props.nextQuestion()
+        setIsShowResult(false)
     }
 
     const nextRound = ()=>{
         setNextRoundMessage(false)
+        props.getNextRound()
         dispatch({
             type: SET_INCORRECT_ANSWERS_COUNT,
             payload: 0
         })
+        if(props.roundQuestionsCount===0){
+            setIsTestFinished(true)
+        }
     }
 
     useEffect(()=>{
-        if(isAnswered){
-            // setIncorrectAnswersCount(prev=>props.currentQuestion.correctRound ? prev : prev+1)
+        if(isAnswered || isOverride){
+            let payload = 0;
+            if(isAnswered){
+                payload = props.currentQuestion.correctRound ? props.incorrectAnswersCount : props.incorrectAnswersCount+1
+            }else if(isOverride){
+                payload = props.incorrectAnswersCount>=1 ? props.incorrectAnswersCount-1 : props.incorrectAnswersCount
+            }
             dispatch({
                 type: SET_INCORRECT_ANSWERS_COUNT,
-                payload: props.currentQuestion.correctRound ? props.incorrectAnswersCount : props.incorrectAnswersCount+1
+                payload: payload
             })
-        }else if(isOverride){
-            // setIncorrectAnswersCount(prev => prev>=1 ? prev-1 : prev)
-            dispatch({
-                type: SET_INCORRECT_ANSWERS_COUNT,
-                payload: props.incorrectAnswersCount>=1 ? props.incorrectAnswersCount-1 : props.incorrectAnswersCount
-            })
+            if(props.pointer===props.roundQuestionsCount-1) {
+                setNextRoundMessage(true)
+            }
+            props.nextQuestion()
         }
-    },[props.currentQuestion])
+    },[props.currentQuestion, props.roundQuestionsCount])
+
+    useEffect(()=>{
+        return()=>{
+            if(nextRoundMessage){
+                props.getNextRound()
+                dispatch({
+                    type: SET_INCORRECT_ANSWERS_COUNT,
+                    payload: 0
+                })
+                if(props.roundQuestionsCount===0){
+                    setIsTestFinished(true)
+                }
+            }  
+        }
+
+    },[nextRoundMessage])
 
     useEffect(()=>{
         document.addEventListener("keypress",handleKeyDown)
@@ -100,10 +128,6 @@ const Task = (props)=>{
     }
 
     const dontKnowHandler = ()=>{
-        dispatch({
-            type: SET_INCORRECT_ANSWERS_COUNT,
-            payload: props.incorrectAnswersCount+1
-        })
         setIsAnswered(true);
         setDontKnow(true)
     }
@@ -123,58 +147,65 @@ const Task = (props)=>{
     
     const appContext = useContext(AppContext)
 
-    const remainingProgress = Math.ceil((props.roundQuestionsCount-correctAnswersCount-props.incorrectAnswersCount)/props.roundQuestionsCount*100)
+    const remainingProgress = props.roundQuestionsCount===0 ? 0 : Math.ceil((props.roundQuestionsCount-correctAnswersCount-props.incorrectAnswersCount)/props.roundQuestionsCount*100)
     const remainingProgressCount = props.roundQuestionsCount-(correctAnswersCount+props.incorrectAnswersCount)
     const incorrectProgress = Math.ceil((props.incorrectAnswersCount/props.roundQuestionsCount)*100)
     const correctProgress = Math.ceil((correctAnswersTotal/props.results.length)*100)
+
+    const testInputField = <TestInputField
+                                name={props.serb}
+                                id={props.serb}
+                                placeholder="Type the English"
+                                submitHandler={sendAnswer}
+                                dontKnowHandler={dontKnowHandler}
+                                validators={[VALIDATOR_TASK(props.eng)]}
+                                errorMessage="Incorrect"
+                                isTest
+                                round={props.round}
+                                style="textareaDefault"
+                            />
+
+    const result = <Result
+                        currentQuestion={props.currentQuestion}
+                        answer={props.currentQuestion.result}
+                        eng={props.currentQuestion.eng}
+                        serb={props.currentQuestion.serb}
+                        next={next}
+                        refNext={refNext}
+                        dontKnow={dontKnow}
+                        overrideHandler={overrideHandler}
+                    />
+                       
+    const finishedRound = <FinishedRound
+                            correctAnswersTotal={correctAnswersTotal}
+                            results={props.results}
+                            nextRound={nextRound}
+                        />
+
+    const finishedTest = <FinishedTest
+                            results={props.results}
+                            round={props.round}
+                            getAllResults={getAllResults}
+                        />
+    
 
     return(
         <div className="taskContainer">
             <div className="taskMain">
             {
-                !isAnswered && !nextRoundMessage
+                props.roundQuestionsCount>0 
                 ?
-                <TestInputField
-                    name={props.serb}
-                    id={props.serb}
-                    placeholder="Type the English"
-                    submitHandler={sendAnswer}
-                    dontKnowHandler={dontKnowHandler}
-                    validators={[VALIDATOR_TASK(props.eng)]}
-                    errorMessage="Incorrect"
-                    isTest
-                    round={props.round}
-                    style="textareaDefault"
-                />
+                (!isAnswered && nextRoundMessage ?
+                            finishedRound : 
+                            !isAnswered ? testInputField : result
+                )
                 :
-                    !nextRoundMessage ?
-                        <Result
-                            currentQuestion={props.currentQuestion}
-                            answer={props.currentQuestion.result}
-                            eng={props.eng}
-                            serb={props.serb}
-                            next={next}
-                            refNext={refNext}
-                            dontKnow={dontKnow}
-                            overrideHandler={overrideHandler}
-                        />
-                        :
-                        props.roundQuestionsCount ? 
-                            <FinishedRound
-                                correctAnswersTotal={correctAnswersTotal}
-                                results={props.results}
-                                nextRound={nextRound}
-                            />
-                            : 
-                            <FinishedTest
-                                results={props.results}
-                                round={props.round}
-                                getAllResults={getAllResults}
-                            />
-            } 
+                finishedTest
+            }
             </div>
             <div className="taskSidebar">
                 <div className="progressBars">
+                    <h3>Round: {props.round}</h3>
                     <ProgressBar 
                         progress={remainingProgress}
                         count={remainingProgressCount}
@@ -187,7 +218,7 @@ const Task = (props)=>{
                     /> 
                     <ProgressBar 
                         progress={correctProgress}
-                        count={correctAnswersCount}
+                        count={correctAnswersTotal}
                         title="Correct"    
                     /> 
                 </div>
@@ -221,6 +252,20 @@ const Task = (props)=>{
                         style="buttonText" 
                         type="button"
                         onClick={()=>{
+                            dispatch({
+                                type: SET_POINTER,
+                                payload: 0
+                            })
+                            dispatch({
+                                type: SET_ROUND,
+                                payload: 1
+                            })
+                            dispatch({
+                                type: SET_INCORRECT_ANSWERS_COUNT,
+                                payload: 0
+                            })
+                            setIsAnswered(false)
+                            setNextRoundMessage(false)
                             closeModalOptions();
                         }}
                     >

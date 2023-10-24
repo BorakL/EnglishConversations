@@ -10,30 +10,22 @@ const TestConversation = () => {
     const{
         pointer,
         round,
-        incorrectAnswersCount,
-        isAnswered
+        incorrectAnswersCount
     } = useSelector(({test})=>({
         pointer: test.pointer,
         round: test.round,
-        incorrectAnswersCount: test.incorrectAnswersCount,
-        // isAnswered: test.isAnswered,
-        // isDontKnow: test.isDontKnow,
-        // isOverride: test.isOverride
+        incorrectAnswersCount: test.incorrectAnswersCount
     }))
 
     const outletContext = useOutletContext()
     const singleConversation = outletContext.conversation;
     const dispatch = useDispatch()
- 
-    // console.log("pointer",pointer)
-    // console.log("round",round)
-    // console.log("incorrectAnswers",incorrectAnswersCount)
 
     const[roundQuestions, setRoundQuestions] = useState([])
     const[currentQuestion,setCurrentQuestion] = useState({})  
 
     useEffect(()=>{
-        setRoundQuestions(singleConversation.results ? singleConversation.results.filter(q=>q.correctRound===0) : []) 
+        setRoundQuestions(singleConversation.results ? singleConversation.results.filter(q=>q.correctRound===0 || q.correctRound===round) : []) 
     },[round])
 
     useEffect(()=>{ 
@@ -43,7 +35,6 @@ const TestConversation = () => {
     },[singleConversation.results])
 
     const nextQuestion = ()=>{ 
-        // setPointer(prev => (prev+1)%roundQuestions.length )
         dispatch({
             type: SET_POINTER,
             payload: (pointer+1)%roundQuestions.length
