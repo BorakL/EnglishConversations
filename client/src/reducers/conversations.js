@@ -3,11 +3,17 @@ const initialState = {
     singleConversation: {},
     conversationsTotal: 0
 }
+const initStateTest = {
+    pointer: 0,
+    round: 1,
+    incorrectAnswersCount: 0
+}
 
 export const SET_CONVERSATIONS = "SET_CONVERSATIONS";
 export const SET_SINGLE_CONVERSATION = "SET_SINGLE_CONVERSATION";
-export const UPDATE_SINGLE_CONVERSATION = "UPDATE_SINGLE_CONVERSATION";
 export const RESET_SINGLE_CONVERSATION = "RESET_SINGLE_CONVERSATION";
+export const SET_SINGLE_CONVERSATION_RESULT = "SET_SINGLE_CONVERSATION_RESULT";
+export const SET_SINGLE_CONVERSATION_TEST = "SET_SINGLE_CONVERSATION_TEST";
 
 export default (state=initialState, action) => {
     switch(action.type){
@@ -21,17 +27,19 @@ export default (state=initialState, action) => {
         case SET_SINGLE_CONVERSATION: {
             if(action.payload && action.payload.conversation){
                 let results = action.payload.conversation.map(c => {return {...c, result:"", correctRound:0}})
+                let test = initStateTest
                 return {
                     ...state,
                     singleConversation: {
                         ...action.payload,
-                        results
+                        results,
+                        test
                     }
                 }
             }
             return state
         }
-        case UPDATE_SINGLE_CONVERSATION: {
+        case SET_SINGLE_CONVERSATION_RESULT: {
             if(
                 action.payload.inputId &&
                 state.singleConversation.results && 
@@ -55,9 +63,26 @@ export default (state=initialState, action) => {
             }
             return state            
         }
+        case SET_SINGLE_CONVERSATION_TEST: {
+            if(
+                action.payload &&
+                state.singleConversation.test
+            ){
+                let update = state.singleConversation;
+                let test = {
+                    ...state.singleConversation.test,
+                    ...action.payload
+                }
+                update.test = test
+                return {
+                    ...state,
+                    ...update
+                }
+            }
+            return state
+        }
         case RESET_SINGLE_CONVERSATION: {
             if(
-                action.payload && 
                 state.singleConversation && 
                 state.singleConversation.results
             ){

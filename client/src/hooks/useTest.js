@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux"
-import { UPDATE_SINGLE_CONVERSATION } from "../reducers/conversations"
+import { SET_SINGLE_CONVERSATION_RESULT } from "../reducers/conversations"
 
 
 const useTest = (action) => {
@@ -8,7 +8,7 @@ const useTest = (action) => {
 
     const sendAnswer = (id,result,round)=>{
         dispatch({
-            type: UPDATE_SINGLE_CONVERSATION,
+            type: SET_SINGLE_CONVERSATION_RESULT,
             payload: {
                 inputId:id,
                 result,

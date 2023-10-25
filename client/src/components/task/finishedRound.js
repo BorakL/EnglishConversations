@@ -1,3 +1,4 @@
+import { useState } from "react"
 import Modal from "../uiElements/modal"
 
 const FinishedRound = (props)=>{
@@ -7,11 +8,21 @@ const FinishedRound = (props)=>{
     //correctRound
     //serb
     //eng
+
+    const[show,setShow]=useState(true)
+    const closeHandler = ()=>{
+        setShow(false)
+        props.setNextRoundMessage(false)
+    }
+
     return(
-        <Modal>
-            <h2>Last Question</h2>
+        <Modal
+            show={show}
+            closeHandler={closeHandler}
+            header={<h2>Last Question</h2>}
+        > 
             <p>Overall Progress: {`${props.correctAnswersTotal}/${props.results.length}`}</p>
-            <button onClick={props.nextRound}>Next round</button>
+            <button onClick={closeHandler}>Next round</button>
 
             <div>
             {

@@ -3,22 +3,32 @@ import { useEffect, useState } from "react";
 import Task from "../../components/task/task"; 
 import { useDispatch, useSelector } from "react-redux";
 import { SET_POINTER, SET_ROUND } from "../../reducers/test";
+import { SET_SINGLE_CONVERSATION_TEST } from "../../reducers/conversations";
 
 
 const TestConversation = () => {
 
-    const{
-        pointer,
-        round,
-        incorrectAnswersCount
-    } = useSelector(({test})=>({
-        pointer: test.pointer,
-        round: test.round,
-        incorrectAnswersCount: test.incorrectAnswersCount
-    }))
+    // const{
+    //     pointer,
+    //     round,
+    //     incorrectAnswersCount
+    // } = useSelector(({test})=>({
+    //     pointer: test.pointer,
+    //     round: test.round,
+    //     incorrectAnswersCount: test.incorrectAnswersCount
+    // }))
 
     const outletContext = useOutletContext()
     const singleConversation = outletContext.conversation;
+    console.log("singleConversation",singleConversation)
+    // const test = singleConversation?.test || {}
+
+    const{
+        pointer=0,
+        round=1,
+        incorrectAnswersCount=0
+    }=singleConversation?.test || {}
+
     const dispatch = useDispatch()
 
     const[roundQuestions, setRoundQuestions] = useState([])
@@ -36,15 +46,19 @@ const TestConversation = () => {
 
     const nextQuestion = ()=>{ 
         dispatch({
-            type: SET_POINTER,
-            payload: (pointer+1)%roundQuestions.length
+            type: SET_SINGLE_CONVERSATION_TEST,
+            payload: {
+                pointer: (pointer+1)%roundQuestions.length
+            }
         })
     }
 
     const getNextRound = ()=>{
         dispatch({
-            type: SET_ROUND,
-            payload: round+1
+            type: SET_SINGLE_CONVERSATION_TEST,
+            payload: {
+                round: round+1
+            }
         })
     }
     

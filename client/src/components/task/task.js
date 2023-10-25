@@ -12,6 +12,7 @@ import Modal from "../uiElements/modal";
 import { AppContext } from "../../context/appContext";
 import { useDispatch } from "react-redux";
 import { SET_INCORRECT_ANSWERS_COUNT, SET_POINTER, SET_ROUND } from "../../reducers/test";
+import { RESET_SINGLE_CONVERSATION, SET_SINGLE_CONVERSATION_TEST } from "../../reducers/conversations";
 
 const Task = (props)=>{ 
 
@@ -20,6 +21,7 @@ const Task = (props)=>{
     const[nextRoundMessage, setNextRoundMessage] = useState(false)
     const[dontKnow, setDontKnow]=useState(false)
     const[isModalOpen, setIsModalOpen]=useState(false)
+    const[showNextRound, setShowNextRound]=useState(false)
     const[isTestFinished, setIsTestFinished]=useState(false)
     const[isShowResult, setIsShowResult]=useState(false)
 
@@ -51,17 +53,17 @@ const Task = (props)=>{
         setIsShowResult(false)
     }
 
-    const nextRound = ()=>{
-        setNextRoundMessage(false)
-        props.getNextRound()
-        dispatch({
-            type: SET_INCORRECT_ANSWERS_COUNT,
-            payload: 0
-        })
-        if(props.roundQuestionsCount===0){
-            setIsTestFinished(true)
-        }
-    }
+    // const nextRound = ()=>{
+    //     setNextRoundMessage(false)
+    //     props.getNextRound()
+    //     dispatch({
+    //         type: SET_INCORRECT_ANSWERS_COUNT,
+    //         payload: 0
+    //     })
+    //     if(props.roundQuestionsCount===0){
+    //         setIsTestFinished(true)
+    //     }
+    // }
 
     useEffect(()=>{
         if(isAnswered || isOverride){
@@ -71,9 +73,13 @@ const Task = (props)=>{
             }else if(isOverride){
                 payload = props.incorrectAnswersCount>=1 ? props.incorrectAnswersCount-1 : props.incorrectAnswersCount
             }
+            // dispatch({
+            //     type: SET_INCORRECT_ANSWERS_COUNT,
+            //     payload: payload
+            // })
             dispatch({
-                type: SET_INCORRECT_ANSWERS_COUNT,
-                payload: payload
+                type: SET_SINGLE_CONVERSATION_TEST,
+                payload: {incorrectAnswersCount: payload}
             })
             if(props.pointer===props.roundQuestionsCount-1) {
                 setNextRoundMessage(true)
@@ -87,8 +93,8 @@ const Task = (props)=>{
             if(nextRoundMessage){
                 props.getNextRound()
                 dispatch({
-                    type: SET_INCORRECT_ANSWERS_COUNT,
-                    payload: 0
+                    type: SET_SINGLE_CONVERSATION_TEST,
+                    payload: {incorrectAnswersCount: 0}
                 })
                 if(props.roundQuestionsCount===0){
                     setIsTestFinished(true)
@@ -179,7 +185,8 @@ const Task = (props)=>{
     const finishedRound = <FinishedRound
                             correctAnswersTotal={correctAnswersTotal}
                             results={props.results}
-                            nextRound={nextRound}
+                            // nextRound={nextRound}
+                            setNextRoundMessage={setNextRoundMessage}
                         />
 
     const finishedTest = <FinishedTest
@@ -253,16 +260,15 @@ const Task = (props)=>{
                         type="button"
                         onClick={()=>{
                             dispatch({
-                                type: SET_POINTER,
-                                payload: 0
+                                type: SET_SINGLE_CONVERSATION_TEST,
+                                payload: {
+                                    pointer:0,
+                                    round:1,
+                                    incorrectAnswersCount:0
+                                }
                             })
                             dispatch({
-                                type: SET_ROUND,
-                                payload: 1
-                            })
-                            dispatch({
-                                type: SET_INCORRECT_ANSWERS_COUNT,
-                                payload: 0
+                                type: RESET_SINGLE_CONVERSATION
                             })
                             setIsAnswered(false)
                             setNextRoundMessage(false)
