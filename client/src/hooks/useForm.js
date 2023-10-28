@@ -1,14 +1,17 @@
-import { useCallback, useMemo, useReducer } from "react"
+import { useCallback, useReducer } from "react"
 
-const formReducer = (state, action) => { 
+const formReducer = (state, action) => {
     switch(action.type){
-        case "INPUT_CHANGE" :
+        case "INPUT_CHANGE" :  
             let formIsValid = true
+            let formIsChanged = false
             for(const inputId in state.inputs){
                 if(inputId===action.payload.inputId){
                     formIsValid = formIsValid && action.payload.isValid
+                    formIsChanged = formIsChanged || action.payload.isChanged
                 }else{
-                    formIsValid = formIsValid && state.inputs[inputId].isValid 
+                    formIsValid = formIsValid && state.inputs[inputId].isValid
+                    formIsChanged = formIsChanged || state.inputs[inputId].isChanged
                 }
             }
             return {
@@ -18,10 +21,13 @@ const formReducer = (state, action) => {
                     [action.payload.inputId]: {
                         ...state.inputs[action.payload.inputId],
                         [action.payload.name]: action.payload.value, 
-                        isValid: action.payload.isValid
+                        isValid: action.payload.isValid,
+                        isChanged: action.payload.isChanged
                     }
                 },
-                isValid: formIsValid
+                isValid: formIsValid,
+                isChanged: formIsChanged,
+                isTouched: action.payload.value ? true : false
             }
         case "REMOVE_INPUT" :
             const prevInputs = {...state.inputs}
@@ -39,19 +45,22 @@ const useForm = (inputs, action) => {
 
     const initState ={
         inputs,
-        isValid: false
+        isValid: false,
+        isTouched: false,
+        isChanged: false
     }
 
     const[formState,dispatch] = useReducer(formReducer, initState)
  
-    const inputHandler = useCallback((id,name,value,isValid) => { 
+    const inputHandler = useCallback((id,name,value,isValid,isChanged) => {
         dispatch({
             type:"INPUT_CHANGE",
             payload: {
                 value: value,
                 isValid: isValid,
+                isChanged: isChanged,
                 name: name,
-                inputId:id
+                inputId: id
             }
         })
     },[])

@@ -11,7 +11,6 @@ import Button from "../button/button";
 import Modal from "../uiElements/modal";
 import { AppContext } from "../../context/appContext";
 import { useDispatch } from "react-redux";
-import { SET_INCORRECT_ANSWERS_COUNT, SET_POINTER, SET_ROUND } from "../../reducers/test";
 import { RESET_SINGLE_CONVERSATION, SET_SINGLE_CONVERSATION_TEST } from "../../reducers/conversations";
 
 const Task = (props)=>{ 
@@ -21,17 +20,10 @@ const Task = (props)=>{
     const[nextRoundMessage, setNextRoundMessage] = useState(false)
     const[dontKnow, setDontKnow]=useState(false)
     const[isModalOpen, setIsModalOpen]=useState(false)
-    const[showNextRound, setShowNextRound]=useState(false)
     const[isTestFinished, setIsTestFinished]=useState(false)
     const[isShowResult, setIsShowResult]=useState(false)
 
     const dispatch = useDispatch()
-
-    console.log("props.round",props.round)
-    console.log("props.pointerrrrrrrrrrrrrrrrrrr",props.pointer)
-    console.log("results",props.results)
-    console.log("props.incorrectAnswersCount",props.incorrectAnswersCount)
-    console.log("props.roundQuestionsCount",props.roundQuestionsCount)
 
     const correctAnswersCount = props.results?.filter(r=>r.correctRound===props.round).length || 0
     const correctAnswersTotal = props.results?.filter(r=>r.correctRound>0).length || 0
@@ -53,18 +45,6 @@ const Task = (props)=>{
         setIsShowResult(false)
     }
 
-    // const nextRound = ()=>{
-    //     setNextRoundMessage(false)
-    //     props.getNextRound()
-    //     dispatch({
-    //         type: SET_INCORRECT_ANSWERS_COUNT,
-    //         payload: 0
-    //     })
-    //     if(props.roundQuestionsCount===0){
-    //         setIsTestFinished(true)
-    //     }
-    // }
-
     useEffect(()=>{
         if(isAnswered || isOverride){
             let payload = 0;
@@ -73,10 +53,6 @@ const Task = (props)=>{
             }else if(isOverride){
                 payload = props.incorrectAnswersCount>=1 ? props.incorrectAnswersCount-1 : props.incorrectAnswersCount
             }
-            // dispatch({
-            //     type: SET_INCORRECT_ANSWERS_COUNT,
-            //     payload: payload
-            // })
             dispatch({
                 type: SET_SINGLE_CONVERSATION_TEST,
                 payload: {incorrectAnswersCount: payload}
@@ -89,6 +65,11 @@ const Task = (props)=>{
     },[props.currentQuestion, props.roundQuestionsCount])
 
     useEffect(()=>{
+        if(props.roundQuestionsCount===0){
+            dispatch({
+                type: RESET_SINGLE_CONVERSATION
+            })
+        }
         return()=>{
             if(nextRoundMessage){
                 props.getNextRound()
@@ -96,12 +77,8 @@ const Task = (props)=>{
                     type: SET_SINGLE_CONVERSATION_TEST,
                     payload: {incorrectAnswersCount: 0}
                 })
-                if(props.roundQuestionsCount===0){
-                    setIsTestFinished(true)
-                }
             }  
         }
-
     },[nextRoundMessage])
 
     useEffect(()=>{
@@ -174,8 +151,8 @@ const Task = (props)=>{
     const result = <Result
                         currentQuestion={props.currentQuestion}
                         answer={props.currentQuestion.result}
-                        eng={props.currentQuestion.eng}
-                        serb={props.currentQuestion.serb}
+                        eng={props.eng}
+                        serb={props.serb}
                         next={next}
                         refNext={refNext}
                         dontKnow={dontKnow}

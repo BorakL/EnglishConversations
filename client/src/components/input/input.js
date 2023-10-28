@@ -4,16 +4,20 @@ import { valid } from "../../utils/valid"
 const initState = {
     value:"",
     isValid: false,
-    isTouched: false
+    isTouched: false,
+    isChanged: false
 }
 
-const inputReducer = (state=initState, action) => {
+const inputReducer = (state=initState, action) => { 
+    console.log("action.payload",action.payload)
+    
     switch(action.type){
-        case "CHANGED" : 
+        case "CHANGED" :  
             return {
                 ...state,
                 value: action.payload.value,
-                isValid: valid(action.payload.value, action.payload.validators)
+                isValid: valid(action.payload.value, action.payload.validators),
+                isChanged: action.payload.value!==action.payload.initValue
             }
         case "TOUCHED" : 
             return {
@@ -25,6 +29,7 @@ const inputReducer = (state=initState, action) => {
 }
 
 const Input = (props)=>{
+    
     const[inputState,dispatch] = useReducer(inputReducer, {
                                                 ...initState,
                                                 value: props.initValue,
@@ -37,7 +42,8 @@ const Input = (props)=>{
             type: "CHANGED",
             payload: {
                 value: event.target.value,
-                validators: props.validators || []
+                validators: props.validators || [],
+                initValue: props.initValue
             }
         })
     }
@@ -47,7 +53,8 @@ const Input = (props)=>{
             type: "TOUCHED",
             payload: {
                 value: event.target.value,
-                validators: props.validators || []
+                validators: props.validators || [],
+                initValue: props.initValue
             }
         })
     }
@@ -55,7 +62,8 @@ const Input = (props)=>{
     const{
         value,
         isValid,
-        isTouched
+        isTouched,
+        isChanged
     } = inputState
 
     const expandTextArea = (e)=>{
@@ -64,8 +72,8 @@ const Input = (props)=>{
     }
 
     useEffect(()=>{
-        props.onInput(props.id, props.name, value, isValid)
-    },[value, props.round, props.name, isTouched, props.onInput, props.id])
+        props.onInput(props.id, props.name, value, isValid, isChanged)
+    },[value, props.round, props.name, isTouched, props.onInput, props.id, isChanged])
 
     const element = props.type === "textarea" ?
     <textarea

@@ -3,9 +3,14 @@ const VALIDATOR_TYPE_MAXLENGTH = "MAXLENGTH";
 const VALIDATOR_TYPE_MINLENGTH = "MINLENGTH";
 const VALIDATOR_TYPE_MAX = "MAX";
 const VALIDATOR_TYPE_MIN = "MIN";
-const VALIDATOR_TYPE_TASK = "TASK"
+const VALIDATOR_TYPE_TASK = "TASK";
+const VALIDATOR_TYPE_CHANGED ="CHANGED"
 
 export const VALIDATOR_REQUIRE = () => ({type: VALIDATOR_TYPE_REQUIRE})
+export const VALIDATOR_CHANGED = (val) => ({
+    type: VALIDATOR_TYPE_CHANGED, 
+    value: val
+})
 export const VALIDATOR_MAXLENGTH = val => ({
     type: VALIDATOR_TYPE_MAXLENGTH,
     value: val
@@ -46,6 +51,9 @@ export const valid = (value, validators)=>{
             isValid = isValid && value > validator.value
         }
         if(validator.type===VALIDATOR_TYPE_TASK){
+            isValid = isValid && value.trim()===validator.value
+        }
+        if(validator.type===VALIDATOR_TYPE_CHANGED){
             isValid = isValid && value.trim()===validator.value
         }
     }

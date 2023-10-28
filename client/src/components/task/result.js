@@ -1,14 +1,7 @@
-import { useEffect } from "react";
 import Button from "../button/button";
 
 const Result = (props)=>{
- 
-//correctRound
-//eng
-//next
-//refNext
-//dontKnow
-//overrideHandler 
+
     return(
         <div className="resultContainer">
             <h2>{!props.dontKnow && ( props.currentQuestion.correctRound>0 ? 
@@ -19,7 +12,7 @@ const Result = (props)=>{
             <div className="resultsSection">
                 <div className="definition">
                     <h6>Serbian</h6>
-                    <p>{props.serb}</p>
+                    <p>{props.dontKnow ? props.serb : props.currentQuestion.serb }</p>
                 </div>
                 {!props.dontKnow ? 
                 <div className="yourAnswer">
@@ -30,7 +23,7 @@ const Result = (props)=>{
                 null}
                 <div>
                     <h6>Correct answer</h6>
-                    <p>{props.eng}</p>
+                    <p>{props.dontKnow ? props.eng : props.currentQuestion.eng }</p>
                 </div>
             </div> 
             <div>
