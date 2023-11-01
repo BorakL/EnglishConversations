@@ -4,15 +4,20 @@ import useForm from "../../hooks/useForm";
 import Button from "../button/button";
 import { useOutletContext } from "react-router";
 import { updateConversation } from "../../services/api";
+import { useDispatch } from "react-redux";
+import { REMOVE_SINGLE_CONVERSATION_SENTENCE } from "../../reducers/conversations";
 
 const List = ()=>{
 
     const outletContext = useOutletContext()
 
     const c = outletContext?.conversation?.conversation || []
-    const conversationContent = c.length>0 ? c : []
+    // const[conversationContent,setConversationContent] = useState(c.length>0 ? c : [])
+    const conversationContent = c.length>0 ? c : [];
 
     const[editingFields,setEditingFields]=useState([])
+    const dispatch = useDispatch();
+    console.log("outletContext?.conversation",outletContext?.conversation)
 
     const action = async (values) => {
         if(values.isValid && Object.keys(values.inputs).length>0){
@@ -24,6 +29,9 @@ const List = ()=>{
                     return c
                 }
             })
+            // dispatch({
+                 
+            // })
             try{
                 await updateConversation(outletContext.conversation._id, {"conversation":newConversation})
                 setEditingFields([])
@@ -40,6 +48,21 @@ const List = ()=>{
         formState
     } = useForm({}, action)
 
+    const removeConversationItem = (id)=>{
+        dispatch({
+            type: REMOVE_SINGLE_CONVERSATION_SENTENCE,
+            payload: id
+        })
+        removeHandler();
+    }
+
+    const editConversationItem = (id)=>{
+
+    }
+    
+    const addConversationItem = ()=>{
+
+    }
 
     const conversation = conversationContent.map(c => 
         <Sentence 
@@ -47,6 +70,7 @@ const List = ()=>{
             eng={c.eng} 
             id={c.eng}
             inputHandler={inputHandler}
+            // removeHandler={()=>removeSentece(c.eng)}
             removeHandler={removeHandler}
             editingFields={editingFields}
             setEditingFields={setEditingFields}

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { getConversation } from "../../services/api";
 import { Outlet, useOutlet, useParams } from "react-router";
 import {useSelector, useDispatch} from "react-redux"
-import { SET_SINGLE_CONVERSATION } from "../../reducers/conversations";
+import { SET_SINGLE_CONVERSATION, SET_SINGLE_CONVERSATION_RESULT, SET_SINGLE_CONVERSATION_TEST } from "../../reducers/conversations";
 import "./conversation.scss"
 import ConversationNav from "../../components/conversationNav/conversationNav";
 import Sentence from "../../components/sentence/sentence";
@@ -16,7 +16,6 @@ const Conversation = ()=>{
         conversation: conversations.singleConversation
     }))
 
-    const[initLoad,setInitLoad]=useState(false)
     const dispatch = useDispatch();
     const params = useParams();
     const host = "http://localhost:3001/img/topics/";
@@ -33,11 +32,28 @@ const Conversation = ()=>{
         }catch(error){
             console.log(error.message)
         }
-        setInitLoad(true)
     }
-
+    
     useEffect(()=>{
-        loadConversation(params.conversation)
+        if(!conversation || conversation.id!==params.conversation){
+            loadConversation(params.conversation)
+        }
+        if(conversation && conversation.id===params.conversation && localStorage.test && localStorage.results){
+            dispatch({
+                type: SET_SINGLE_CONVERSATION_TEST,
+                payload: localStorage.test
+            })
+            dispatch({
+                type: SET_SINGLE_CONVERSATION_RESULT,
+                payload: localStorage.results
+            })
+        }
+        return ()=>{
+            if(conversation && conversation.id===params.conversation && conversation.test && conversation.results){
+                localStorage.setItem("test",JSON.stringify(conversation.test))
+                localStorage.setItem("results",JSON.stringify(conversation.results))
+            }
+        }
     },[])
  
     const options={
@@ -58,18 +74,17 @@ const Conversation = ()=>{
     }
 
     return( 
-        initLoad ? 
             <div className="conversationWrapper">
                 <h1>{conversation.title}</h1>
                 <ConversationNav conversation={conversation}/>
                 {!outlet ?
                 <>
                 <div>
-                    <img alt="topic" src={`${host}${conversation.topic.title}.jpg`}/>
+                    <img alt="topic" src={`${host}${conversation.topic?.title}.jpg`}/>
                 </div>
                 <div ref={targetRef}>
                     <ul>
-                        {conversation.conversation.map(c=><Sentence 
+                        {conversation.conversation?.map(c=><Sentence 
                                                                 id={c._id} 
                                                                 serb={c.serb}
                                                                 eng={c.eng}
@@ -82,8 +97,6 @@ const Conversation = ()=>{
                 null}
                 <Outlet context={{conversation: conversation}}/>
             </div>
-        :
-        <p>Loading...</p> 
         
     )
 }

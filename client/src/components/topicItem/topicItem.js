@@ -3,7 +3,6 @@ import "./topicItem.scss"
 
 const TopicItem = ({topic})=>{
 const location = useLocation();
-console.log("topic",topic)
 
 const host = "http://localhost:3001/img/topics"
 

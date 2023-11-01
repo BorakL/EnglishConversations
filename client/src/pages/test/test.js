@@ -1,27 +1,14 @@
 import { useOutletContext } from "react-router";
 import { useEffect, useState } from "react"; 
 import Task from "../../components/task/task"; 
-import { useDispatch, useSelector } from "react-redux";
-import { SET_POINTER, SET_ROUND } from "../../reducers/test";
-import { SET_SINGLE_CONVERSATION_TEST } from "../../reducers/conversations";
+import { useDispatch } from "react-redux";
+import { SET_SINGLE_CONVERSATION_RESULT, SET_SINGLE_CONVERSATION_TEST } from "../../reducers/conversations";
 
 
 const TestConversation = () => {
 
-    // const{
-    //     pointer,
-    //     round,
-    //     incorrectAnswersCount
-    // } = useSelector(({test})=>({
-    //     pointer: test.pointer,
-    //     round: test.round,
-    //     incorrectAnswersCount: test.incorrectAnswersCount
-    // }))
-
     const outletContext = useOutletContext()
     const singleConversation = outletContext.conversation;
-    console.log("singleConversation",singleConversation)
-    // const test = singleConversation?.test || {}
 
     const{
         pointer=0,
@@ -32,7 +19,7 @@ const TestConversation = () => {
     const dispatch = useDispatch()
 
     const[roundQuestions, setRoundQuestions] = useState([])
-    const[currentQuestion,setCurrentQuestion] = useState({})  
+    const[currentQuestion,setCurrentQuestion] = useState({})
 
     useEffect(()=>{
         setRoundQuestions(singleConversation.results ? singleConversation.results.filter(q=>q.correctRound===0 || q.correctRound===round) : []) 
@@ -62,7 +49,6 @@ const TestConversation = () => {
         })
     }
     
-
     return (
         <>
             {

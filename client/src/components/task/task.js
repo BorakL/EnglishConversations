@@ -20,7 +20,6 @@ const Task = (props)=>{
     const[nextRoundMessage, setNextRoundMessage] = useState(false)
     const[dontKnow, setDontKnow]=useState(false)
     const[isModalOpen, setIsModalOpen]=useState(false)
-    const[isTestFinished, setIsTestFinished]=useState(false)
     const[isShowResult, setIsShowResult]=useState(false)
 
     const dispatch = useDispatch()
@@ -65,11 +64,6 @@ const Task = (props)=>{
     },[props.currentQuestion, props.roundQuestionsCount])
 
     useEffect(()=>{
-        if(props.roundQuestionsCount===0){
-            dispatch({
-                type: RESET_SINGLE_CONVERSATION
-            })
-        }
         return()=>{
             if(nextRoundMessage){
                 props.getNextRound()

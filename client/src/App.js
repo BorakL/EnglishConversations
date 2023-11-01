@@ -40,7 +40,7 @@ function App() {
     <AppContextProvider>
       <div className="App">
         <MainNavigation/>
-        <div 
+        <div
           className={`layout ${backgroundLocation ? "hidden" : "visible"}`} 
           ref={scrollParentRef}
         > 
@@ -51,7 +51,7 @@ function App() {
         <main>
           { backgroundLocation && getRoutes(location) }
         </main>
-      </div> 
+      </div>
     </AppContextProvider>
   );
 }

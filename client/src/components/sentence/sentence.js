@@ -15,7 +15,7 @@ const Sentence = (props)=>{
     });
     let indx = props.editingFields?.findIndex(f=>f===props.id)
 
-    const editHandler = ()=>{  
+    const editHandler = ()=>{
         if(indx<0){
             props.setEditingFields(prev=>{return[...prev,props.id]})
         }else{
