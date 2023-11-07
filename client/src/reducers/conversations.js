@@ -44,12 +44,12 @@ export default (state=initialState, action) => {
         case REMOVE_SINGLE_CONVERSATION_SENTENCE: {
             if(
                 action.payload && 
-                action.payload.conversationId &&
+                action.payload &&
                 state.singleConversation &&
                 state.singleConversation.conversation
             ){
                 let update = state.singleConversation;
-                let conversation = state.singleConversation.conversation.filter(c=>c._id!==action.payload.conversationId)
+                let conversation = state.singleConversation.conversation.filter(c=>c.eng!==action.payload)
                 update.conversation = conversation
                 return {
                     ...state,

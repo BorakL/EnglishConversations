@@ -11,6 +11,7 @@ import Card from './components/card/card';
 import List from './components/list/list';
 import {useNavigationType} from 'react-router-dom';
 import { AppContextProvider } from './context/appContext';
+import EditConversation from './pages/editConversation/editConversation';
 
 function App() {
 
@@ -27,6 +28,7 @@ function App() {
                     <Route path="learn" exact element={<Card/>}/>
                     <Route path="list" exact element={<List/>}/>
                     <Route path="test" exact element={<TestConversation/>}/>
+                    <Route path="edit" exact element={<EditConversation/>}/>
                   </Route>
                 </Routes>
 

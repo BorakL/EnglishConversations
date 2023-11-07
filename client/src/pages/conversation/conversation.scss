@@ -7,5 +7,10 @@
     display: flex;
     align-items: center;
     justify-content: space-evenly
+}
 
+.conversationWrapper{
+    height:auto;
+    transition: height 1.15s ease-out;
+    border: 1px solid grey;
 }

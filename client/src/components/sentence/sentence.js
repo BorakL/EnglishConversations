@@ -22,7 +22,7 @@ const Sentence = (props)=>{
             const prevFields = [...props.editingFields];
             prevFields.splice(indx,1)
             props.setEditingFields(prevFields)
-            props.removeHandler(props.id)
+            props.removeFormHandler([props.id])
         }
     }
 
@@ -35,32 +35,35 @@ const Sentence = (props)=>{
         <div className="sentence">
             <div className="sentenceContent">  
                 {
-                    indx>=0 ?
+                    props.isEditing || props.editingFields && indx>=0 ?
                     <>
                         <div>
                             <Input
-                                id={props.id}
+                                id={`${props.id}-serb`}
                                 type="textarea"
-                                onInput={props.inputHandler}
+                                onInput={props.inputFormHandler}
                                 initValue={props.serb}
-                                name="serb"
+                                name={props.id}
+                                title="serb"
                                 placeholder={props.serb}
-                                errorMessage="serbian error"
                                 validators = {[VALIDATOR_REQUIRE()]}
                                 class="inputDefault"
+                                errorMessage="Problem"
                             />
                         </div>
                         <div>
                             <Input
-                                id={props.id}
+                                id={`${props.id}-eng`}
                                 type="textarea"
-                                onInput={props.inputHandler}
+                                onInput={props.inputFormHandler}
                                 initValue={props.eng}
-                                name="eng"
+                                name={props.id}
+                                title="eng"
                                 placeholder={props.eng}
-                                errorMessage="english error"
                                 validators = {[VALIDATOR_REQUIRE()]}
                                 class="inputDefault"
+                                errorMessage="Problem"
+                                autoFocus = {true}
                             />
                         </div>
                     </>
@@ -80,7 +83,7 @@ const Sentence = (props)=>{
                     <RxSpeakerLoud/>
                 </Button>
                 {
-                    props.editingFields ? 
+                    !props.isEditing ?
                     <Button
                         onClick={editHandler}
                         type="button"
@@ -90,6 +93,16 @@ const Sentence = (props)=>{
                     </Button>
                     : null
                 }
+                {
+                    props.removeSentenceHandler ?
+                    <Button 
+                        onClick={()=>props.removeSentenceHandler(props.id,[`${props.id}-serb`,`${props.id}-eng`])}
+                        type="button"
+                    >
+                        X
+                    </Button>
+                    : null
+                } 
                 
             </div> 
         </div>

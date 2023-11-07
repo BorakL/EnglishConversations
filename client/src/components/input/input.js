@@ -9,7 +9,6 @@ const initState = {
 }
 
 const inputReducer = (state=initState, action) => { 
-    console.log("action.payload",action.payload)
     
     switch(action.type){
         case "CHANGED" :  
@@ -51,11 +50,11 @@ const Input = (props)=>{
     const touchHandler = (event) => {
         dispatch({
             type: "TOUCHED",
-            payload: {
-                value: event.target.value,
-                validators: props.validators || [],
-                initValue: props.initValue
-            }
+            // payload: {
+            //     value: event.target.value,
+            //     validators: props.validators || [],
+            //     initValue: props.initValue
+            // }
         })
     }
 
@@ -72,7 +71,7 @@ const Input = (props)=>{
     }
 
     useEffect(()=>{
-        props.onInput(props.id, props.name, value, isValid, isChanged)
+        props.onInput(props.id, props.name, value, props.title, isValid, isChanged)
     },[value, props.round, props.name, isTouched, props.onInput, props.id, isChanged])
 
     const element = props.type === "textarea" ?
@@ -83,14 +82,16 @@ const Input = (props)=>{
         placeholder={props.placeholder}
         onChange = {changeHandler}
         onBlur = {touchHandler}
-        autoFocus
+        autoFocus = {props.autoFocus}
         onInput={expandTextArea} 
+        title={props.title}
     />
     :
     <input
         id={props.id || props.name}
         name={props.name}
         value={value}
+        title={props.title}
         placeholder={props.placeholder}
         onChange = {changeHandler}
         onBlur = {touchHandler}
@@ -98,7 +99,6 @@ const Input = (props)=>{
     
     return(
         <div className={props.class}>
-            {/* <label htmlFor={props.id}> {props.id} </label> */} 
             {element} 
             {isTouched && !isValid ? <div>{props.errorMessage}</div> : null}
         </div>

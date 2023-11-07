@@ -16,6 +16,8 @@ const Conversation = ()=>{
         conversation: conversations.singleConversation
     }))
 
+    const[initLoading,setInitLoading] = useState(true)
+
     const dispatch = useDispatch();
     const params = useParams();
     const host = "http://localhost:3001/img/topics/";
@@ -24,11 +26,13 @@ const Conversation = ()=>{
 
     const loadConversation = async(conversationId) => {
         try{
+            setInitLoading(true)
             const conversationData = await getConversation(conversationId);
             dispatch({
                 type:SET_SINGLE_CONVERSATION,
                 payload: conversationData.data.doc
             })
+            setInitLoading(false)
         }catch(error){
             console.log(error.message)
         }
@@ -76,26 +80,36 @@ const Conversation = ()=>{
     return( 
             <div className="conversationWrapper">
                 <h1>{conversation.title}</h1>
-                <ConversationNav conversation={conversation}/>
-                {!outlet ?
+                <ConversationNav/>
                 <>
-                <div>
-                    <img alt="topic" src={`${host}${conversation.topic?.title}.jpg`}/>
-                </div>
-                <div ref={targetRef}>
-                    <ul>
-                        {conversation.conversation?.map(c=><Sentence 
-                                                                id={c._id} 
-                                                                serb={c.serb}
-                                                                eng={c.eng}
-                                                            />)}
-                    </ul>
-                </div>
-                <Button onClick={createPdf}> Download PDF </Button>
+                {
+                    
+                    initLoading ? <h1>Loading...</h1> :
+                         <>
+                        {!outlet ?
+                            <>
+                                <div>
+                                    <img alt="topic" src={`${host}${conversation.topic?.title}.jpg`}/>
+                                </div>
+                                <div ref={targetRef}>
+                                    <ul>
+                                        {conversation.conversation?.map(c=><Sentence 
+                                                                                id={c._id} 
+                                                                                serb={c.serb}
+                                                                                eng={c.eng}
+                                                                            />)}
+                                    </ul>
+                                </div>
+                                <Button onClick={createPdf}> Download PDF </Button>
+                            </>
+                            :
+                        null}
+                        <Outlet context={{name:"Luka",conversation: conversation}}/>
+                         </>
+                }
                 </>
-                :
-                null}
-                <Outlet context={{conversation: conversation}}/>
+
+
             </div>
         
     )
