@@ -83,7 +83,7 @@ const Sentence = (props)=>{
                     <RxSpeakerLoud/>
                 </Button>
                 {
-                    !props.isEditing ?
+                    props.editingFields && !props.isEditing ?
                     <Button
                         onClick={editHandler}
                         type="button"

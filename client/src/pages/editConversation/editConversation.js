@@ -3,46 +3,20 @@ import useForm from "../../hooks/useForm"
 import { useEffect, useState } from "react";
 import Sentence from "../../components/sentence/sentence";
 import Button from "../../components/button/button";
+import {CSSTransition,TransitionGroup} from "react-transition-group"
 
 const EditConversation = ()=>{
     const outletContext = useOutletContext().conversation?.conversation || []
     const[conversationContent,setConversationContent] = useState(outletContext);
-    console.log("conversationContent",conversationContent)
-    // useEffect(()=>{
-    //     const c = outletContext?.conversation?.conversation || []
-    //     setConversationContent(c.length>0 ? c : []);
-    // },[outletContext])
-
 
     const action = (value)=>{
         console.log("formState",value)
     }
 
-    //Ovde nemoj da koristiš map metod jer on vraća niz. Moraš da napraviš objekat
-    // const inputs = conversationContent.map(c=>{
-    //     return {
-    //         [c._id]:{serb:c.serb, eng:c.eng}
-    //     }
-    // })
-    // console.log("inputs",inputs)
-
-    // const inputs = {n:4}
-    // conversationContent.forEach(c=>inputs[c._id]={serb:c.serb, eng:c.eng})
-
-    // {serb:c.serb, eng:c.eng}
-    // [v.serb]:{name:'eng',value:v.eng,isValid:true,isChanged:false} 
-    // const inputs = conversationContent.map(v => 
-        
-        // { return { [v.serb]:{name:'eng', value:v.eng, isValid:true, isChanged:false}  }
-        // [v.eng]:{name:'serb',value:v.serb,isValid:true,isChanged:false}  
-    
-    // )
-
     const{
         formState, 
         inputHandler,
         removeHandler,
-        addHandler,
         submitHandler
     } = useForm({},action)
 
@@ -60,17 +34,26 @@ const EditConversation = ()=>{
     return(
         <>
             <form className="conversationWrapper" onSubmit={submitHandler}>
-                {conversationContent.map(c=>
-                    <Sentence
-                        key={c._id}
-                        serb={c.serb}
-                        eng={c.eng}
-                        id={c._id}
-                        inputFormHandler={inputHandler}
-                        isEditing={true}
-                        removeSentenceHandler={removeSentenceHandler}
-                    />
-                )}
+                <TransitionGroup component={null}>
+                    {conversationContent.map(c=>
+                        <CSSTransition
+                            key={c._id}
+                            timeout={1000}
+                            classNames="conversation"
+                        >
+                            <Sentence
+                                key={c._id}
+                                serb={c.serb}
+                                eng={c.eng}
+                                id={c._id}
+                                inputFormHandler={inputHandler}
+                                isEditing={true}
+                                removeSentenceHandler={removeSentenceHandler}
+                            />
+                        </CSSTransition>
+                        
+                    )}
+                </TransitionGroup>
                 <Button
                     type="button"
                     onClick={addSentenceHandler}
