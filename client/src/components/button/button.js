@@ -2,18 +2,36 @@ import {Link, NavLink} from 'react-router-dom'
 
 const Button = props => {
 
-    const classes = `${props.style || 'button'} 
-                     ${!props.style && props.size || ''}
-                     ${!props.style && props.danger && 'danger' || ''}
-                     ${!props.style && props.correct && 'correct' || ''}
-                     ${!props.style && props.wrong && 'wrong' || ''}
-                     ${!props.style && props.inverse && 'inverse' || ''}
-                     ${!props.style && props.disabled && 'disabled' || ''}`
+    const getClasses = () => {
+        let classes = ""
+        let size = props.size ? props.size : ""
+        if(!props.style){
+            switch(props){
+                case props.size : classes=''
+                case props.danger : classes='danger'
+                case props.correct : classes='correct'
+                case props.wrong : classes='wrong'
+                case props.inverse : classes='inverse'
+                case props.disabled : classes='disabled'
+                default : classes=''
+            }
+        }else{
+            return props.style
+        }
+        return ["button",classes,size].join(" ")
+    }
+
+    const navLinkStyles = ({isActive,isPending,isTransitioning}) => [
+        isPending ? "pending" : "",
+        isActive ? "active" : "",
+        isTransitioning ? "transitioning" : "",
+        getClasses()
+    ].join(" ")
 
     if(props.href){
         return (
             <a
-                className={classes}                
+                className={getClasses()}                
                 href={props.href}
             >
                 {props.children}
@@ -24,9 +42,9 @@ const Button = props => {
         if(props.element==="navLink"){
             return(<NavLink 
                 to={props.to}
-                exact={props.exact}
-                className={classes}
+                exact={props.exact} 
                 onClick={props.onClick}
+                className={navLinkStyles}
             >
             {props.children}
             </NavLink>)
@@ -34,7 +52,7 @@ const Button = props => {
             return(<Link 
                 to={props.to}
                 exact={props.exact}
-                className={classes}
+                className={getClasses()}
                 onClick={props.onClick}
             >
             {props.children}
@@ -44,7 +62,7 @@ const Button = props => {
 
     return(
         <button 
-            className={`${classes} ${props.active && 'active'}`}
+            className={`${getClasses()} ${props.active ? 'active' : ''}`}
             type={props.type}
             onClick={props.onClick}
             disabled={props.disabled}

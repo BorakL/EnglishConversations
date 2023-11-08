@@ -11,13 +11,14 @@ const ProgressBar = (props)=>{
     const progressBarInnerStyle = {
         "width":`${props.progress || 0}%`,
         "height":"100%",
-        "backgroundColor":`${props.color || "red"}`
+        "backgroundColor":`${props.color || "red"}`,
+        "transition": "width 500ms"
     }
 
     const progressBarTitleStyle = {
         "display":"flex",
         "flexDirection":"row",
-        "justifyContent":"spaceBetween"
+        "justify-content":"space-between"
     }
 
     return(

@@ -12,6 +12,7 @@ import Modal from "../uiElements/modal";
 import { AppContext } from "../../context/appContext";
 import { useDispatch } from "react-redux";
 import { RESET_SINGLE_CONVERSATION, SET_SINGLE_CONVERSATION_TEST } from "../../reducers/conversations";
+import {PiSpeakerSimpleHighBold,PiSpeakerSimpleXBold} from 'react-icons/pi'
 
 const Task = (props)=>{ 
 
@@ -217,37 +218,42 @@ const Task = (props)=>{
                     closeHandler={closeModalOptions}
                     header={<h2>Options</h2>} 
                 >    
-                    <Button
-                        type="button"
-                        onClick={()=>{
-                            closeModalOptions();
-                            appContext.turnAudio();
-                        }}
-                    >
-                        Audio
-                    </Button>
-                    <Button 
-                        style="buttonText" 
-                        type="button"
-                        onClick={()=>{
-                            dispatch({
-                                type: SET_SINGLE_CONVERSATION_TEST,
-                                payload: {
-                                    pointer:0,
-                                    round:1,
-                                    incorrectAnswersCount:0
-                                }
-                            })
-                            dispatch({
-                                type: RESET_SINGLE_CONVERSATION
-                            })
-                            setIsAnswered(false)
-                            setNextRoundMessage(false)
-                            closeModalOptions();
-                        }}
-                    >
-                        Restart write
-                    </Button>
+                    <div>   
+                        <Button
+                            type="button"
+                            style="buttonIcon"
+                            onClick={()=>{
+                                appContext.turnAudio();
+                            }}
+                        >
+                            {appContext.globalOptions.audio ? <PiSpeakerSimpleHighBold/> : <PiSpeakerSimpleXBold/>}
+                        </Button>
+                    </div>
+                    <div>
+                        <Button 
+                            style="buttonText" 
+                            type="button"
+                            onClick={()=>{
+                                dispatch({
+                                    type: SET_SINGLE_CONVERSATION_TEST,
+                                    payload: {
+                                        pointer:0,
+                                        round:1,
+                                        incorrectAnswersCount:0
+                                    }
+                                })
+                                dispatch({
+                                    type: RESET_SINGLE_CONVERSATION
+                                })
+                                setIsAnswered(false)
+                                setNextRoundMessage(false)
+                                closeModalOptions();
+                            }}
+                        >
+                            Restart write
+                        </Button>
+                    </div>
+                    
                 </Modal>
             }
         </div>

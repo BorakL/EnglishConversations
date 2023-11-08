@@ -2,12 +2,13 @@ import ReactDOM from "react-dom"
 import "./modal.scss"
 import BackDrop from "./backDrop"
 import Button from "../button/button"
+import {AiOutlineClose} from 'react-icons/ai'
 
 const ModalOverlay = props => {
     const content = (
-        <div className={`modal ${props.className}`}>
+        <div className={`modal ${props.className || ''}`}>
             {props.header ? <header>{props.header}</header> : null}
-            <div className={`modalContent ${props.contentClass}`}>
+            <div className={`modalContent ${props.contentClass || ''}`}>
                 <div>{props.children}</div>
             </div>
             {props.footer ? <footer>{props.footer}</footer> : null}
@@ -16,7 +17,7 @@ const ModalOverlay = props => {
                 type="icon"
                 style="buttonIcon"
             >
-                Close
+                <AiOutlineClose/>
             </Button>
         </div> 
     )         
