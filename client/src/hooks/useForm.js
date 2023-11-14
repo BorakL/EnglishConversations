@@ -1,7 +1,6 @@
 import { useCallback, useReducer } from "react"
 
 const formReducer = (state, action) => {
-    console.log("satate",state)
     let formIsValid = true
     let formIsChanged = false
     switch(action.type){
@@ -72,7 +71,6 @@ const formReducer = (state, action) => {
                     {return { [input._id]: { [input.name]:input.value, isValid:input.isValid, isChanged:input.isChanged } }} 
                 )
                 // {serb:"", eng:"", _id:id, isValid:false, isChanged:false}
-                console.log("inputsssss",inputs)
                 return state
             }
         default: return state

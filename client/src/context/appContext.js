@@ -4,7 +4,8 @@ const AppContext = createContext();
 
 const AppContextProvider = ({children}) => { 
     const defaultOptions = {
-        audio: true
+        audio: true,
+        isEnglishFirst: true
     }
 
     const[globalOptions,setGlobalOptions]=useState(defaultOptions)
@@ -12,9 +13,16 @@ const AppContextProvider = ({children}) => {
     const turnAudio = ()=>{
         setGlobalOptions(prev=>{return {...prev, audio: !globalOptions.audio}})
     }
+    const changeFirstLang = ()=>{
+        setGlobalOptions(prev=>{return {...prev, isEnglishFirst: !globalOptions.isEnglishFirst}})
+    }
 
     return(
-        <AppContext.Provider value={{globalOptions, turnAudio}}> 
+        <AppContext.Provider value={{
+            globalOptions, 
+            turnAudio,
+            changeFirstLang
+        }}> 
             {children}            
         </AppContext.Provider>
     )

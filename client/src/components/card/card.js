@@ -1,66 +1,124 @@
-import { useEffect, useState } from "react"; 
+import { useContext, useEffect, useMemo, useState } from "react"; 
 import "./card.scss"
 import Button from "../button/button";
-import {GrLinkNext,GrLinkPrevious} from "react-icons/gr"
 import { useOutletContext } from "react-router";
+import { useSpeechSynthesis } from "react-speech-kit";
+import {FaPlay,FaStop} from "react-icons/fa"
+import { Pagination, Navigation } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+import { AppContext } from "../../context/appContext";
 
-const Card = (props)=>{
+const Card = ()=>{
 
     const outletContext = useOutletContext();
-    console.log("outletContext",outletContext)
-    console.log("propssss",props)
+    const conversation = outletContext?.conversation?.conversation || [];
+    const appContext = useContext(AppContext)
 
     const[pointer,setPointer]=useState(0)
     const[flip,setFlip] = useState(false)
-
-    const nextCard = ()=>{
-        if(pointer<outletContext.conversation.conversation.length-1){
-            setPointer(prev=>prev+1)
-            setFlip(false)
+    const[isPlayConversation,setIsPlayConversation] = useState(false)
+    const[endSpeak,setEndSpeak] = useState(false)
+    
+    const { speak } = useSpeechSynthesis({
+        onEnd: ()=>{
+            setPointer(prev => prev===conversation.length-1 ? 0 : prev+1)
+            setEndSpeak(true)
         }
-    }
-    const prevCard = ()=>{
-        if(pointer>0) {
-            setPointer(prev=>prev-1)
-            setFlip(false)
-        }
-    }
-    const flipCard = ()=>{ 
-        setFlip(prev=>!prev)
-    }
+    }); 
  
+    const flipCard = ()=>{
+        if(!isPlayConversation){
+            setFlip(prev=>!prev)
+        }
+    }
+
+    const playConversation = ()=>{
+        if(!isPlayConversation){
+            setIsPlayConversation(true);
+            setFlip(true)
+        }else{
+            setIsPlayConversation(false);
+            setFlip(false)
+        }
+        setPointer(0)
+    }
+
+    useMemo(()=>{
+        if(conversation[pointer] && isPlayConversation){ 
+            setEndSpeak(false)
+            return speak({text:conversation[pointer]?.eng})
+        }
+        else if(pointer===conversation.length ){ 
+            setPointer(0)
+            setFlip(false)
+            setIsPlayConversation(false)
+        }
+    },[pointer,conversation.length,isPlayConversation])
+
+    useEffect(()=>{
+        if(endSpeak && !isPlayConversation){
+            setPointer(prev=>prev-1)
+        }
+    },[isPlayConversation,endSpeak])
+
+    const card = (conversation)=> <div className={`flip-card ${flip ? " flip-active" : ""}`} onClick={flipCard}>
+                                        <div className = "flip-card-inner">
+                                            <div className="flip-card-front">
+                                                <p>{appContext.globalOptions.isEnglishFirst ? conversation?.eng : conversation?.serb}</p>
+                                            </div>
+                                            <div className="flip-card-back">
+                                                <p>{appContext.globalOptions.isEnglishFirst ? conversation?.serb : conversation?.eng}</p>
+                                            </div>
+                                        </div>
+                                    </div> 
+
     return( 
         <div className="flashCard">
-            <div className={`flip-card ${flip ? " flip-active" : ""}`} onClick={flipCard}>
-                <div className = "flip-card-inner">
-                    <div className="flip-card-front">
-                        <p>{outletContext.conversation.conversation[pointer].serb}</p>
-                    </div>
-                    <div className="flip-card-back">
-                        <p>{outletContext.conversation.conversation[pointer].eng}</p>
-                    </div>
-                </div>
-            </div>
-            <div className="flashCardButtons"> 
-                <Button 
-                    type="button"
-                    onClick={prevCard}
-                    disabled={pointer===0}
-                    style="buttonIcon"
-                >
-                    <GrLinkPrevious/>
-                </Button> 
+            {!isPlayConversation ?
+                <Swiper
+                    pagination={{
+                        type: 'bullets',
+                    }}
+                    navigation={true}
+                    modules={[Pagination, Navigation]} 
+                    onSlideChange={()=>setFlip(false)}
+                    >
+                        {conversation.map(c=><SwiperSlide key={c._id}>{card(c)}</SwiperSlide>)}
+                </Swiper>
+            : 
+            <> 
                 <div>
-                    {`${pointer+1}/${outletContext.conversation.conversation.length}`}
+                    {card(conversation[pointer])}
+                </div>
+                <div>
+                    {`${pointer+1}/${conversation.length}`}
                 </div> 
-                <Button 
-                    type="button"
-                    onClick={nextCard}
-                    disabled={pointer===outletContext.conversation.conversation.length-1}
-                    style="buttonIcon"
-                >
-                    <GrLinkNext/>
-                </Button> 
+            </> 
+            }
+            <div className="flashCardControllers"> 
+                <div>
+                    <Button
+                        onClick={playConversation}
+                        style="buttonIcon"
+                    >
+                        {!isPlayConversation ? <FaPlay/> : <FaStop/>}
+                    </Button>
+                </div>
+                {!isPlayConversation ?
+                <div>
+                    <Button
+                        onClick={()=>{if(!isPlayConversation)appContext.changeFirstLang()}}
+                        style="buttonIcon"
+                    >
+                        settings icon
+                    </Button>
+                </div>
+                : null
+                }
+                
             </div>
         </div> 
     )

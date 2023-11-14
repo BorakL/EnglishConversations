@@ -12,7 +12,8 @@
     flex-direction: column;
     align-items: center;
     box-sizing: border-box;
-    border-radius: 1.5em; 
+    border-radius: 1.5em;
+    z-index: 100; 
     header{
         margin: 20px 0;
     }
@@ -22,4 +23,23 @@
         right: 10px;
     }
 
+}
+
+
+.fullScreenModal{
+    box-sizing: border-box;
+    position: fixed;
+    z-index: 100;    
+    left: 0;
+    top: 0; 
+    width: 100%;
+    height: 100%;
+    background-color: #f6f7fb;
+    overflow: auto;
+    overflow-x: hidden;
+    >button{
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
 }

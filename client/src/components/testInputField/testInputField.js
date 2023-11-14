@@ -56,8 +56,7 @@ const TestInputField = (props)=>{
 
     const{
         value,
-        isValid,
-        isTouched
+        isValid
     } = inputState
 
     const { speak } = useSpeechSynthesis();

@@ -52,4 +52,33 @@
     align-items: center;
     flex-direction: row;
     gap: 20px;
+    margin-top: 1em;
+    >div{
+      min-width: 60px; 
+      font-size: 1.2em;
+    } 
+  }
+
+  .swipeCard-enter{
+    opacity: 0;
+  }
+  .swipeCard-enter-active{
+    opacity: 1;
+    transition: opacity 500ms;
+  } 
+
+  .swipeCard-exit{
+    opacity: 1;
+  }
+  .swipeCard-exit-active{
+    opacity: 0;
+    transition: opacity 500ms;
+  }
+
+  .flashCardControllers{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    margin-top: 15px; 
   }

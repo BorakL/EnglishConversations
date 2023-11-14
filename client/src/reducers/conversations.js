@@ -1,12 +1,26 @@
 const initialState = {
     conversations: [],
-    singleConversation: {},
+    singleConversation: {
+        test: {
+            incorrectAnswersCount: 0,
+            pointer: 0,
+            round: 1
+        },
+        conversation: [
+            // {serb: 'tempor', eng: 'quis', _id: '64e3955363943a78851fd291'}
+        ],
+        results: [
+            // {
+            //     "serb": "aute",
+            //     "eng": "eu",
+            //     "_id": "64e3955363943a78851fd292",
+            //     "result": "",
+            //     "correctRound": 0
+            // }
+        ],
+        title: ""
+    },
     conversationsTotal: 0
-}
-const initStateTest = {
-    pointer: 0,
-    round: 1,
-    incorrectAnswersCount: 0
 }
 
 export const SET_CONVERSATIONS = "SET_CONVERSATIONS";
@@ -27,15 +41,14 @@ export default (state=initialState, action) => {
             }           
         }
         case SET_SINGLE_CONVERSATION: {
-            if(action.payload && action.payload.conversation){
+            if(action.payload && action.payload.conversation && state.singleConversation){
                 let results = action.payload.conversation.map(c => {return {...c, result:"", correctRound:0}})
-                let test = initStateTest
                 return {
                     ...state,
                     singleConversation: {
+                        ...state.singleConversation,
                         ...action.payload,
-                        results,
-                        test
+                        results
                     }
                 }
             }
@@ -58,16 +71,6 @@ export default (state=initialState, action) => {
             }
             return state;
         }
-        // case EDIT_SINGLE_CONVERSATION : {
-        //     if(
-        //         action.payload &&
-        //         state.singleConversation &&
-        //         state.singleConversation.conversation
-        //     ){
-        //         let update = state.singleConversation;
-        //         let conversation = state.singleConversation.conversation
-        //     }
-        // }
         case SET_SINGLE_CONVERSATION_RESULT: {
             if(
                 action.payload.inputId &&

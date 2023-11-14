@@ -10,17 +10,25 @@ import Result from "./result";
 import Button from "../button/button";  
 import Modal from "../uiElements/modal";
 import { AppContext } from "../../context/appContext";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RESET_SINGLE_CONVERSATION, SET_SINGLE_CONVERSATION_TEST } from "../../reducers/conversations";
-import {PiSpeakerSimpleHighBold,PiSpeakerSimpleXBold} from 'react-icons/pi'
+import Input from "../input/input";
+import useForm from "../../hooks/useForm";
+import Exam from "../modals/exam/exam";
+import Options from "../modals/options/options";
 
 const Task = (props)=>{ 
+
+    const{singleConversation:questions} = useSelector(({conversations})=>({
+        singleConversation: conversations.singleConversation.conversation
+    }));
 
     const[isAnswered,setIsAnswered]=useState(false)
     const[isOverride, setIsOverride]=useState(false)
     const[nextRoundMessage, setNextRoundMessage] = useState(false)
     const[dontKnow, setDontKnow]=useState(false)
-    const[isModalOpen, setIsModalOpen]=useState(false)
+    const[isModalExamOpen, setIsModalExamOpen]=useState(false)
+    const[isModalOptionsOpen, setIsModalOptionsOpen]=useState(false)
     const[isShowResult, setIsShowResult]=useState(false)
 
     const dispatch = useDispatch()
@@ -28,11 +36,30 @@ const Task = (props)=>{
     const correctAnswersCount = props.results?.filter(r=>r.correctRound===props.round).length || 0
     const correctAnswersTotal = props.results?.filter(r=>r.correctRound>0).length || 0
     const refNext = useRef()
+    
+    const[examFinished,setExamFinished]=useState(false)    
 
     const action = ()=>{
         setIsAnswered(true)
         setIsOverride(false)
         setIsShowResult(true)
+    }
+
+    const resetTest = ()=>{
+        dispatch({
+            type: SET_SINGLE_CONVERSATION_TEST,
+            payload: {
+                pointer:0,
+                round:1,
+                incorrectAnswersCount:0
+            }
+        })
+        dispatch({
+            type: RESET_SINGLE_CONVERSATION
+        })
+        setIsAnswered(false)
+        setNextRoundMessage(false)
+        setIsModalOptionsOpen(false);
     }
 
     const {
@@ -116,11 +143,15 @@ const Task = (props)=>{
         setIsOverride(true)
     }
 
-    const closeModalOptions = ()=>{
-        setIsModalOpen(false)
+    const closeModalExam = ()=>{
+        if(!examFinished){
+            alert("Are you sure you want to leave?")
+        }
+        setIsModalExamOpen(false)
+        setExamFinished(false)
     }
     const openModalOptions = ()=>{
-        setIsModalOpen(true)
+        setIsModalOptionsOpen(true)
     }
     
     const appContext = useContext(AppContext)
@@ -210,53 +241,97 @@ const Task = (props)=>{
                         Options
                     </Button>
                 </div>
+                <div className="taskOptions">
+                    <Button 
+                        type="button" 
+                        onClick={()=>setIsModalExamOpen(true)}
+                    >
+                        Exam
+                    </Button>
+                </div>
                 
             </div>
             {
-                <Modal 
-                    show={isModalOpen} 
-                    closeHandler={closeModalOptions}
-                    header={<h2>Options</h2>} 
-                >    
-                    <div>   
-                        <Button
-                            type="button"
-                            style="buttonIcon"
-                            onClick={()=>{
-                                appContext.turnAudio();
-                            }}
-                        >
-                            {appContext.globalOptions.audio ? <PiSpeakerSimpleHighBold/> : <PiSpeakerSimpleXBold/>}
-                        </Button>
-                    </div>
-                    <div>
-                        <Button 
-                            style="buttonText" 
-                            type="button"
-                            onClick={()=>{
-                                dispatch({
-                                    type: SET_SINGLE_CONVERSATION_TEST,
-                                    payload: {
-                                        pointer:0,
-                                        round:1,
-                                        incorrectAnswersCount:0
-                                    }
-                                })
-                                dispatch({
-                                    type: RESET_SINGLE_CONVERSATION
-                                })
-                                setIsAnswered(false)
-                                setNextRoundMessage(false)
-                                closeModalOptions();
-                            }}
-                        >
-                            Restart write
-                        </Button>
-                    </div>
-                    
+                // <Modal 
+                //     show={isModalOpen} 
+                //     closeHandler={closeModalOptions}
+                //     header={<h2>Options</h2>}
+                //     fullScreen={true}
+                // >    
+                //     <div>   
+                //         <Button
+                //             type="button"
+                //             style="buttonIcon"
+                //             onClick={()=>{
+                //                 appContext.turnAudio();
+                //             }}
+                //         >
+                //             {appContext.globalOptions.audio ? <PiSpeakerSimpleHighBold/> : <PiSpeakerSimpleXBold/>}
+                //         </Button>
+                //     </div>
+                //     <div>
+                //         <Button 
+                //             style="buttonText" 
+                //             type="button"
+                //             onClick={()=>{
+                //                 dispatch({
+                //                     type: SET_SINGLE_CONVERSATION_TEST,
+                //                     payload: {
+                //                         pointer:0,
+                //                         round:1,
+                //                         incorrectAnswersCount:0
+                //                     }
+                //                 })
+                //                 dispatch({
+                //                     type: RESET_SINGLE_CONVERSATION
+                //                 })
+                //                 setIsAnswered(false)
+                //                 setNextRoundMessage(false)
+                //                 closeModalOptions();
+                //             }}
+                //         >
+                //             Restart write
+                //         </Button>
+                //     </div>
+                // </Modal>
+                <Modal
+                    show={isModalOptionsOpen} 
+                    closeHandler={()=>setIsModalOptionsOpen(false)}
+                    header={<h2>Options</h2>}
+                >
+                    <Options
+                        resetTest={resetTest}
+                        appContext={appContext}                    
+                    />
+                </Modal>
+            }
+            {
+                <Modal
+                    show={isModalExamOpen} 
+                    closeHandler={closeModalExam}
+                    header={<h2>Test</h2>}
+                    fullScreen={true}
+                >
+                    <Exam
+                        questions={questions}
+                        setExamFinished={setExamFinished}
+                        examFinished={examFinished}
+                    />
                 </Modal>
             }
         </div>
+                        //     <Input
+                        //     id={`${props.id}-serb`}
+                        //     type="textarea"
+                        //     onInput={props.inputFormHandler}
+                        //     initValue={props.serb}
+                        //     name={props.id}
+                        //     title="serb"
+                        //     placeholder={props.serb}
+                        //     validators = {[VALIDATOR_REQUIRE()]}
+                        //     class="inputDefault"
+                        //     errorMessage="Problem"
+                        // />
     )
 }
 

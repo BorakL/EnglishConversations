@@ -6,7 +6,7 @@ import {AiOutlineClose} from 'react-icons/ai'
 
 const ModalOverlay = props => {
     const content = (
-        <div className={`modal ${props.className || ''}`}>
+        <div className={`${props.fullScreen ? "fullScreenModal" : "modal"} ${props.className || ''}`}>
             {props.header ? <header>{props.header}</header> : null}
             <div className={`modalContent ${props.contentClass || ''}`}>
                 <div>{props.children}</div>
@@ -27,7 +27,7 @@ const ModalOverlay = props => {
 const Modal = props => {
     return(
         <>
-            {props.show && <BackDrop onClick={props.closeHandler}/>}
+            {props.show && !props.fullScreen ? <BackDrop onClick={props.closeHandler}/> : null}
             {props.show && <ModalOverlay {...props}/> } 
         </> 
     )
