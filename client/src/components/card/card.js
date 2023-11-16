@@ -10,6 +10,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { AppContext } from "../../context/appContext";
+import { FaRepeat } from "react-icons/fa6";
 
 const Card = ()=>{
 
@@ -64,8 +65,8 @@ const Card = ()=>{
         }
     },[isPlayConversation,endSpeak])
 
-    const card = (conversation)=> <div className={`flip-card ${flip ? " flip-active" : ""}`} onClick={flipCard}>
-                                        <div className = "flip-card-inner">
+    const card = (conversation)=> <div className={`flip-card ${flip ? " flip-active" : ""}`} >
+                                        <div className = "flip-card-inner" onClick={flipCard}>
                                             <div className="flip-card-front">
                                                 <p>{appContext.globalOptions.isEnglishFirst ? conversation?.eng : conversation?.serb}</p>
                                             </div>
@@ -113,7 +114,7 @@ const Card = ()=>{
                         onClick={()=>{if(!isPlayConversation)appContext.changeFirstLang()}}
                         style="buttonIcon"
                     >
-                        settings icon
+                        <FaRepeat/>
                     </Button>
                 </div>
                 : null

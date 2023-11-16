@@ -89,12 +89,12 @@ main{
 
 .inputDefault{ 
   textarea{
-    width:95%;
+    width:100%;
     min-height:5px;
     max-height:100px; 
     overflow: visible;
     border-color: transparent;
-    border-bottom: 2px solid grey;
+    // border-bottom: 2px solid grey;
     outline: none;
     resize: none;
   } 
