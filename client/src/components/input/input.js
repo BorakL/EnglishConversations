@@ -100,7 +100,7 @@ const Input = (props)=>{
     return(
         <div className={props.class}>
             {element} 
-            {isTouched && !isValid ? <div>{props.errorMessage}</div> : null}
+            {isTouched && !isValid && props.errorMessage ? <div>{props.errorMessage}</div> : null}
         </div>
     )
 }
