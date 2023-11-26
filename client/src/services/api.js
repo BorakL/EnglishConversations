@@ -7,3 +7,4 @@ export const getTopicConversations = (id, query) => axios.get(`topics/${id}/conv
 export const getConversation = (id) => axios.get(`conversations/${id}`)
 export const updateConversation = (id,newConversation) => axios.put(`conversations/${id}`,newConversation )
 export const loginUser = (data) => axios.post("users/login",data,{headers: {withCredentials: true}})
+export const signupUser = (data) => axios.post("users/signup",data,{headers: {withCredentials: true}})

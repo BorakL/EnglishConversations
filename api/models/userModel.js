@@ -3,7 +3,7 @@ import validator from "validator"
 import bcrypt from "bcryptjs"
 
 const userSchema = new mongoose.Schema({
-    name: {
+    username: {
         type: String,
         required: [true, "Please tell us your name"]
     },
@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: [true, "Please provide a password"],
-        minLength: 10,
+        minLength: 5,
         select: false
     },
     passwordConfirm: {

@@ -1,18 +1,41 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import Button from "../../components/button/button"
 import Input from "../../components/input/input"
 import useForm from "../../hooks/useForm"
-import { VALIDATOR_CHANGED, VALIDATOR_MINLENGTH, VALIDATOR_REGEX, VALIDATOR_REQUIRE } from "../../utils/valid"
+import { VALIDATOR_CHANGED, VALIDATOR_MINLENGTH, VALIDATOR_REGEX, VALIDATOR_REQUIRE } from "../../utils/valid" 
+import { signupUser } from "../../services/api"
 
 const Signup = ()=>{
+    const[loading,setLoading] = useState(false)
+
+    const signupHandler = async(data)=>{
+        console.log("data.inputs",data.inputs)
+        let newUser = {
+            username: data.inputs.username.value,
+            email: data.inputs.email.value,
+            password: data.inputs.password.value,
+            passwordConfirm: data.inputs.passwordConfirm.value
+        }
+        try{
+            setLoading(true)
+            await signupUser(newUser)
+            setLoading(false)
+        }catch(error){
+            setLoading(false)
+            console.log("error",error) 
+        }
+    }
     const {
         formState,
         submitHandler,
         inputHandler
-    } = useForm({},(x)=>{console.log("values",x)}) 
+    } = useForm({}, signupHandler)
+
+
     
     return(
         <>
+            {loading ? <h1>Loading</h1> : null}
             <h1>Signup</h1>
             <form onSubmit={submitHandler}>
                 <Input
@@ -58,12 +81,12 @@ const Signup = ()=>{
                     isRequired={true}
                     disabled={!formState?.inputs?.password?.value || !formState?.inputs?.password?.isValid}
                 /> 
-                      
-                
                 <Button
                     type="submit"
                     disabled={!formState.isValid}
-                >Signup</Button>
+                >
+                    Signup
+                </Button>
             </form>
         </>
         

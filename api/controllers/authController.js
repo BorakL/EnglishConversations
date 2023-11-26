@@ -1,8 +1,7 @@
 import User from "./../models/userModel.js";
 import jwt from 'jsonwebtoken';
 import {promisify} from 'util';
-import Test from "../models/testModel.js";
-import mongoose from "mongoose";
+import catchAsync from "../utils/catchAsync.js";
 
 export const restrictTo = (...roles)=>{
     return (req,res,next)=>{
@@ -32,53 +31,32 @@ const createSendToken = (user, statusCode, res) => {
         token,
         user
     }) 
-}
+} 
 
-export const signup = async (req,res)=>{
-    try{
-        const {name,email,password,passwordConfirm} = req.body 
-        const newUser = await User.create({
-            name,
-            email,
-            password,
-            passwordConfirm
-        })
-        createSendToken(newUser,201,res)
-    }catch(error){
-        res.status(404).json({
-            status:"fail",
-            message: error.message
-        })
-    }
-}
+export const signup = catchAsync(async(req,res,next)=>{
+    const{username,email,password,passwordConfirm} = req.body;
+    const user = await User.create({
+        username,
+        email,
+        password,
+        passwordConfirm
+    })
+    console.log("userrr",user)
+    createSendToken(user,201,res)
+})
 
-export const login = async (req,res,next) => {
-    try{
-        console.log("req.body",req.body)
-        const {email,password} = req.body;
-        if(!email || !password){
-            throw new Error("Please provide email and password")
-        }
-        const user = await User.findOne({email}).select('+password')
-        if(!user || !(await user.correctPassword(password, user.password))) {
-            throw new Error("Incorrect email and password")
-        }
-        const results =  await Test.aggregate([
-            {$match: {"user": new mongoose.Types.ObjectId(user.id)}},
-            {$sort: {"date":-1}},
-            {$group: {_id: "$conversation", latest: {$first: "$$ROOT"} }},
-            {$project: {conversation:"$latest.conversation", result:"$latest.result"}}
-        ])
-        res.cookie('results', JSON.stringify(results), {maxAge:360000} )
-        createSendToken(user,200,res)
-        console.log("#reeesssss",res)
-    }catch(error){
-        res.status(404).json({
-            status:"fail",
-            message: error.message
-        })
+
+export const login = catchAsync(async(req,res,next)=>{
+    const{email,password} = req.body;
+    if(!email || !password){
+        throw new Error("Please provide email and password")
     }
-}
+    const user = await User.findOne({email}).select("+password") 
+    if(!user || !(await user.correctPassword(password,user.password))){ 
+        throw new Error("Incorrect username or password.") 
+    } 
+    createSendToken(user,200,res)
+})
 
 export const protect = async (req,res,next)=>{
     try{
