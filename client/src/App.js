@@ -12,6 +12,10 @@ import List from './components/list/list';
 import {useNavigationType} from 'react-router-dom';
 import { AppContextProvider } from './context/appContext';
 import EditConversation from './pages/editConversation/editConversation';
+import Login from './pages/login/login'; 
+import {AuthContextProvider} from './context/authContext'
+import PageNotFound from './pages/PageNotFound/pageNotFound';
+import Signup from './pages/signup/signup';
 
 function App() {
 
@@ -29,7 +33,10 @@ function App() {
                     <Route path="list" exact element={<List/>}/>
                     <Route path="test" exact element={<TestConversation/>}/>
                     <Route path="edit" exact element={<EditConversation/>}/>
-                  </Route>
+                  </Route> 
+                  <Route path="login" element={<Login/>}/>
+                  <Route path="signup" element={<Signup/>}/>
+                  <Route path="*" element={<PageNotFound/>}/>
                 </Routes>
 
   const backgroundLocation = useMemo(()=>{
@@ -39,22 +46,24 @@ function App() {
   },[location])
 
   return ( 
-    <AppContextProvider>
-      <div className="App">
-        <MainNavigation/>
-        <div
-          className={`layout ${backgroundLocation ? "hidden" : "visible"}`} 
-          ref={scrollParentRef}
-        > 
+    <AuthContextProvider>
+      <AppContextProvider>
+        <div className="App">
+          <MainNavigation/>
+          <div
+            className={`layout ${backgroundLocation ? "hidden" : "visible"}`} 
+            ref={scrollParentRef}
+          > 
+            <main>
+              {getRoutes(backgroundLocation || location) }
+            </main>         
+          </div> 
           <main>
-            {getRoutes(backgroundLocation || location) }
-          </main>         
-        </div> 
-        <main>
-          { backgroundLocation && getRoutes(location) }
-        </main>
-      </div>
-    </AppContextProvider>
+            { backgroundLocation && getRoutes(location) }
+          </main>
+        </div>
+      </AppContextProvider>
+    </AuthContextProvider>
   );
 }
 

@@ -4,7 +4,8 @@ const VALIDATOR_TYPE_MINLENGTH = "MINLENGTH";
 const VALIDATOR_TYPE_MAX = "MAX";
 const VALIDATOR_TYPE_MIN = "MIN";
 const VALIDATOR_TYPE_TASK = "TASK";
-const VALIDATOR_TYPE_CHANGED ="CHANGED"
+const VALIDATOR_TYPE_CHANGED = "CHANGED"
+const VALIDATOR_TYPE_REGEX = "REGEX"
 
 export const VALIDATOR_REQUIRE = () => ({type: VALIDATOR_TYPE_REQUIRE})
 export const VALIDATOR_CHANGED = (val) => ({
@@ -31,6 +32,10 @@ export const VALIDATOR_TASK = (val) => ({
     type: VALIDATOR_TYPE_TASK,
     value: val
 })
+export const VALIDATOR_REGEX = (val) => ({
+    type: VALIDATOR_TYPE_REGEX,
+    value: val
+})
 
 export const valid = (value, validators)=>{
     let isValid = true;
@@ -55,6 +60,9 @@ export const valid = (value, validators)=>{
         }
         if(validator.type===VALIDATOR_TYPE_CHANGED){
             isValid = isValid && value.trim()===validator.value
+        }
+        if(validator.type===VALIDATOR_TYPE_REGEX){
+            isValid = isValid && value.trim().match(validator.value)
         }
     }
     return isValid

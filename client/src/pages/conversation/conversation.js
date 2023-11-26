@@ -34,14 +34,14 @@ const Conversation = ()=>{
             })
             setInitLoading(false)
         }catch(error){
-            console.log(error.message)
+            console.log(error)
         }
     }
     
-    useEffect(()=>{
-        if(!conversation || conversation.id!==params.conversation){
+    useEffect(()=>{ 
+        
             loadConversation(params.conversation)
-        }
+      
         if(conversation && conversation.id===params.conversation && localStorage.test && localStorage.results){
             dispatch({
                 type: SET_SINGLE_CONVERSATION_TEST,
@@ -52,12 +52,15 @@ const Conversation = ()=>{
                 payload: localStorage.results
             })
         }
-        return ()=>{
-            if(conversation && conversation.id===params.conversation && conversation.test && conversation.results){
-                localStorage.setItem("test",JSON.stringify(conversation.test))
-                localStorage.setItem("results",JSON.stringify(conversation.results))
-            }
-        }
+        // if(conversation && 
+        //     conversation.id===params.conversation && 
+        //     conversation.test && 
+        //     conversation.results  &&
+        //     !localStorage.test && !localStorage.results
+        //     ){
+        //     localStorage.setItem("test",JSON.stringify(conversation.test))
+        //     localStorage.setItem("results",JSON.stringify(conversation.results))
+        // } 
     },[])
  
     const options={

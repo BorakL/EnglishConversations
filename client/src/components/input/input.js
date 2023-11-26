@@ -23,6 +23,10 @@ const inputReducer = (state=initState, action) => {
                 ...state,
                 isTouched: true
             }
+        case "RESET" :
+            return {
+                ...initState
+            }
         default: return state
     }
 }
@@ -49,13 +53,12 @@ const Input = (props)=>{
 
     const touchHandler = (event) => {
         dispatch({
-            type: "TOUCHED",
-            // payload: {
-            //     value: event.target.value,
-            //     validators: props.validators || [],
-            //     initValue: props.initValue
-            // }
+            type: "TOUCHED"
         })
+    }
+
+    const resetHandler = ()=>{
+        dispatch({type:"RESET"})
     }
 
     const{
@@ -74,6 +77,12 @@ const Input = (props)=>{
         props.onInput(props.id, props.name, value, props.title, isValid, isChanged)
     },[value, props.round, props.name, isTouched, props.onInput, props.id, isChanged])
 
+    useEffect(()=>{
+        if(props.resetField){
+            resetHandler();
+        }   
+    },[props.resetField])
+
     const element = props.type === "textarea" ?
     <textarea
         value={value}
@@ -89,18 +98,26 @@ const Input = (props)=>{
     :
     <input
         id={props.id || props.name}
+        type={props.type}
         name={props.name}
         value={value}
         title={props.title}
         placeholder={props.placeholder}
         onChange = {changeHandler}
         onBlur = {touchHandler}
+        disabled = {props.disabled}
     />
     
     return(
         <div className={props.class}>
+            {props.id && props.name ? <label htmlFor={props.id}>{props.name}</label> : null}
             {element} 
-            {isTouched && !isValid && props.errorMessage ? <div>{props.errorMessage}</div> : null}
+            {/* {isTouched && !isValid && props.errorMessage ? <div>{props.requiredField ? }</div> : null} */}
+            {isTouched && !value ?
+                props.isRequired ? <div>This field is required</div> : ""
+                :
+                isTouched && !isValid && props.errorMessage ? <div>{props.errorMessage}</div> : null
+            }
         </div>
     )
 }

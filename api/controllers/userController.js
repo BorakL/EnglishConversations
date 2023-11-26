@@ -83,9 +83,11 @@ export const setUserResults = async(req,res,next)=>{
         console.log(error.message)
     }
 }
+
 // db.test.aggregate([
 //     { $sort: { "date": -1 } },
 //     { $group: { _id: "$type", latest: { $first: "$$ROOT" } }},
 //     { $project : {_id : 0, id : "$latest.id", type : "$latest.type", date : "$latest.date", firstName : "$latest.firstName", lastName : "$latest.lastName", }},
 //     { $sort: { "type": 1 } }
 // ])
+

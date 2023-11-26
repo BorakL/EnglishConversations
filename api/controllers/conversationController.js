@@ -10,19 +10,19 @@ export const setUser = (req,res,next)=>{
 const setQuery = (req)=>{
     const query = {}
     if(req.query.title) query.title = {$regex: req.query.title.trim(), $options:"i"}
-    if(req.params.topicId) query.topic = new mongoose.Types.ObjectId(req.params.topicId)
+    if(req.query.topicId) query.topic = new mongoose.Types.ObjectId(req.query.topicId)
     return query
 }
 
-const lookupOptions = [
-    {$lookup: {
-        "from":"topics",
-        "localField": "topic",
-        "foreignField": "_id",
-        "as":"topic"
-    }},
-    {$unwind: '$topic'}
-]
+const lookup ={
+    "from":"topics",
+    "localField": "topic",
+    "foreignField": "_id",
+    "as":"topic"
+}
+
+const unwind = '$topic'
+
 
 export const getConversation = getOne(Conversation)
 
@@ -32,4 +32,4 @@ export const updateConversation = updateOne(Conversation)
 
 export const deleteConversation = deleteOne(Conversation)
 
-export const getAllConversations = getAll(Conversation, setQuery, lookupOptions)
+export const getAllConversations = getAll(Conversation, setQuery, lookup, unwind)

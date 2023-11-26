@@ -18,12 +18,12 @@ const formReducer = (state, action) => {
                 ...state,
                 inputs: {
                     ...state.inputs,
-                    [action.payload.inputId]: {     //Neka rečenica na srpskom
-                        name: action.payload.name,      //eng
-                        value: action.payload.value,        //Some sentence on english
+                    [action.payload.inputId]: {
+                        name: action.payload.name,
+                        value: action.payload.value,
                         title: action.payload.title,
-                        isValid:  action.payload.isValid,       //
-                        isChanged: action.payload.isChanged        //
+                        isValid:  action.payload.isValid,
+                        isChanged: action.payload.isChanged
                     }
                 },
                 isValid: formIsValid,
@@ -73,6 +73,13 @@ const formReducer = (state, action) => {
                 // {serb:"", eng:"", _id:id, isValid:false, isChanged:false}
                 return state
             }
+        case "RESET" :
+            return {
+                inputs: action.payload,
+                isValid: false,
+                isChanged: false,
+                isTouched: false
+            }
         default: return state
     }
 }
@@ -118,6 +125,14 @@ const useForm = (inputs, action) => {
         })
     }
 
+    const resetHandler = (inputs)=>{
+        console.log("inputs",inputs)
+        dispatch({
+            type:"RESET",
+            payload: inputs
+        })
+    }
+
     const submitHandler = (e)=>{
         e.preventDefault();
         action(formState)
@@ -128,6 +143,7 @@ const useForm = (inputs, action) => {
         inputHandler,
         removeHandler,
         addHandler,
+        resetHandler,
         submitHandler
     }
 }

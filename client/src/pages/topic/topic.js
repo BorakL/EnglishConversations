@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
 import { getTopicConversations } from "../../services/api";
 import InfiniteScroll from "react-infinite-scroller";
@@ -6,6 +6,7 @@ import ConversationItem from "../../components/conversationItem/conversationItem
 import './topic.scss';
 import { useDispatch, useSelector } from "react-redux"; 
 import { SET_CONVERSATIONS } from "../../reducers/conversations";
+import { AuthContext } from "../../context/authContext";
 
 const Topic = ()=>{
     const {
@@ -43,12 +44,16 @@ const Topic = ()=>{
         loadTopicConversations()
     },[query])
 
+    const{loggedIn, logout} = useContext(AuthContext)
+
     return(
         <>
         {
         !loading ?
         <div className="topicPage" ref={scrollParentRef}>
             <h1>One Topic</h1>
+            <p> {loggedIn ? "logged in" : "not logged in"}</p>
+            <button onClick={logout}>logout</button>
             <div className="conversationsContainer">
                 {conversations.map(c=> <ConversationItem key={c._id} conversation={c} />)}
             </div>
