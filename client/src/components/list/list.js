@@ -4,30 +4,36 @@ import useForm from "../../hooks/useForm";
 import Button from "../button/button";
 import { useOutletContext } from "react-router";
 import { updateConversation } from "../../services/api";   
+import {useDispatch, useSelector} from "react-redux"
+import { SET_SINGLE_CONVERSATION } from "../../reducers/conversations";
 
 const List = ()=>{
 
-    const outletContext = useOutletContext()
-
-    const c = outletContext?.conversation?.conversation || []
-    const conversationContent = c.length>0 ? c : [];
-
     const[editingFields,setEditingFields]=useState([]) 
+    const dispatch = useDispatch()
 
-    // const dispatch = useDispatch();
+    const{conversationData, conversationId} = useSelector(({conversations}) => ({
+        conversationData: conversations.singleConversation.conversation,
+        conversationId: conversations.singleConversation.id
+    }))
 
-    const action = async (values) => {
+    const action = async (values) => { 
         if(values.isValid && Object.keys(values.inputs).length>0){
-            const newConversation = conversationContent.map(c=>{
-                if(values.inputs[c.eng]){
-                    let input = values.inputs[c.eng];
-                    return {serb:input.serb, eng:input.eng }
+            const newConversation = conversationData.map(c => {
+                if(values.inputs[`${c._id}-eng`] && values.inputs[`${c._id}-serb`]){
+                    let inputEng = values.inputs[`${c._id}-eng`];
+                    let inputSerb = values.inputs[`${c._id}-serb`];
+                    return {serb:inputSerb.value, eng:inputEng.value, _id:inputSerb.name}
                 }else{
                     return c
                 }
             })
             try{
-                await updateConversation(outletContext.conversation._id, {"conversation":newConversation})
+                await updateConversation(conversationId, {"conversation":newConversation})
+                dispatch({
+                    type: SET_SINGLE_CONVERSATION ,
+                    payload: {conversation: newConversation}
+                })
                 setEditingFields([])
             }catch(error){
                 console.log("error",error)
@@ -42,11 +48,12 @@ const List = ()=>{
         formState
     } = useForm({}, action)
 
-    const conversation = conversationContent.map(c => 
+    const conversation = conversationData.map(c => 
         <Sentence 
+            key={c._id}
             serb={c.serb} 
             eng={c.eng} 
-            id={c.eng}
+            id={c._id}
             inputFormHandler={inputHandler}
             removeFormHandler={removeHandler}
             editingFields={editingFields}

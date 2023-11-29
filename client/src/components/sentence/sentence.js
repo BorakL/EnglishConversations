@@ -49,6 +49,7 @@ const Sentence = (props)=>{
                                 validators = {[VALIDATOR_REQUIRE()]}
                                 class="inputDefault"
                                 errorMessage="Problem"
+                                isRequired={true}
                             />
                         </div>
                         <div>
@@ -63,7 +64,8 @@ const Sentence = (props)=>{
                                 validators = {[VALIDATOR_REQUIRE()]}
                                 class="inputDefault"
                                 errorMessage="Problem"
-                                autoFocus = {true}
+                                autoFocus = {true} 
+                                isRequired={true}
                             />
                         </div>
                     </>

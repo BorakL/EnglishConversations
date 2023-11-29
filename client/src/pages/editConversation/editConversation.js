@@ -1,16 +1,45 @@
-import { useOutletContext } from "react-router";
 import useForm from "../../hooks/useForm"
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Sentence from "../../components/sentence/sentence";
 import Button from "../../components/button/button";
 import {CSSTransition,TransitionGroup} from "react-transition-group"
+import { useDispatch, useSelector } from "react-redux";
+import { SET_SINGLE_CONVERSATION } from "../../reducers/conversations";
+import { updateConversation } from "../../services/api";
 
 const EditConversation = ()=>{
-    const outletContext = useOutletContext().conversation?.conversation || []
-    const[conversationContent,setConversationContent] = useState(outletContext);
+    const{conversationData, conversationId} = useSelector(({conversations})=>({
+        conversationData: conversations.singleConversation.conversation,
+        conversationId: conversations.singleConversation.id
+    }))
 
-    const action = (value)=>{
-        console.log("formState",value)
+    const[loading,setLoading] = useState(false)
+    const dispatch = useDispatch()
+
+    const action = async (values) => {
+        if(values.isValid && Object.keys(values.inputs).length>0){
+            setLoading(true)
+            const newConversation = conversationData.map(c => {
+                if(values.inputs[`${c._id}-eng`] && values.inputs[`${c._id}-serb`]){
+                    let inputEng = values.inputs[`${c._id}-eng`];
+                    let inputSerb = values.inputs[`${c._id}-serb`];
+                    return {serb:inputSerb.value, eng:inputEng.value}
+                }else{
+                    return c
+                }
+            })
+            try{
+                await updateConversation(conversationId, {"conversation":newConversation})
+                dispatch({
+                    type: SET_SINGLE_CONVERSATION,
+                    payload: {conversation: newConversation}
+                }) 
+                setLoading(false)
+            }catch(error){
+                setLoading(false)
+                console.log("error",error)
+            }
+        }
     }
 
     const{
@@ -21,21 +50,26 @@ const EditConversation = ()=>{
     } = useForm({},action)
 
     const removeSentenceHandler = (translateId,sentenceIds)=>{
-        setConversationContent(prev=>prev.filter(p=>p._id!==translateId)) 
+        dispatch({
+            type: SET_SINGLE_CONVERSATION,
+            payload: {conversation: conversationData.filter(p=>p._id!==translateId)}
+        }) 
         removeHandler(sentenceIds)
     }
 
     const addSentenceHandler = ()=>{
         const id=Math.random()*1000
-        setConversationContent(prev=>[...prev,{serb:"", eng:"", _id:id, isValid:false, isChanged:false}])
+        dispatch({
+            type: SET_SINGLE_CONVERSATION,
+            payload: {conversation: [...conversationData, {serb:"", eng:"", _id:id}]}
+        })
     }
-
     
     return(
         <>
             <form className="conversationWrapper" onSubmit={submitHandler}>
                 <TransitionGroup component={null}>
-                    {conversationContent.map(c=>
+                    {conversationData.map(c=>
                         <CSSTransition
                             key={c._id}
                             timeout={1000}
@@ -66,6 +100,7 @@ const EditConversation = ()=>{
                 >
                     Done
                 </Button>
+                {loading ? <h1>Loading...</h1> : null}
             </form>    
         </>
     )

@@ -110,7 +110,7 @@ const Input = (props)=>{
     
     return(
         <div className={props.class}>
-            {props.id && props.name ? <label htmlFor={props.id}>{props.name}</label> : null}
+            {props.id && props.name && props.label ? <label htmlFor={props.id}>{props.name}</label> : null}
             {element} 
             {/* {isTouched && !isValid && props.errorMessage ? <div>{props.requiredField ? }</div> : null} */}
             {isTouched && !value ?

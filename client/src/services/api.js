@@ -2,9 +2,18 @@ import axios from "axios";
 
 axios.defaults.baseURL = "http://127.0.0.1:3001/api/v1/"
 
+const token = localStorage.getItem("token");
+const headers = {
+    'Content-Type': 'application/json',
+    'withCredentials': true
+}
+if(token){
+    headers['Authorization'] = `Bearer ${token}`
+}
+
 export const getTopics = (params) => axios.get("topics",{params})
 export const getTopicConversations = (id, query) => axios.get(`topics/${id}/conversations`, {params: query} )
 export const getConversation = (id) => axios.get(`conversations/${id}`)
-export const updateConversation = (id,newConversation) => axios.put(`conversations/${id}`,newConversation )
-export const loginUser = (data) => axios.post("users/login",data,{headers: {withCredentials: true}})
-export const signupUser = (data) => axios.post("users/signup",data,{headers: {withCredentials: true}})
+export const updateConversation = (id,newConversation) => axios.put(`conversations/${id}`,newConversation, {headers} )
+export const loginUser = (data) => axios.post("users/login",data,{headers})
+export const signupUser = (data) => axios.post("users/signup",data,{headers})

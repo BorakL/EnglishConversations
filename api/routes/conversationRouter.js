@@ -16,7 +16,7 @@ conversationRouter.route("/")
 conversationRouter.route("/:id")
     .get(getConversation)
     .put(protect, 
-        authorization(Conversation),
+        // authorization(Conversation),
         updateConversation)
     .delete(protect,
         authorization(Conversation),

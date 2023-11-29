@@ -16,6 +16,7 @@ import Login from './pages/login/login';
 import {AuthContextProvider} from './context/authContext'
 import PageNotFound from './pages/PageNotFound/pageNotFound';
 import Signup from './pages/signup/signup';
+import CreateConversation from './pages/createConversation/createConversation';
 
 function App() {
 
@@ -36,6 +37,7 @@ function App() {
                   </Route> 
                   <Route path="login" element={<Login/>}/>
                   <Route path="signup" element={<Signup/>}/>
+                  <Route path="create-conversation" element={<CreateConversation/>}/>
                   <Route path="*" element={<PageNotFound/>}/>
                 </Routes>
 
