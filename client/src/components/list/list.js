@@ -11,6 +11,7 @@ const List = ()=>{
 
     const[editingFields,setEditingFields]=useState([]) 
     const dispatch = useDispatch()
+    const[loading,setLoading]=useState(false)
 
     const{conversationData, conversationId} = useSelector(({conversations}) => ({
         conversationData: conversations.singleConversation.conversation,
@@ -19,23 +20,26 @@ const List = ()=>{
 
     const action = async (values) => { 
         if(values.isValid && Object.keys(values.inputs).length>0){
+            setLoading(true)
             const newConversation = conversationData.map(c => {
                 if(values.inputs[`${c._id}-eng`] && values.inputs[`${c._id}-serb`]){
                     let inputEng = values.inputs[`${c._id}-eng`];
                     let inputSerb = values.inputs[`${c._id}-serb`];
-                    return {serb:inputSerb.value, eng:inputEng.value, _id:inputSerb.name}
+                    return {serb:inputSerb.value, eng:inputEng.value, _id:c._id}
                 }else{
                     return c
                 }
             })
             try{
-                await updateConversation(conversationId, {"conversation":newConversation})
+                await updateConversation(conversationId, {"conversation": newConversation.map(c=>{return{"serb":c.serb, "eng":c.eng}} )})
                 dispatch({
                     type: SET_SINGLE_CONVERSATION ,
                     payload: {conversation: newConversation}
                 })
                 setEditingFields([])
+                setLoading(false)
             }catch(error){
+                setLoading(false)
                 console.log("error",error)
             }
         }

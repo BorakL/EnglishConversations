@@ -23,13 +23,13 @@ const EditConversation = ()=>{
                 if(values.inputs[`${c._id}-eng`] && values.inputs[`${c._id}-serb`]){
                     let inputEng = values.inputs[`${c._id}-eng`];
                     let inputSerb = values.inputs[`${c._id}-serb`];
-                    return {serb:inputSerb.value, eng:inputEng.value}
+                    return {serb:inputSerb.value, eng:inputEng.value, _id:c._id}
                 }else{
                     return c
                 }
             })
             try{
-                await updateConversation(conversationId, {"conversation":newConversation})
+                await updateConversation(conversationId, {"conversation":newConversation.map(c=>{return{"serb":c.serb, "eng":c.eng}} )})
                 dispatch({
                     type: SET_SINGLE_CONVERSATION,
                     payload: {conversation: newConversation}
