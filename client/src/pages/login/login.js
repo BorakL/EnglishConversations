@@ -18,8 +18,7 @@ const Login = ()=>{
             setLoading(true)
             const email = formState.inputs?.email?.value
             const password = formState.inputs?.password?.value
-            const response = await loginUser({email:email,password:password}) 
-            console.log("response",response)
+            const response = await loginUser({email:email,password:password})
             login(response.data.token)
             setLoading(false)
         }catch(error){

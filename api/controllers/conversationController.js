@@ -14,7 +14,7 @@ const setQuery = (req)=>{
     return query
 }
 
-const lookup ={
+const lookup = {
     "from":"topics",
     "localField": "topic",
     "foreignField": "_id",

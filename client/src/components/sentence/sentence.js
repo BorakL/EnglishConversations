@@ -98,7 +98,7 @@ const Sentence = (props)=>{
                 {
                     props.removeSentenceHandler ?
                     <Button 
-                        onClick={()=>props.removeSentenceHandler(props.id,[`${props.id}-serb`,`${props.id}-eng`])}
+                        onClick={()=>props.removeSentenceHandler(props.id)}
                         type="button"
                     >
                         X

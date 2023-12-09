@@ -9,48 +9,21 @@ import { SET_SINGLE_CONVERSATION } from "../../reducers/conversations";
 
 const List = ()=>{
 
-    const[editingFields,setEditingFields]=useState([]) 
     const dispatch = useDispatch()
-    const[loading,setLoading]=useState(false)
+    const outletContext = useOutletContext();
 
     const{conversationData, conversationId} = useSelector(({conversations}) => ({
         conversationData: conversations.singleConversation.conversation,
         conversationId: conversations.singleConversation.id
     }))
 
-    const action = async (values) => { 
-        if(values.isValid && Object.keys(values.inputs).length>0){
-            setLoading(true)
-            const newConversation = conversationData.map(c => {
-                if(values.inputs[`${c._id}-eng`] && values.inputs[`${c._id}-serb`]){
-                    let inputEng = values.inputs[`${c._id}-eng`];
-                    let inputSerb = values.inputs[`${c._id}-serb`];
-                    return {serb:inputSerb.value, eng:inputEng.value, _id:c._id}
-                }else{
-                    return c
-                }
-            })
-            try{
-                await updateConversation(conversationId, {"conversation": newConversation.map(c=>{return{"serb":c.serb, "eng":c.eng}} )})
-                dispatch({
-                    type: SET_SINGLE_CONVERSATION ,
-                    payload: {conversation: newConversation}
-                })
-                setEditingFields([])
-                setLoading(false)
-            }catch(error){
-                setLoading(false)
-                console.log("error",error)
-            }
-        }
-    }
 
     const {
         inputHandler,
         submitHandler,
         removeHandler,
         formState
-    } = useForm({}, action)
+    } = useForm({}, outletContext.editConversation)
 
     const conversation = conversationData.map(c => 
         <Sentence 
@@ -60,14 +33,14 @@ const List = ()=>{
             id={c._id}
             inputFormHandler={inputHandler}
             removeFormHandler={removeHandler}
-            editingFields={editingFields}
-            setEditingFields={setEditingFields}
+            editingFields={outletContext.editingFields}
+            setEditingFields={outletContext.setEditingFields}
         />
     )
 
     return(
         <>
-        {editingFields.length>0 ? 
+        {outletContext.editingFields.length>0 ? 
             <form onSubmit={submitHandler}>
                 {conversation}
                 <Button

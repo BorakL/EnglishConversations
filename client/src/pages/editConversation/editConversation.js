@@ -5,7 +5,7 @@ import Button from "../../components/button/button";
 import {CSSTransition,TransitionGroup} from "react-transition-group"
 import { useDispatch, useSelector } from "react-redux";
 import { SET_SINGLE_CONVERSATION } from "../../reducers/conversations";
-import { updateConversation } from "../../services/api";
+import { useOutletContext } from "react-router";
 
 const EditConversation = ()=>{
     const{conversationData, conversationId} = useSelector(({conversations})=>({
@@ -13,48 +13,22 @@ const EditConversation = ()=>{
         conversationId: conversations.singleConversation.id
     }))
 
-    const[loading,setLoading] = useState(false)
     const dispatch = useDispatch()
-
-    const action = async (values) => {
-        if(values.isValid && Object.keys(values.inputs).length>0){
-            setLoading(true)
-            const newConversation = conversationData.map(c => {
-                if(values.inputs[`${c._id}-eng`] && values.inputs[`${c._id}-serb`]){
-                    let inputEng = values.inputs[`${c._id}-eng`];
-                    let inputSerb = values.inputs[`${c._id}-serb`];
-                    return {serb:inputSerb.value, eng:inputEng.value, _id:c._id}
-                }else{
-                    return c
-                }
-            })
-            try{
-                await updateConversation(conversationId, {"conversation":newConversation.map(c=>{return{"serb":c.serb, "eng":c.eng}} )})
-                dispatch({
-                    type: SET_SINGLE_CONVERSATION,
-                    payload: {conversation: newConversation}
-                }) 
-                setLoading(false)
-            }catch(error){
-                setLoading(false)
-                console.log("error",error)
-            }
-        }
-    }
+    const outletContext = useOutletContext();
 
     const{
         formState, 
         inputHandler,
         removeHandler,
         submitHandler
-    } = useForm({},action)
+    } = useForm({},outletContext.editConversation)
 
-    const removeSentenceHandler = (translateId,sentenceIds)=>{
+    const removeSentenceHandler = (id)=>{
         dispatch({
             type: SET_SINGLE_CONVERSATION,
-            payload: {conversation: conversationData.filter(p=>p._id!==translateId)}
+            payload: {conversation: conversationData.filter(p=>p._id!==id)}
         }) 
-        removeHandler(sentenceIds)
+        removeHandler([`${id}-eng`,`${id}-serb`])
     }
 
     const addSentenceHandler = ()=>{
@@ -100,7 +74,7 @@ const EditConversation = ()=>{
                 >
                     Done
                 </Button>
-                {loading ? <h1>Loading...</h1> : null}
+                {outletContext.loading ? <h1>Loading...</h1> : null}
             </form>    
         </>
     )

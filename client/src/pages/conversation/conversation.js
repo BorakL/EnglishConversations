@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { getConversation } from "../../services/api";
+import { getConversation, updateConversation } from "../../services/api";
 import { Outlet, useOutlet, useParams } from "react-router";
 import {useSelector, useDispatch} from "react-redux"
 import { SET_SINGLE_CONVERSATION, SET_SINGLE_CONVERSATION_RESULT, SET_SINGLE_CONVERSATION_TEST } from "../../reducers/conversations";
@@ -14,9 +14,11 @@ const Conversation = ()=>{
         conversation
     } = useSelector(({ conversations }) => ({
         conversation: conversations.singleConversation
-    }))
+    })) 
 
     const[initLoading,setInitLoading] = useState(true)
+    const[loading,setLoading] = useState(false)
+    const[editingFields, setEditingFields] = useState([])
 
     const dispatch = useDispatch();
     const params = useParams();
@@ -37,10 +39,37 @@ const Conversation = ()=>{
             console.log(error)
         }
     }
+
+    const editConversation = async (values) => {
+        if(values.isValid && Object.keys(values.inputs).length>0){
+            setLoading(true)
+            const newConversation = conversation.conversation.map(c => {
+                if(values.inputs[`${c._id}-eng`] && values.inputs[`${c._id}-serb`]){
+                    let inputEng = values.inputs[`${c._id}-eng`];
+                    let inputSerb = values.inputs[`${c._id}-serb`];
+                    return {serb:inputSerb.value, eng:inputEng.value, _id:c._id}
+                }else{
+                    return c
+                }
+            })
+            try{
+                await updateConversation(conversation.id, {"conversation":newConversation.map(c=>{return{"serb":c.serb, "eng":c.eng}} )})
+                dispatch({
+                    type: SET_SINGLE_CONVERSATION,
+                    payload: {conversation: newConversation}
+                }) 
+                setLoading(false)
+                setEditingFields([])
+            }catch(error){
+                setLoading(false)
+                console.log("error",error)
+            }
+        }
+    }
     
     useEffect(()=>{ 
         
-            loadConversation(params.conversation)
+        loadConversation(params.conversation)
       
         if(conversation && conversation.id===params.conversation && localStorage.test && localStorage.results){
             dispatch({
@@ -52,15 +81,6 @@ const Conversation = ()=>{
                 payload: localStorage.results
             })
         }
-        // if(conversation && 
-        //     conversation.id===params.conversation && 
-        //     conversation.test && 
-        //     conversation.results  &&
-        //     !localStorage.test && !localStorage.results
-        //     ){
-        //     localStorage.setItem("test",JSON.stringify(conversation.test))
-        //     localStorage.setItem("results",JSON.stringify(conversation.results))
-        // } 
     },[])
  
     const options={
@@ -97,6 +117,7 @@ const Conversation = ()=>{
                                 <div ref={targetRef}>
                                     <ul>
                                         {conversation.conversation?.map(c=><Sentence 
+                                                                                key={c._id}
                                                                                 id={c._id} 
                                                                                 serb={c.serb}
                                                                                 eng={c.eng}
@@ -107,7 +128,13 @@ const Conversation = ()=>{
                             </>
                             :
                         null}
-                        <Outlet context={{name:"Luka",conversation: conversation}}/>
+                        <Outlet context={{
+                            loading, 
+                            conversation, 
+                            editConversation,
+                            setEditingFields,
+                            editingFields    
+                        }}/>
                          </>
                 }
                 </>
