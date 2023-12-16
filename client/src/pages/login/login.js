@@ -6,6 +6,7 @@ import Button from "../../components/button/button"
 import { loginUser } from "../../services/api"
 import Modal from "../../components/uiElements/modal"
 import { AuthContext } from "../../context/authContext"
+import "./login.scss";
 
 const Login = ()=>{
     const[loading,setLoading]=useState(false)
@@ -31,40 +32,40 @@ const Login = ()=>{
     const {formState,inputHandler,resetHandler,submitHandler} = useForm({},loginHandler)
 
     return(
-        <>
-        <h1>Login</h1>
-        <form onSubmit={submitHandler}> 
-            <Input
-                id="email"
-                type="email"
-                placeholder="Email"
-                isRequired={true}
-                initValue=""
-                name="email" 
-                onInput={inputHandler}
-                validators={[VALIDATOR_REGEX(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)]}
-                errorMessage="Invalid email."
-            />  
-            <Input
-                id="password"
-                type="password"
-                placeholder="Password"
-                name="password"
-                initValue=""
-                isRequired={true}
-                onInput={inputHandler}
-                errorMessage="Password is required"
-            /> 
-            <Button type="submit" disabled={!formState.isValid}>Login</Button>
-        </form>
-        <Modal
-            header={<h2>Error</h2>}
-            closeHandler={()=>setShowModal(false)}
-            show={showModal}
-        >
-            {errorMessage}
-        </Modal>
-        </>
+        <div className="loginPage">
+            <h1>Login</h1>
+            <form onSubmit={submitHandler}> 
+                <Input
+                    id="email"
+                    type="email"
+                    placeholder="Email"
+                    isRequired={true}
+                    initValue=""
+                    name="email" 
+                    onInput={inputHandler}
+                    validators={[VALIDATOR_REGEX(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)]}
+                    errorMessage="Invalid email."
+                />  
+                <Input
+                    id="password"
+                    type="password"
+                    placeholder="Password"
+                    name="password"
+                    initValue=""
+                    isRequired={true}
+                    onInput={inputHandler}
+                    errorMessage="Password is required"
+                /> 
+                <Button type="submit" disabled={!formState.isValid}>Login</Button>
+            </form>
+            <Modal
+                header={<h2>Error</h2>}
+                closeHandler={()=>setShowModal(false)}
+                show={showModal}
+            >
+                {errorMessage}
+            </Modal>
+        </div>
     )
 }
 

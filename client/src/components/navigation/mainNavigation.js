@@ -25,7 +25,7 @@ const MainNavigation = ()=>{
             {drawerIsOpen && <BackDrop onClick={closeDrawerHandler}/>}
             <SideDrawer show={drawerIsOpen} onClick={closeDrawerHandler}>
                 <nav className="main-navigation__drawer-nav">
-                    <NavLinks/>
+                    <NavLinks drawerIsOpen/>
                 </nav>
             </SideDrawer> 
             <MainHeader>
@@ -37,10 +37,15 @@ const MainNavigation = ()=>{
                     <span/>
                     <span/>
                 </button>
-                <h1 className="main-navigation_title"> <Link to="/"> YourLogo </Link> </h1>
-                <nav className="main-navigation__header-nav">
-                    <NavLinks/>
-                </nav>
+                <h1 className="main-navigation_title"> <Link to="/"> YourLogo </Link> </h1> 
+                {
+                    !drawerIsOpen ?
+                    <nav className="main-navigation__header-nav">
+                        <NavLinks/>
+                    </nav>
+                    :
+                    null
+                }
             </MainHeader>   
         </>
     )

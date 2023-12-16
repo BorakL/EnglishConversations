@@ -48,30 +48,28 @@
     color: white;
   }
   
-  @media (min-width: 768px) {
-    .nav-links {
-      flex-direction: row;
-    }
   
-    .nav-links li {
-      margin: 0 0.5rem;
-    }
-  
-    .nav-links a {
-      color: white;
-      text-decoration: none;
-    }
-  
-    .nav-links button {
-      border: 1px solid white;
-      color: white;
-      background: transparent;
-    }
-    
-    .nav-links button:hover,
-    .nav-links button:active {
-      background: #f8df00;
-      color: #292929;
-    }
+  .header-nav-links {
+    flex-direction: row;
+  }
+
+  .header-nav-links li {
+    margin: 0 0.5rem;
+  }
+
+  .header-nav-links a {
+    color: white;
+    text-decoration: none;
+  }
+
+  .header-nav-links button {
+    border: 1px solid white;
+    color: white;
+    background: transparent;
   }
   
+  .header-nav-links button:hover,
+  .header-nav-links button:active {
+    background: #f8df00;
+    color: #292929;
+  } 

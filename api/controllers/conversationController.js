@@ -10,7 +10,8 @@ export const setUser = (req,res,next)=>{
 const setQuery = (req)=>{
     const query = {}
     if(req.query.title) query.title = {$regex: req.query.title.trim(), $options:"i"}
-    if(req.query.topicId) query.topic = new mongoose.Types.ObjectId(req.query.topicId)
+    if(req.params.topicId) query.topic = new mongoose.Types.ObjectId(req.params.topicId)
+    console.log("req.params",req.params) 
     return query
 }
 

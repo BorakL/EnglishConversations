@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 import './navLinks.scss';
 
 const NavLinks = props => {
-  return <ul className="nav-links">
+  return <ul className={`nav-links ${!props.drawerIsOpen ? "header-nav-links" : ""}`}>
     <li>
       <NavLink to="/create-conversation">Create</NavLink>
     </li>

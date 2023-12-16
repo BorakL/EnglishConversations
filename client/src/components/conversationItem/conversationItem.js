@@ -15,7 +15,7 @@ const ConversationItem = ({conversation})=>{
                     <Button
                         type="link"
                         to={`${conversation._id}/test`}
-                        style="buttonIcon"
+                        icon
                     >
                         <GrDocumentVerified/>
                     </Button> 

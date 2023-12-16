@@ -1,4 +1,17 @@
+@import "./style/variables";
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
+  font-family: "Lato", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.7;
+  color:#777;
   text-align: center;
   background: #f6f7fb;
 } 
@@ -7,14 +20,27 @@ body {
 .button{
   display: inline-block;
   font: inherit;
-  padding:0.8rem 1.5rem; 
+  padding:0.7rem 1.5rem; 
   border-radius: 4px;
   outline: none;
   border:none;
   color:white;
-  width: 100%;
   margin: 10px;
   background-color: #3ccfcf;
+}
+
+.icon{
+  display: inline-block;
+  padding: 0.8rem;
+  margin: 10px;
+  background-color: transparent;
+  border:none;
+  font-size: 1.5em;
+  cursor: pointer;
+}
+
+.icon:hover{
+  cursor: pointer;
 }
 
 .button:focus {
@@ -25,16 +51,13 @@ body {
   background-color: #28a7a7;
   cursor: pointer;
 }
-// .button:active, .button:focus, .button.active {
-//   background: blue
-// }
-.button.disabled{
+.button.disabled, .icon.disabled{
   background-color: lightblue;
 } 
-.button.correct{
+.button.correct, .icon.correct{
   background-color: green;
 }
-.button.wrong{
+.button.wrong, .icon.wrong{
   background-color: red;
 }
 .button.sm{
@@ -43,18 +66,34 @@ body {
 .button.md{
   width:150px;
 }
+.button.lg{
+  width:200px
+}
+.button.xl{
+  width:300px
+}
+.iccon.sm{
+  width:50px;
+}
+.icon.md{
+  width:100px
+}
 
-.active{
+.button.active{
   border-bottom: 4px solid red;
 }
-.pending{
+.button.pending{
   color:yellow
 }
-.transitioning{
+.button.transitioning{
   color:green
 }
 
-.buttonIcon, .buttonText{
+.icon.active{
+  color:red;
+}
+
+.buttonText{
   background-color: transparent;
   border:none;
   margin: 10px;
@@ -69,9 +108,11 @@ body {
   color:orange
 }
 
-.buttonIconActive{
-  color: orange; 
-}
+
+
+
+
+
 
 a{
   color: inherit;
@@ -82,7 +123,8 @@ a{
 } 
 
 
-main{
+
+section{
   max-width: 1000px;
   margin: auto; 
 }

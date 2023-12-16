@@ -5,9 +5,9 @@ const ConversationNav = (props)=>{
     return(
         <nav>
             <div className="conversationNav">
-                <Button element={"navLink"} to={`list`}>Learn</Button>
-                <Button element={"navLink"} to={`learn`}>Flashcards</Button>
-                <Button element={"navLink"} to={`test`}>Test</Button>
+                <Button lg navLink to={`list`} gt>Learn</Button>
+                <Button lg navLink to={`learn`}>Flashcards</Button>
+                <Button lg navLink to={`test`}>Test</Button>
             </div>
         </nav>
     )

@@ -6,8 +6,7 @@ const Options = (props)=>{
         <>
         <div>   
             <Button
-                type="button"
-                style="buttonIcon"
+                icon
                 onClick={()=>{
                     props.appContext.turnAudio();
                 }}

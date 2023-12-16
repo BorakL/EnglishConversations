@@ -36,13 +36,9 @@ const Result = (props)=>{
                 </Button>
             </div>
             {!props.dontKnow && <div>
-                <Button 
-                    type="button" 
-                    style="buttonText"
-                    onClick={props.overrideHandler}
-                >
-                    Override: I was correct
-                </Button> 
+                <div>
+                    <a onClick={props.overrideHandler}>Override: I was correct</a>
+                </div>
             </div>}
         </div>
     )

@@ -10,11 +10,6 @@ import { GrClose,GrCheckmark  } from "react-icons/gr";
 
 const Exam = (props)=>{
     
-    // const{singleConversation:questions} = useSelector(({conversations})=>({
-    //     singleConversation: conversations.singleConversation.conversation
-    // }));
-
-    // const[examFinished,setExamFinished]=useState(false)
     const testRef = useRef(null)
     const{
         inputHandler,

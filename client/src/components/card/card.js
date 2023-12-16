@@ -103,7 +103,7 @@ const Card = ()=>{
                 <div>
                     <Button
                         onClick={playConversation}
-                        style="buttonIcon"
+                        icon
                     >
                         {!isPlayConversation ? <FaPlay/> : <FaStop/>}
                     </Button>
@@ -112,7 +112,7 @@ const Card = ()=>{
                 <div>
                     <Button
                         onClick={()=>{if(!isPlayConversation)appContext.changeFirstLang()}}
-                        style="buttonIcon"
+                        icon
                     >
                         <FaRepeat/>
                     </Button>

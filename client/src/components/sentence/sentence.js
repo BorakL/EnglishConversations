@@ -79,8 +79,8 @@ const Sentence = (props)=>{
             <div className="sentenceTools">
                 <Button
                     onClick={soundHandler}
-                    type="button"
-                    style={`buttonIcon ${isReading && "buttonIconActive"}`}
+                    icon
+                    active={isReading}
                 >
                     <RxSpeakerLoud/>
                 </Button>
@@ -88,8 +88,8 @@ const Sentence = (props)=>{
                     props.editingFields && !props.isEditing ?
                     <Button
                         onClick={editHandler}
-                        type="button"
-                        style={`buttonIcon ${indx>=0 && "buttonIconActive"}`}
+                        icon
+                        active={indx>=0}
                     >
                         <FiEdit2/>
                     </Button>
@@ -99,7 +99,7 @@ const Sentence = (props)=>{
                     props.removeSentenceHandler ?
                     <Button 
                         onClick={()=>props.removeSentenceHandler(props.id)}
-                        type="button"
+                        icon
                     >
                         X
                     </Button>

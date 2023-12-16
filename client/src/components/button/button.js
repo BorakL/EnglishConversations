@@ -3,22 +3,12 @@ import {Link, NavLink} from 'react-router-dom'
 const Button = props => {
 
     const getClasses = () => {
-        let classes = ""
-        let size = props.size ? props.size : ""
-        if(!props.style){
-            switch(props){
-                case props.size : classes=''
-                case props.danger : classes='danger'
-                case props.correct : classes='correct'
-                case props.wrong : classes='wrong'
-                case props.inverse : classes='inverse'
-                case props.disabled : classes='disabled'
-                default : classes=''
-            }
-        }else{
-            return props.style
-        }
-        return ["button",classes,size].join(" ")
+        let buttonClasses = ["md","sm","xl","lg","active","danger","correct","wrong","inverse","disabled"]
+        let classes = []
+        buttonClasses.forEach(c => {
+            if(props[c]) classes.push(c)
+        })
+        return [props.icon ? "icon" : "button", ...classes].join(" ")
     }
 
     const navLinkStyles = ({isActive,isPending,isTransitioning}) => [
@@ -39,7 +29,7 @@ const Button = props => {
         )
     }
     if(props.to){
-        if(props.element==="navLink"){
+        if(props.navLink){
             return(<NavLink 
                 to={props.to}
                 exact={props.exact} 
@@ -62,7 +52,7 @@ const Button = props => {
 
     return(
         <button 
-            className={`${getClasses()} ${props.active ? 'active' : ''}`}
+            className={getClasses()}
             type={props.type}
             onClick={props.onClick}
             disabled={props.disabled}

@@ -1,0 +1,75 @@
+.homePage{
+    header{
+        height: 95vh;
+        width:100%;
+        background-image: linear-gradient(to right bottom, rgba(126,213,111,0.8), rgba(40,180,131,0.8)), url("./../../../public/hero.jpg");
+        background-size: cover;
+        background-position: top;  
+        clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
+        position: relative;
+        .logoBox{
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            .logo{
+                height: 35px;
+            }
+        }
+        .textBox{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            h1.headingPrimary{
+                color: #fff;
+                text-transform: uppercase;
+                .main{
+                    display: block;
+                    font-size: 60px;
+                    font-weight: 400;
+                    letter-spacing: 35px;
+                    animation-name: moveInLeft;
+                    animation-duration: 1s;
+                }
+                .sub{
+                    display: block;
+                    font-size: 20px;
+                    font-weight: 400;
+                    letter-spacing: 17.5px;
+                    animation-name: moveInRight;
+                    animation-duration: 1s;
+                }
+            }
+        }
+        
+    }
+}
+
+ 
+@keyframes moveInLeft {
+    0% {
+        opacity:0;
+        transform: translateX(-100px)
+    }
+    80% {
+        transform: translateX(10px);
+    }
+    100% {
+        opacity:1;
+        transform: translate(0);
+    }
+}
+
+@keyframes moveInRight {
+    0%{
+        opacity: 0;
+        transform: translateX(100px); ;
+    }
+    80%{
+        transform: translateX(-10px);
+    }
+    100%{
+        opacity: 1;
+        transform: translate(0)
+    }
+}

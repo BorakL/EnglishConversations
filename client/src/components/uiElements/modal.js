@@ -14,8 +14,7 @@ const ModalOverlay = props => {
             {props.footer ? <footer>{props.footer}</footer> : null}
             <Button
                 onClick={props.closeHandler}
-                type="icon"
-                style="buttonIcon"
+                icon
             >
                 <AiOutlineClose/>
             </Button>
