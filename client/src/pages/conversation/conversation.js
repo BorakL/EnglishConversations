@@ -101,8 +101,10 @@ const Conversation = ()=>{
     }
 
     return( 
-            <div className="conversationWrapper">
-                <h1>{conversation.title}</h1>
+            <div className="conversation-wrapper page-wrapper">
+                <div className="conversation-wrapper-title">
+                    <h1>{conversation.title}</h1>
+                </div>            
                 <ConversationNav/>
                 <>
                 {
@@ -111,10 +113,10 @@ const Conversation = ()=>{
                          <>
                         {!outlet ?
                             <>
-                                <div>
+                                <div className="conversation-wrapper-img">
                                     <img alt="topic" src={`${host}${conversation.topic?.title}.jpg`}/>
                                 </div>
-                                <div ref={targetRef}>
+                                <div className="covnersation-wrapper-content" ref={targetRef}>
                                     <ul>
                                         {conversation.conversation?.map(c=><Sentence 
                                                                                 key={c._id}
@@ -138,10 +140,7 @@ const Conversation = ()=>{
                          </>
                 }
                 </>
-
-
             </div>
-        
     )
 }
 

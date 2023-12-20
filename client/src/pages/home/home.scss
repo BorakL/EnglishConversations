@@ -1,5 +1,5 @@
-.homePage{
-    header{
+.home-page{
+    &-hero{
         height: 95vh;
         width:100%;
         background-image: linear-gradient(to right bottom, rgba(126,213,111,0.8), rgba(40,180,131,0.8)), url("./../../../public/hero.jpg");
@@ -7,7 +7,7 @@
         background-position: top;  
         clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
         position: relative;
-        .logoBox{
+        &-logoBox{
             position: absolute;
             top: 40px;
             left: 40px;
@@ -15,12 +15,12 @@
                 height: 35px;
             }
         }
-        .textBox{
+        &-textBox{
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%,-50%);
-            h1.headingPrimary{
+            h1.heading-primary{
                 color: #fff;
                 text-transform: uppercase;
                 .main{

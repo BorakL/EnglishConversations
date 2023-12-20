@@ -3,7 +3,7 @@ import {Link, NavLink} from 'react-router-dom'
 const Button = props => {
 
     const getClasses = () => {
-        let buttonClasses = ["md","sm","xl","lg","active","danger","correct","wrong","inverse","disabled"]
+        let buttonClasses = ["md","sm","xl","lg","fullWidth","active","danger","correct","wrong","inverse","disabled","text"]
         let classes = []
         buttonClasses.forEach(c => {
             if(props[c]) classes.push(c)

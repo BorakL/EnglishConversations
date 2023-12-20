@@ -5,21 +5,16 @@ import Button from "../../components/button/button";
 const Home = ()=>{
 
     return (
-    <div className="homePage">
-        <header className="header">
-            <div className="logoBox">
+    <div className="home-page">
+        <header className="home-page-hero">
+            <div className="home-page-hero-logoBox">
                 <img src="logo.png" alt="Logo" className="logo"/>
             </div>
-            <div className="textBox">
-                <h1 className="headingPrimary">
+            <div className="home-page-hero-textBox">
+                <h1 className="heading-primary">
                     <span className="main">Outdoors </span>
                     <span className="sub">is where life happens</span>
                 </h1>
-                <Button
-                    wrong
-                >
-                    Dugme
-                </Button>
             </div>
         </header>
     </div>

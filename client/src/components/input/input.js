@@ -109,14 +109,17 @@ const Input = (props)=>{
     />
     
     return(
-        <div className={props.class}>
+        <div className="inputField">
             {props.id && props.name && props.label ? <label htmlFor={props.id}>{props.name}</label> : null}
             {element} 
-            {/* {isTouched && !isValid && props.errorMessage ? <div>{props.requiredField ? }</div> : null} */}
             {isTouched && !value ?
-                props.isRequired ? <div>This field is required</div> : ""
+                props.isRequired ? <div className="inputField-errorMessage">This field is required</div> : ""
                 :
-                isTouched && !isValid && props.errorMessage ? <div>{props.errorMessage}</div> : null
+                isTouched && !isValid && props.errorMessage ? 
+                    <div className="inputField-errorMessage">
+                        {props.errorMessage}
+                    </div> :
+                     null
             }
         </div>
     )

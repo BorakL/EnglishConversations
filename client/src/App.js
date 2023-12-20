@@ -60,9 +60,13 @@ function App() {
               {getRoutes(backgroundLocation || location) }
             </main>         
           </div> 
-          <main>
-            { backgroundLocation && getRoutes(location) }
-          </main>
+          {
+            backgroundLocation &&
+            <main>
+              { backgroundLocation && getRoutes(location) }
+            </main>
+          }
+          
         </div>
       </AppContextProvider>
     </AuthContextProvider>

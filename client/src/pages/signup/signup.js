@@ -36,58 +36,66 @@ const Signup = ()=>{
     return(
         <>
             {loading ? <h1>Loading</h1> : null}
-            <h1>Signup</h1>
-            <form onSubmit={submitHandler}>
-                <Input
-                    type="text"
-                    name="username"
-                    id="username"
-                    onInput={inputHandler}
-                    placeholder="Username"
-                    initValue="" 
-                    isRequired={true}
-                />
-                <Input
-                    type="email"
-                    name="email"
-                    id="email"
-                    onInput={inputHandler}
-                    placeholder="Email"
-                    initValue=""
-                    validators={[VALIDATOR_REGEX(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)]}
-                    isRequired={true}
-                    errorMessage={"Invalid email."}
-                />
-                <Input
-                    type="password"
-                    name="password"
-                    id="password"
-                    onInput={inputHandler}
-                    placeholder="Password"
-                    initValue=""
-                    validators={[VALIDATOR_MINLENGTH(5)]}
-                    errorMessage={"Password is too weak."}
-                    isRequired={true}
-                />
-                <Input
-                    type="password"
-                    name="passwordConfirm"
-                    id="passwordConfirm"
-                    onInput={inputHandler}
-                    placeholder="Confirm password"
-                    initValue=""
-                    validators={[VALIDATOR_CHANGED(formState?.inputs?.password?.value)]}
-                    errorMessage={"confirm password."}
-                    isRequired={true}
-                    disabled={!formState?.inputs?.password?.value || !formState?.inputs?.password?.isValid}
-                /> 
-                <Button
-                    type="submit"
-                    disabled={!formState.isValid}
-                >
-                    Signup
-                </Button>
-            </form>
+            <div className="login-page-title">
+                <h1>Signup</h1>
+            </div>
+            <div className="login-page-form">
+                <form onSubmit={submitHandler}>
+                    <div className="login-page-form-fields">
+                        <Input
+                            type="text"
+                            name="username"
+                            id="username"
+                            onInput={inputHandler}
+                            placeholder="Username"
+                            initValue="" 
+                            isRequired={true}
+                        />
+                        <Input
+                            type="email"
+                            name="email"
+                            id="email"
+                            onInput={inputHandler}
+                            placeholder="Email"
+                            initValue=""
+                            validators={[VALIDATOR_REGEX(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)]}
+                            isRequired={true}
+                            errorMessage={"Invalid email."}
+                        />
+                        <Input
+                            type="password"
+                            name="password"
+                            id="password"
+                            onInput={inputHandler}
+                            placeholder="Password"
+                            initValue=""
+                            validators={[VALIDATOR_MINLENGTH(5)]}
+                            errorMessage={"Password is too weak."}
+                            isRequired={true}
+                        />
+                        <Input
+                            type="password"
+                            name="passwordConfirm"
+                            id="passwordConfirm"
+                            onInput={inputHandler}
+                            placeholder="Confirm password"
+                            initValue=""
+                            validators={[VALIDATOR_CHANGED(formState?.inputs?.password?.value)]}
+                            errorMessage={"confirm password."}
+                            isRequired={true}
+                            disabled={!formState?.inputs?.password?.value || !formState?.inputs?.password?.isValid}
+                        /> 
+                    </div>
+                    <Button
+                        type="submit"
+                        disabled={!formState.isValid}
+                        fullWidth
+                    >
+                        Signup
+                    </Button>
+                </form>
+            </div>
+
         </>
         
     )

@@ -106,8 +106,9 @@ const TestInputField = (props)=>{
                 <div> {props.id} </div> 
                 <Button  
                     type="button" 
-                    onClick={props.dontKnowHandler}
-                    style="buttonText"
+                    icon
+                    text
+                    onClick={props.dontKnowHandler} 
                 >
                     Don't know
                 </Button>  

@@ -40,8 +40,8 @@ const EditConversation = ()=>{
     }
     
     return(
-        <>
-            <form className="conversationWrapper" onSubmit={submitHandler}>
+        <div className="edit-conversation-page page-wrapper">
+            <form className="edit-conversation-page-form" onSubmit={submitHandler}>
                 <TransitionGroup component={null}>
                     {conversationData.map(c=>
                         <CSSTransition
@@ -76,7 +76,7 @@ const EditConversation = ()=>{
                 </Button>
                 {outletContext.loading ? <h1>Loading...</h1> : null}
             </form>    
-        </>
+        </div>
     )
 }
 

@@ -7,6 +7,7 @@ import { loginUser } from "../../services/api"
 import Modal from "../../components/uiElements/modal"
 import { AuthContext } from "../../context/authContext"
 import "./login.scss";
+import { Link } from "react-router-dom"
 
 const Login = ()=>{
     const[loading,setLoading]=useState(false)
@@ -32,32 +33,47 @@ const Login = ()=>{
     const {formState,inputHandler,resetHandler,submitHandler} = useForm({},loginHandler)
 
     return(
-        <div className="loginPage">
-            <h1>Login</h1>
-            <form onSubmit={submitHandler}> 
-                <Input
-                    id="email"
-                    type="email"
-                    placeholder="Email"
-                    isRequired={true}
-                    initValue=""
-                    name="email" 
-                    onInput={inputHandler}
-                    validators={[VALIDATOR_REGEX(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)]}
-                    errorMessage="Invalid email."
-                />  
-                <Input
-                    id="password"
-                    type="password"
-                    placeholder="Password"
-                    name="password"
-                    initValue=""
-                    isRequired={true}
-                    onInput={inputHandler}
-                    errorMessage="Password is required"
-                /> 
-                <Button type="submit" disabled={!formState.isValid}>Login</Button>
-            </form>
+        <div className="login-page wrapper-page">
+            <div className="login-page-title">
+                <h1>Login</h1>
+            </div> 
+            <div className="login-page-form">
+                <form onSubmit={submitHandler}>
+                    <div className="login-page-form-fields">
+                        <Input
+                            id="email"
+                            type="email"
+                            placeholder="Email"
+                            isRequired={true}
+                            initValue=""
+                            name="email" 
+                            onInput={inputHandler}
+                            validators={[VALIDATOR_REGEX(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)]}
+                            errorMessage="Invalid email."
+                        />  
+                        <Input
+                            id="password"
+                            type="password"
+                            placeholder="Password"
+                            name="password"
+                            initValue=""
+                            isRequired={true}
+                            onInput={inputHandler}
+                            errorMessage="Password is required"
+                        /> 
+                    </div>  
+                    <Button 
+                        type="submit" 
+                        disabled={!formState.isValid}
+                        fullWidth
+                    >
+                        Login
+                    </Button>
+                </form>
+                <div className="login-page-link">
+                    Not a Member? <Link to="/signup">Signup</Link>
+                </div>
+            </div> 
             <Modal
                 header={<h2>Error</h2>}
                 closeHandler={()=>setShowModal(false)}

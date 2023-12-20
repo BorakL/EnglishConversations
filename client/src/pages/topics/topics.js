@@ -85,8 +85,10 @@ const Topics = (props)=>{
     // },[])
 
     return(
-        <div className="explorePageWrapper">
-            <h1>Topics</h1> 
+        <div className="explore-page page-wrapper">
+            <div className="explore-page-title">
+                <h1>Topics</h1> 
+            </div>        
             <InfiniteScroll
                 pageStart={0}
                 loadMore={() => loadTopics(false,topics.length)}

@@ -50,11 +50,11 @@ const Topic = ()=>{
         <>
         {
         !loading ?
-        <div className="topicPage" ref={scrollParentRef}>
+        <div className="topic-page page-wrapper" ref={scrollParentRef}>
             <h1>One Topic</h1>
             <p> {loggedIn ? "logged in" : "not logged in"}</p>
-            <button onClick={logout}>logout</button>
-            <div className="conversationsContainer">
+            {loggedIn ? <button onClick={logout}>logout</button> : null}
+            <div className="conversations-container">
                 {conversations.map(c=> <ConversationItem key={c._id} conversation={c} />)}
             </div>
         </div>

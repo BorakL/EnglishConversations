@@ -22,8 +22,6 @@ const CreateConversation = ()=>{
     const createStudySet = async(values)=>{
         if(values.isValid && Object.keys(values.inputs).length>0){
             setLoading(true)
-            console.log("values",values)
-            console.log("newStudySet",newStudySet)
             const data = newStudySet.map(c => {
                 if(values.inputs[`${c}-eng`] && values.inputs[`${c}-serb`]){
                     let inputEng = values.inputs[`${c}-eng`];
@@ -34,9 +32,7 @@ const CreateConversation = ()=>{
                 }
             })
             try{
-                console.log("datttttaaaa",data)
                 await createConversation(data)
-                // setNewStudySet([])
                 setLoading(false)
             }catch(error){
                 setLoading(false)
@@ -57,35 +53,39 @@ const CreateConversation = ()=>{
     } = useForm({},createStudySet)
 
     return(
-        <>
-        <h1>Create Study Set</h1>
-        <form onSubmit={submitHandler}>
-            {newStudySet.map(c=>
-                <Sentence
-                    key={c}
-                    id={c}
-                    serb=""
-                    eng=""
-                    inputFormHandler={inputHandler}
-                    removeSentenceHandler={removeCardHandler}
-                    isEditing={true}
-                />
-            )}   
-            <Button
-                type="submit"
-                disabled={!formState.isValid}
-            >
-                Create
-            </Button>   
-            <Button
-                type="button"
-                onClick={addCardHandler}
-            >
-                Add Card    
-            </Button>  
-            {loading ? <h1>Loading...</h1> : null}
-        </form>
-        </>
+        <div className="create-conversation-page page-wrapper">
+            <div className="create-conversation-page-title">
+                <h1>Create Study Set</h1>
+            </div>
+            <div className="create-conversation-page-form">
+                <form onSubmit={submitHandler}>
+                    {newStudySet.map(c=>
+                        <Sentence
+                            key={c}
+                            id={c}
+                            serb=""
+                            eng=""
+                            inputFormHandler={inputHandler}
+                            removeSentenceHandler={removeCardHandler}
+                            isEditing={true}
+                        />
+                    )}   
+                    <Button
+                        type="submit"
+                        disabled={!formState.isValid}
+                    >
+                        Create
+                    </Button>   
+                    <Button
+                        type="button"
+                        onClick={addCardHandler}
+                    >
+                        Add Card    
+                    </Button>  
+                    {loading ? <h1>Loading...</h1> : null}
+                </form>
+            </div>
+        </div>
     )
 }
 

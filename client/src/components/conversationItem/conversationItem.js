@@ -1,24 +1,16 @@
 import {Link, useLocation} from 'react-router-dom'
-import Button from '../button/button'
-import {GrDocumentVerified} from "react-icons/gr"
+import './conversationItem.scss'
 
 const ConversationItem = ({conversation})=>{
     return(
-        <div className="conversationItem">
+        <div className="conversation-item">
             <Link to={conversation._id} >
-                <div className='infoSection'>
-                    <span className="terms">{conversation.conversation?.length || 0} Terms</span>
-                    <span className="users"></span>
+                <div className='conversation-item-infoSection'>
+                    <span className="conversation-item-infoSection-terms">{conversation.conversation?.length || 0} Terms</span>
+                    <span className="conversation-item-infoSection-users"></span>
                 </div>
-                <div className='titleSection'>
+                <div className='conversation-item-titleSection'>
                     <span>{conversation.title}</span>
-                    <Button
-                        type="link"
-                        to={`${conversation._id}/test`}
-                        icon
-                    >
-                        <GrDocumentVerified/>
-                    </Button> 
                 </div> 
             </Link>
         </div>
