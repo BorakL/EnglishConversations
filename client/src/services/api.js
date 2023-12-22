@@ -11,6 +11,7 @@ if(token){
     headers['Authorization'] = `Bearer ${token}`
 }
 
+export const getTopic = (id) => axios.get(`topics/${id}`)
 export const getTopics = (params) => axios.get("topics",{params})
 export const getTopicConversations = (id, query) => axios.get(`topics/${id}/conversations`, {params: query} )
 export const getConversation = (id) => axios.get(`conversations/${id}`)

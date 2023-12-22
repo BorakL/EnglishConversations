@@ -4,7 +4,7 @@ import './conversationItem.scss'
 const ConversationItem = ({conversation})=>{
     return(
         <div className="conversation-item">
-            <Link to={conversation._id} >
+            <Link to={`/conversations/${conversation._id}`} >
                 <div className='conversation-item-infoSection'>
                     <span className="conversation-item-infoSection-terms">{conversation.conversation?.length || 0} Terms</span>
                     <span className="conversation-item-infoSection-users"></span>

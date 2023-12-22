@@ -29,7 +29,7 @@ function App() {
                   <Route path="/" element={<Home/>} />
                   <Route path="topics" element={<Topics scrollParentRef={scrollParentRef}/>} />
                   <Route path="topics/:id" element={<Topic/>} /> 
-                  <Route path="topics/:id/:conversation" exact={false} element={<Conversation/>} >
+                  <Route path="conversations/:conversation" exact={false} element={<Conversation/>} >
                     <Route path="learn" exact element={<Card/>}/>
                     <Route path="list" exact element={<List/>}/>
                     <Route path="test" exact element={<TestConversation/>}/>

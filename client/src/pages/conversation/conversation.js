@@ -8,6 +8,7 @@ import ConversationNav from "../../components/conversationNav/conversationNav";
 import Sentence from "../../components/sentence/sentence";
 import generatePDF, { Resolution, Margin } from 'react-to-pdf';
 import Button from "../../components/button/button";
+import { Link } from "react-router-dom";
 
 const Conversation = ()=>{
     const {
@@ -102,9 +103,17 @@ const Conversation = ()=>{
 
     return( 
             <div className="conversation-wrapper page-wrapper">
-                <div className="conversation-wrapper-title">
-                    <h1>{conversation.title}</h1>
-                </div>            
+                <div className="conversation-header">
+                    <div className="conversation-header-nav">
+                        <span>
+                            <Link to="/topics">Topics</Link> / 
+                            <Link to={`/topics/${conversation.topic?._id}`}> {conversation.topic?.title} </Link> 
+                        </span>
+                    </div>
+                    <div className="conversation-header-title">
+                        <h1>{conversation.title}</h1>
+                    </div>
+                </div>
                 <ConversationNav/>
                 <>
                 {

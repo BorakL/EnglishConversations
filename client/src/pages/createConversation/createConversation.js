@@ -54,8 +54,10 @@ const CreateConversation = ()=>{
 
     return(
         <div className="create-conversation-page page-wrapper">
-            <div className="create-conversation-page-title">
-                <h1>Create Study Set</h1>
+            <div className="create-conversation-header">
+                <div className="create-conversation-header-title left-title">
+                    <h1>Create Study Set</h1>
+                </div>
             </div>
             <div className="create-conversation-page-form">
                 <form onSubmit={submitHandler}>
