@@ -1,6 +1,6 @@
 import { useContext, useEffect, useMemo, useState } from "react"; 
 import "./card.scss"
-import Button from "../button/button";
+import Button from "../../components/button/button";
 import { useOutletContext } from "react-router";
 import { useSpeechSynthesis } from "react-speech-kit";
 import {FaPlay,FaStop} from "react-icons/fa"
@@ -12,7 +12,7 @@ import 'swiper/css/navigation';
 import { AppContext } from "../../context/appContext";
 import { FaRepeat } from "react-icons/fa6";
 
-const Card = ()=>{
+const FlashCards = ()=>{
 
     const outletContext = useOutletContext();
     const conversation = outletContext?.conversation?.conversation || [];
@@ -77,7 +77,7 @@ const Card = ()=>{
                                     </div> 
 
     return( 
-        <div className="flashCard">
+        <div className="flash-card">
             {!isPlayConversation ?
                 <Swiper
                     pagination={{
@@ -99,7 +99,7 @@ const Card = ()=>{
                 </div> 
             </> 
             }
-            <div className="flashCardControllers"> 
+            <div className="flash-card-controllers"> 
                 <div>
                     <Button
                         onClick={playConversation}
@@ -125,4 +125,4 @@ const Card = ()=>{
     )
 }
 
-export default Card;
+export default FlashCards;

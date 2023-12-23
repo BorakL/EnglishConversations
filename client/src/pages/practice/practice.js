@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { SET_SINGLE_CONVERSATION_RESULT, SET_SINGLE_CONVERSATION_TEST } from "../../reducers/conversations";
 
 
-const TestConversation = () => {
+const Practice = () => {
 
     const outletContext = useOutletContext()
     const singleConversation = outletContext.conversation;
@@ -71,4 +71,4 @@ const TestConversation = () => {
     )
 }
 
-export default TestConversation;
+export default Practice;

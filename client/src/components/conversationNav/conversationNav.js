@@ -5,9 +5,9 @@ const ConversationNav = (props)=>{
     return(
         <nav>
             <div className="conversation-nav">
-                <Button xl navLink to={`list`}>Learn</Button>
-                <Button xl navLink to={`learn`}>Flashcards</Button>
-                <Button xl navLink to={`test`}>Test</Button>
+                <Button xl navLink to={`terms`}>Terms</Button>
+                <Button xl navLink to={`flashcards`}>Flashcards</Button>
+                <Button xl navLink to={`practice`}>Practice</Button>
             </div>
         </nav>
     )

@@ -21,8 +21,6 @@ const Topic = ()=>{
         totalConversations: conversations.total
     }))
 
-    console.log("topic",topic)
-
     const[loading,setLoading] = useState(false)
     const dispatch = useDispatch();
     const[query,setQuery] = useState({limit:12})
@@ -36,6 +34,7 @@ const Topic = ()=>{
                 type: SET_SINGLE_TOPIC,
                 payload: topic.data.doc
             })
+            console.log("topic.data.doc",topic.data.doc)
         }catch(error){
             console.log("error",error)
         }
@@ -64,6 +63,8 @@ const Topic = ()=>{
     },[query])
 
     const{loggedIn, logout} = useContext(AuthContext)
+    const topicUrl = `${process.env.REACT_APP_API_BASE_URL}/img/topics/${topic.title}.jpg`;
+    const defaultTopicUrl = `${process.env.REACT_APP_BASE_URL}/default-image.jpg`;
 
     return(
         <>
@@ -80,7 +81,7 @@ const Topic = ()=>{
                     <h1>{topic.title}</h1>
                 </div>
                 <div className="topic-header-img">
-
+                    <img src={false ? topicUrl : defaultTopicUrl}/>
                 </div>
                 <div className="topic-header-info">
 

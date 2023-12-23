@@ -4,11 +4,9 @@ import Topics from './pages/topics/topics';
 import Topic from './pages/topic/topic'; 
 import { Route, Routes, useLocation } from 'react-router';  
 import Conversation from './pages/conversation/conversation';
-import TestConversation from './pages/test/test';
 import MainNavigation from './components/navigation/mainNavigation';
 import { useMemo, useRef } from 'react'; 
-import Card from './components/card/card';
-import List from './components/list/list';
+import Terms from './pages/terms/terms';
 import {useNavigationType} from 'react-router-dom';
 import { AppContextProvider } from './context/appContext';
 import EditConversation from './pages/editConversation/editConversation';
@@ -17,6 +15,8 @@ import {AuthContextProvider} from './context/authContext'
 import PageNotFound from './pages/PageNotFound/pageNotFound';
 import Signup from './pages/signup/signup';
 import CreateConversation from './pages/createConversation/createConversation';
+import Practice from './pages/practice/practice';
+import FlashCards from './pages/card/card';
 
 function App() {
 
@@ -30,9 +30,9 @@ function App() {
                   <Route path="topics" element={<Topics scrollParentRef={scrollParentRef}/>} />
                   <Route path="topics/:id" element={<Topic/>} /> 
                   <Route path="conversations/:conversation" exact={false} element={<Conversation/>} >
-                    <Route path="learn" exact element={<Card/>}/>
-                    <Route path="list" exact element={<List/>}/>
-                    <Route path="test" exact element={<TestConversation/>}/>
+                    <Route path="flashcards" exact element={<FlashCards/>}/>
+                    <Route path="terms" exact element={<Terms/>}/>
+                    <Route path="practice" exact element={<Practice/>}/>
                     <Route path="edit" exact element={<EditConversation/>}/>
                   </Route> 
                   <Route path="login" element={<Login/>}/>

@@ -12,4 +12,11 @@
 .topic-header{
     text-align: left;
     padding: 2rem 0;
+    &-img{
+        max-width:300px;
+        min-width:250px;
+        img{
+            width:100%;
+        }
+    }
 }

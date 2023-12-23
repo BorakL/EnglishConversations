@@ -45,7 +45,7 @@
     transform: rotateY(180deg);
   }
 
-  .flashCardButtons{
+  .flash-card-buttons{
     display: flex;
     min-width: 200px;
     justify-content:center;
@@ -75,7 +75,7 @@
     transition: opacity 500ms;
   }
 
-  .flashCardControllers{
+  .flash-card-controllers{
     display: flex;
     flex-direction: row;
     align-items: center;

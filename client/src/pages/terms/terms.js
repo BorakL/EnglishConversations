@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import Sentence from "../sentence/sentence";
+import Sentence from "../../components/sentence/sentence";
 import useForm from "../../hooks/useForm";
-import Button from "../button/button";
+import Button from "../../components/button/button";
 import { useOutletContext } from "react-router";
 import { updateConversation } from "../../services/api";   
 import {useDispatch, useSelector} from "react-redux"
 import { SET_SINGLE_CONVERSATION } from "../../reducers/conversations";
 
-const List = ()=>{
+const Terms = ()=>{
 
     const dispatch = useDispatch()
     const outletContext = useOutletContext();
@@ -55,4 +55,4 @@ const List = ()=>{
     )
 }
 
-export default List;
+export default Terms;

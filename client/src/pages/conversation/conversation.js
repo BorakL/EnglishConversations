@@ -23,7 +23,6 @@ const Conversation = ()=>{
 
     const dispatch = useDispatch();
     const params = useParams();
-    const host = "http://localhost:3001/img/topics/";
     const outlet = useOutlet(); 
     const targetRef = useRef(); 
 
@@ -122,9 +121,6 @@ const Conversation = ()=>{
                          <>
                         {!outlet ?
                             <>
-                                <div className="conversation-wrapper-img">
-                                    <img alt="topic" src={`${host}${conversation.topic?.title}.jpg`}/>
-                                </div>
                                 <div className="covnersation-wrapper-content" ref={targetRef}>
                                     <ul>
                                         {conversation.conversation?.map(c=><Sentence 
