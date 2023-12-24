@@ -1,19 +1,16 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
 import { getTopic, getTopicConversations } from "../../services/api";
-import InfiniteScroll from "react-infinite-scroller";
 import ConversationItem from "../../components/conversationItem/conversationItem";
 import './topic.scss';
 import { useDispatch, useSelector } from "react-redux"; 
 import { SET_CONVERSATIONS } from "../../reducers/conversations";
-import { AuthContext } from "../../context/authContext";
 import { SET_SINGLE_TOPIC } from "../../reducers/topics";
 import { Link } from "react-router-dom";
 
 const Topic = ()=>{
     const {
         conversations,
-        totalConversations,
         topic
     } = useSelector(({conversations, topics}) => ({
         conversations: conversations.conversations,
@@ -61,9 +58,7 @@ const Topic = ()=>{
         loadTopic(params.id)
     },[query])
 
-    const{loggedIn, logout} = useContext(AuthContext)
     const topicUrl = `${process.env.REACT_APP_API_BASE_URL}/img/topics/${topic.title}.jpg`;
-    const defaultTopicUrl = `${process.env.REACT_APP_BASE_URL}/default-image.jpg`;
 
     return(
         <>
@@ -80,14 +75,12 @@ const Topic = ()=>{
                     <h1>{topic.title}</h1>
                 </div>
                 <div className="topic-header-img">
-                    <img src={false ? topicUrl : defaultTopicUrl}/>
+                    <img src={topicUrl} alt="topicImage" title={topic.title}/>
                 </div>
                 <div className="topic-header-info">
 
                 </div>
             </div>
-            <p> {loggedIn ? "logged in" : "not logged in"}</p>
-            {loggedIn ? <button onClick={logout}>logout</button> : null}
             <div className="conversations-container">
                 {conversations.map(c=> <ConversationItem key={c._id} conversation={c} />)}
             </div>
