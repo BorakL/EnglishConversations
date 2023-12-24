@@ -34,7 +34,6 @@ const Topic = ()=>{
                 type: SET_SINGLE_TOPIC,
                 payload: topic.data.doc
             })
-            console.log("topic.data.doc",topic.data.doc)
         }catch(error){
             console.log("error",error)
         }

@@ -13,18 +13,17 @@ export const restrictTo = (...roles)=>{
     }
 }
 
-const signToken = id=>{
-    return jwt.sign({id}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRES_IN})
+const signToken = user=>{
+    return jwt.sign({user}, process.env.JWT_SECRET, {expiresIn: process.env.JWT_EXPIRES_IN})
 }
 
 const createSendToken = (user, statusCode, res) => {
-    const token = signToken(user._id)
+    const token = signToken(user)
     const cookiesOptions = {
         expires: new Date(new Date() + process.env.JWT_COOKIE_EXPIRES_IN*24*60*60*1000),
         httpOnly: true
     }
     if(process.env.NODE_ENV==='production') cookiesOptions.secure = true
-    user.password = undefined;
     res.cookie('jwt', token, cookiesOptions)
     res.status(statusCode).json({
         status:"success",
@@ -41,7 +40,7 @@ export const signup = catchAsync(async(req,res,next)=>{
         password,
         passwordConfirm
     })
-    console.log("userrr",user)
+    user.password = undefined;
     createSendToken(user,201,res)
 })
 
@@ -55,6 +54,7 @@ export const login = catchAsync(async(req,res,next)=>{
     if(!user || !(await user.correctPassword(password,user.password))){ 
         throw new Error("Incorrect username or password.") 
     } 
+    user.password = undefined;
     createSendToken(user,200,res)
 })
 
