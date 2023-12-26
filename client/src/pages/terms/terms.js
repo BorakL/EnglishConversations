@@ -6,6 +6,7 @@ import { useOutletContext } from "react-router";
 import { updateConversation } from "../../services/api";   
 import {useDispatch, useSelector} from "react-redux"
 import { SET_SINGLE_CONVERSATION } from "../../reducers/conversations";
+import { Link } from "react-router-dom";
 
 const Terms = ()=>{
 
@@ -42,14 +43,26 @@ const Terms = ()=>{
         <>
         {outletContext.editingFields.length>0 ? 
             <form onSubmit={submitHandler}>
-                {conversation}
+                {conversation}  
                 <Button
                     type="submit"
+                    lg
                     disabled={!formState?.isChanged || !formState?.isValid}
-                />
+                >
+                    Edit
+                </Button> 
             </form>
             : 
-            conversation    
+            <div>
+                {conversation}
+                <Button
+                    to="/edit"
+                    lg
+                >
+                    Add/Remove
+                </Button>    
+                
+            </div>
         }
         </>
     )

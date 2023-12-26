@@ -1,19 +1,23 @@
-.taskContainer{
+.task-container{
     display: flex;
     flex-direction: row-reverse;
     justify-content: space-between;
     gap: 20px;
 
-    .taskSidebar{
+    &-sidebar{
         text-align: left;
         width: 12rem; 
         background-color: white;
         padding:20px;
-        .progressBar{
+        &-progressBar{
             margin-bottom: 1.2em;
-        } 
+        }
+        &-options{
+            text-align: center;
+        }
+
     }
-    .taskMain{
+    &-main{
         box-sizing: border-box;
         width: calc(100% - 12rem); 
         padding: 2rem 1rem;

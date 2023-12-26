@@ -8,18 +8,31 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-  }
-  
-  .nav-links li {
-    margin: 1rem;
-  }
-  
-  .nav-links a {
-    border: 1px solid transparent;
-    color: #292929;
-    text-decoration: none;
-    padding: 0.5rem;
-  }
+    li{
+      margin: 1rem;
+    }
+    a{
+      border: 1px solid transparent;
+      color: #292929;
+      text-decoration: none;
+      padding: 0.5rem;
+    }
+    button{
+      cursor: pointer;
+      border: 1px solid #292929;
+      color: #292929;
+      background: transparent;
+      padding: 0.5rem;
+      font: inherit;
+      &:focus{
+        outline: none;
+      }
+      &:hover, &:active{
+        background: #292929;
+        color: white;
+      }
+    }
+  } 
   
   .nav-links a:hover,
   .nav-links a:active,
@@ -27,49 +40,25 @@
     background: #f8df00;
     border-color: #292929;
     color: #292929;
-  }
-  
-  .nav-links button {
-    cursor: pointer;
-    border: 1px solid #292929;
-    color: #292929;
-    background: transparent;
-    padding: 0.5rem;
-    font: inherit;
-  }
-  
-  .nav-links button:focus {
-    outline: none;
-  }
-  
-  .nav-links button:hover,
-  .nav-links button:active {
-    background: #292929;
-    color: white;
-  }
+  } 
   
   
   .header-nav-links {
     flex-direction: row;
-  }
-
-  .header-nav-links li {
-    margin: 0 0.5rem;
-  }
-
-  .header-nav-links a {
-    color: white;
-    text-decoration: none;
-  }
-
-  .header-nav-links button {
-    border: 1px solid white;
-    color: white;
-    background: transparent;
-  }
-  
-  .header-nav-links button:hover,
-  .header-nav-links button:active {
-    background: #f8df00;
-    color: #292929;
+    li{
+      margin: 0 0.5rem;
+    }
+    a{
+      color: white;
+      text-decoration: none;
+    }
+    button{
+      border: 1px solid white;
+      color: white;
+      background: transparent;
+      &:hover, &:active{
+        background: #f8df00;
+        color: #292929;
+      }
+    }
   } 

@@ -198,8 +198,8 @@ const Task = (props)=>{
     
 
     return(
-        <div className="taskContainer">
-            <div className="taskMain">
+        <div className="task-container">
+            <div className="task-container-main">
             {
                 props.roundQuestionsCount>0 
                 ?
@@ -211,8 +211,8 @@ const Task = (props)=>{
                 finishedTest
             }
             </div>
-            <div className="taskSidebar">
-                <div className="progressBars">
+            <div className="task-container-sidebar">
+                <div className="task-container-sidebar-progressBar task-sidebar">
                     <h3>Round: {props.round}</h3>
                     <ProgressBar 
                         progress={remainingProgress}
@@ -230,19 +230,19 @@ const Task = (props)=>{
                         title="Correct"    
                     /> 
                 </div>
-                <div className="taskOptions">
+                <div className="task-container-sidebar-options task-sidebar">
                     <Button 
-                        type="button" 
-                        style="buttonText"
+                        type="text" 
                         onClick={openModalOptions}
+                        icon
+                        text
                     >
                         Options
                     </Button>
-                </div>
-                <div className="taskOptions">
                     <Button 
                         type="button" 
                         onClick={()=>setIsModalExamOpen(true)}
+                        md
                     >
                         Exam
                     </Button>

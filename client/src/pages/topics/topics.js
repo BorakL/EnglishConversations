@@ -64,30 +64,11 @@ const Topics = (props)=>{
             })
         }
     },[query])
-    
-    // const handleScroll = function(e){
-    //     if(props.scrollParentRef.current.scrollTop>0){ 
-    //         if(timer!==null){
-    //             clearTimeout(timer)
-    //         }
-    //         timer = setTimeout(()=>{
-    //             dispatch({
-    //                 type: SET_SCROLL_POSITION,
-    //                 payload: props.scrollParentRef.current.scrollTop
-    //             })
-    //         },130)
-    //     }
-    // }
-
-    // useEffect(()=>{ 
-    //     props.scrollParentRef.current.addEventListener("scroll",handleScroll,false)
-    //     return ()=>{props.scrollParentRef.current.removeEventListener("scroll",handleScroll,false)}
-    // },[])
 
     return(
         <div className="explore-page page-wrapper">
             <div className="explore-header">
-                <div className="explore-header-title left-title">
+                <div className="explore-header-title header-title left-title">
                     <h1>Topics</h1> 
                 </div>
             </div>

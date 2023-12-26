@@ -111,11 +111,24 @@ body {
   color:orange
 }
 
+.form-button-group{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+  margin: 2rem auto;
+}
+
+.right-button{
+  float: right;
+  margin: 1rem;
+}
 
 
 
-
-
+.header-title{
+  margin: 1.2rem 0;
+}
 
 a{
   color: inherit;
