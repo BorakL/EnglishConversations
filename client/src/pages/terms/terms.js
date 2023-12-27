@@ -56,7 +56,7 @@ const Terms = ()=>{
             <div>
                 {conversation}
                 <Button
-                    to="/edit"
+                    to="edit"
                     lg
                 >
                     Add/Remove

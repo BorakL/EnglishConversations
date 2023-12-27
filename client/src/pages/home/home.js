@@ -7,9 +7,6 @@ const Home = ()=>{
     return (
     <div className="home-page">
         <header className="home-page-hero">
-            <div className="home-page-hero-logoBox">
-                <img src="logo.png" alt="Logo" className="logo"/>
-            </div>
             <div className="home-page-hero-textBox">
                 <h1 className="heading-primary">
                     <span className="main">Outdoors </span>

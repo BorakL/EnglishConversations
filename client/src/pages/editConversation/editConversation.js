@@ -60,20 +60,24 @@ const EditConversation = ()=>{
                             />
                         </CSSTransition>
                         
-                    )}
+                    )} 
                 </TransitionGroup>
-                <Button
-                    type="button"
-                    onClick={addSentenceHandler}
-                >
-                    Add Item
-                </Button>
-                <Button 
-                    type="submit"
-                    disabled={!formState.isValid}
-                >
-                    Done
-                </Button>
+                <div>
+                    <Button
+                        type="button"
+                        onClick={addSentenceHandler}
+                    >
+                        Add Item
+                    </Button>
+                </div>
+                <div className="right-button">
+                    <Button 
+                        type="submit"
+                        disabled={!formState.isValid}
+                    >
+                        Done
+                    </Button>
+                </div>
                 {outletContext.loading ? <h1>Loading...</h1> : null}
             </form>    
         </div>

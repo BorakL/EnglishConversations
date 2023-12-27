@@ -7,13 +7,14 @@ import { loginUser } from "../../services/api"
 import Modal from "../../components/uiElements/modal"
 import { AuthContext } from "../../context/authContext"
 import "./login.scss";
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 const Login = ()=>{
     const[loading,setLoading]=useState(false)
     const[showModal,setShowModal]=useState(false)
     const[errorMessage,setErrorMessage]=useState("")
     const {loggedIn,login,logout } = useContext(AuthContext)
+    const navigate = useNavigate();
     
     const loginHandler = async()=>{
         try{
@@ -23,6 +24,7 @@ const Login = ()=>{
             const response = await loginUser({email:email,password:password})
             login(response.data.token)
             setLoading(false)
+            navigate("/user-profile")
         }catch(error){
             setLoading(false)
             setErrorMessage(error.response.data.message)

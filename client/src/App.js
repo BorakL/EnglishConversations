@@ -17,6 +17,7 @@ import Signup from './pages/signup/signup';
 import CreateConversation from './pages/createConversation/createConversation';
 import Practice from './pages/practice/practice';
 import FlashCards from './pages/card/card';
+import UserProfile from './pages/userProfile/userProfile';
 
 function App() {
 
@@ -33,11 +34,12 @@ function App() {
                     <Route path="flashcards" exact element={<FlashCards/>}/>
                     <Route path="terms" exact element={<Terms/>}/>
                     <Route path="practice" exact element={<Practice/>}/>
-                    <Route path="edit" exact element={<EditConversation/>}/>
+                    <Route path="terms/edit" exact element={<EditConversation/>}/>
                   </Route> 
                   <Route path="login" element={<Login/>}/>
                   <Route path="signup" element={<Signup/>}/>
                   <Route path="create-conversation" element={<CreateConversation/>}/>
+                  <Route path="user-profile" element={<UserProfile/>}/>
                   <Route path="*" element={<PageNotFound/>}/>
                 </Routes>
 

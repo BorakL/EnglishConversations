@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RESET_SINGLE_CONVERSATION, SET_SINGLE_CONVERSATION_TEST } from "../../reducers/conversations";
 import Exam from "../modals/exam/exam";
 import Options from "../modals/options/options";
+import { IoIosOptions } from "react-icons/io";
 
 const Task = (props)=>{ 
 
@@ -237,7 +238,7 @@ const Task = (props)=>{
                         icon
                         text
                     >
-                        Options
+                        Options <IoIosOptions /> 
                     </Button>
                     <Button 
                         type="button" 

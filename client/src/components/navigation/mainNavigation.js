@@ -37,7 +37,11 @@ const MainNavigation = ()=>{
                     <span/>
                     <span/>
                 </button>
-                <h1 className="main-navigation_title"> <Link to="/"> YourLogo </Link> </h1> 
+                <h1 className="main-navigation_title"> 
+                    <Link to="/">
+                        <img src="logo.png" alt="Logo" className="logo"/> <span>English Conversations</span>
+                    </Link>
+                </h1> 
                 {
                     !drawerIsOpen ?
                     <nav className="main-navigation__header-nav">

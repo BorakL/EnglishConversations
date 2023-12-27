@@ -6,6 +6,7 @@ import Input from "../input/input";
 import { VALIDATOR_REQUIRE } from "../../utils/valid";
 import {RxSpeakerLoud} from 'react-icons/rx';
 import {FiEdit2} from 'react-icons/fi';
+import { GoTrash } from "react-icons/go"; 
 
 const Sentence = (props)=>{ 
     const[isReading,setIsReading] = useState(false) 
@@ -101,7 +102,7 @@ const Sentence = (props)=>{
                         onClick={()=>props.removeSentenceHandler(props.id)}
                         icon
                     >
-                        X
+                        <GoTrash/>
                     </Button>
                     : null
                 } 

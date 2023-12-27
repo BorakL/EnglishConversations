@@ -4,4 +4,12 @@
     align-items: center;
     justify-content: space-evenly;
     margin-bottom: 1.5em;
+    .btn-content{
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+    }
 }
