@@ -39,7 +39,7 @@ const MainNavigation = ()=>{
                 </button>
                 <h1 className="main-navigation_title"> 
                     <Link to="/">
-                        <img src="logo.png" alt="Logo" className="logo"/> <span>English Conversations</span>
+                        <img src="/logo.png" alt="Logo" className="logo"/> <span>English Conversations</span>
                     </Link>
                 </h1> 
                 {

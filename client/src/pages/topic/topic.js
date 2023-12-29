@@ -62,9 +62,11 @@ const Topic = ()=>{
 
     return(
         <>
+        
+        <div className="topic-page page-wrapper" ref={scrollParentRef}>
         {
         !loading ?
-        <div className="topic-page page-wrapper" ref={scrollParentRef}>
+        <>
             <div className="topic-header">
                 <div className="topic-header-nav">
                     <span>
@@ -84,10 +86,12 @@ const Topic = ()=>{
             <div className="conversations-container">
                 {conversations.map(c=> <ConversationItem key={c._id} conversation={c} />)}
             </div>
-        </div>
+        </>
         : 
         <p>loading...</p>
         }
+        </div>
+        
         </>
     )
 }

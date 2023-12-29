@@ -34,7 +34,7 @@ const Signup = ()=>{
 
     
     return(
-        <>
+         <div className="login-page page-wrapper">
             {loading ? <h1>Loading</h1> : null}
             <div className="login-page-title">
                 <h1>Signup</h1>
@@ -95,8 +95,8 @@ const Signup = ()=>{
                     </Button>
                 </form>
             </div>
-
-        </>
+        </div>
+        
         
     )
 }

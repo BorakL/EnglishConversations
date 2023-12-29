@@ -35,7 +35,7 @@ const Login = ()=>{
     const {formState,inputHandler,resetHandler,submitHandler} = useForm({},loginHandler)
 
     return(
-        <div className="login-page wrapper-page">
+        <div className="login-page page-wrapper">
             <div className="login-page-title">
                 <h1>Login</h1>
             </div> 

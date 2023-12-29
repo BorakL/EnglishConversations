@@ -18,6 +18,7 @@ import CreateConversation from './pages/createConversation/createConversation';
 import Practice from './pages/practice/practice';
 import FlashCards from './pages/card/card';
 import UserProfile from './pages/userProfile/userProfile';
+import Footer from './components/footer/footer';
 
 function App() {
 
@@ -44,32 +45,31 @@ function App() {
                 </Routes>
 
   const backgroundLocation = useMemo(()=>{
-    if(location.state && location.state.backgroundLocation && navigationType!=="POP")
+    if(location.state && location.state.backgroundLocation && navigationType!=="POP"){
       return location.state.backgroundLocation
+    }
     return null
   },[location])
+
+  const getLayout = (location)=>{
+    return(<>
+      <MainNavigation/> 
+        <main>
+          {getRoutes(location) }
+        </main>  
+      <Footer/>       
+    </>)
+  }
 
   return ( 
     <AuthContextProvider>
       <AppContextProvider>
-        <div className="App">
-          <MainNavigation/>
-          <div
-            className={`layout ${backgroundLocation ? "hidden" : "visible"}`} 
-            ref={scrollParentRef}
-          > 
-            <main>
-              {getRoutes(backgroundLocation || location) }
-            </main>         
-          </div> 
-          {
-            backgroundLocation &&
-            <main>
-              { backgroundLocation && getRoutes(location) }
-            </main>
-          }
-          
-        </div>
+      <>
+        <div className={`layout ${backgroundLocation ? "hidden" : "visible"}`} ref={scrollParentRef}>
+          {getLayout(backgroundLocation || location)}
+        </div> 
+        {backgroundLocation && getLayout(location)} 
+      </>
       </AppContextProvider>
     </AuthContextProvider>
   );

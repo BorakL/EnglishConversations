@@ -6,6 +6,11 @@
   box-sizing: border-box;
 }
 
+.layout{
+  height: 100vh;
+  overflow: auto;
+}
+
 body {
   font-family: "Lato", sans-serif;
   font-weight: 400;
@@ -120,7 +125,9 @@ body {
 }
 
 .right-button{
-  float: right;
+  display: flex;
+  flex-direction: row;
+  justify-content: right;
   margin: 1rem;
 }
 
@@ -157,11 +164,6 @@ section{
   } 
 }
 
-.layout{
-  height: calc(100vh - 3em);
-  overflow: auto; 
-}
-
 .visible{ 
   display: block;  
 }
@@ -185,6 +187,7 @@ section{
 
 .page-wrapper{
   max-width: 1000px;
+  min-height: calc(100vh - 6em);
   margin: auto; 
   padding: 10px;
 }
