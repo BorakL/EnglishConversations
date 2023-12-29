@@ -4,6 +4,7 @@ import Sentence from "../../components/sentence/sentence";
 import useForm from "../../hooks/useForm"
 import { createConversation } from "../../services/api";
 import { v4 as uuidv4 } from 'uuid';
+import Loader from "../../components/loader/loader";
 
 const CreateConversation = ()=>{
     const[newStudySet,setNewStudySet]=useState([]);
@@ -93,7 +94,7 @@ const CreateConversation = ()=>{
                     </div>
                     
                 </form>
-                {loading ? <h1>Loading...</h1> : null}
+                {loading ? <Loader/> : null}
             </div>
         </div>
     )

@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { SET_CONVERSATIONS } from "../../reducers/conversations";
 import { SET_SINGLE_TOPIC } from "../../reducers/topics";
 import { Link } from "react-router-dom";
+import Loader from "../../components/loader/loader";
 
 const Topic = ()=>{
     const {
@@ -88,7 +89,7 @@ const Topic = ()=>{
             </div>
         </>
         : 
-        <p>loading...</p>
+        <Loader/>
         }
         </div>
         

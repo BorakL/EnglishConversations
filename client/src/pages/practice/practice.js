@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Task from "../../components/task/task"; 
 import { useDispatch } from "react-redux";
 import { SET_SINGLE_CONVERSATION_RESULT, SET_SINGLE_CONVERSATION_TEST } from "../../reducers/conversations";
+import Loader from "../../components/loader/loader";
 
 
 const Practice = () => {
@@ -65,7 +66,7 @@ const Practice = () => {
                     incorrectAnswersCount={incorrectAnswersCount}
                 />
                 :
-                <p>...loading</p>
+                <Loader/>
             }
         </>
     )

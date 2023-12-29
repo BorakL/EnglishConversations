@@ -9,6 +9,7 @@ import Sentence from "../../components/sentence/sentence";
 import generatePDF, { Resolution, Margin } from 'react-to-pdf';
 import Button from "../../components/button/button";
 import { Link } from "react-router-dom";
+import Loader from "../../components/loader/loader";
 
 const Conversation = ()=>{
     const {
@@ -117,7 +118,7 @@ const Conversation = ()=>{
                 <>
                 {
                     
-                    initLoading ? <h1>Loading...</h1> :
+                    initLoading ? <Loader/> :
                          <>
                         {!outlet ?
                             <>

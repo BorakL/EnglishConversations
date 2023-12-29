@@ -6,6 +6,7 @@ import {CSSTransition,TransitionGroup} from "react-transition-group"
 import { useDispatch, useSelector } from "react-redux";
 import { SET_SINGLE_CONVERSATION } from "../../reducers/conversations";
 import { useOutletContext } from "react-router";
+import Loader from "../../components/loader/loader";
 
 const EditConversation = ()=>{
     const{conversationData, conversationId} = useSelector(({conversations})=>({
@@ -78,7 +79,7 @@ const EditConversation = ()=>{
                         Done
                     </Button>
                 </div>
-                {outletContext.loading ? <h1>Loading...</h1> : null}
+                {outletContext.loading ? <Loader/> : null}
             </form>    
         </div>
     )
