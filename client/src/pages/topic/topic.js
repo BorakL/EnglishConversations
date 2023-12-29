@@ -71,7 +71,7 @@ const Topic = ()=>{
             <div className="topic-header">
                 <div className="topic-header-nav">
                     <span>
-                        <Link to="/topics">Topics/</Link>{topic.title}
+                        <Link to="/topics"> Topics / </Link>{topic.title}
                     </span>
                 </div>
                 <div className="topic-header-title left-title">
