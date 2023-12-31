@@ -180,10 +180,10 @@ section{
   border:1px solid;
   border-color: green;
 }
-.defaultBorder{ 
-  border:1px solid;
-  border-color: grey;
-}
+// .defaultBorder{ 
+//   border:1px solid;
+//   border-color: grey;
+// }
 
 .page-wrapper{
   max-width: 1000px;
@@ -220,6 +220,7 @@ section{
 
 .inputField{
   textarea{
+    border: 1px solid grey;
     width:100%;
     border:none;
     outline:none;

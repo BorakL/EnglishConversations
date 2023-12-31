@@ -35,7 +35,7 @@
             justify-content:flex-start;
             textarea{  
                 border:none; 
-                height:20px;
+                height:2rem;
                 resize: none;
                 width: 100%;
                 border-bottom: 2px solid grey;
@@ -56,10 +56,10 @@
                 }
                 margin-bottom: 3em;
             }
-            .correctAnswer{
+            .correct-answer{
                 color:green;
             }
-            .wrongAnswer{
+            .wrong-answer{
                 color:red;
             }
         }

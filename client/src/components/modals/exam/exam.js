@@ -16,11 +16,10 @@ const Exam = (props)=>{
         submitHandler,
         formState
     } = useForm({},(values)=>{
-        document.querySelector(".fullScreenModal").scrollTo({top: 0, behavior:'smooth'})
+        document.querySelector(".full-screen-modal").scrollTo({top: 0, behavior:'smooth'})
         alert("Did you finish the exam?")
         props.setExamFinished(true);
     })
-    console.log("formState",formState)
     const testResults = Object.values(formState.inputs) || [];
     const resultsTotal = testResults.length || 0;
     const correct = testResults.filter(i=>i.isValid).length || 0
@@ -33,58 +32,60 @@ const Exam = (props)=>{
     }
 
     return(
-        <form className="testWindow" onSubmit={submitHandler}>
+        <form className="test-window" onSubmit={submitHandler}>
             {
             props.examFinished ?
             <div>
                 <div className="">
                     <h2>{overalScore>requiredScore ? "Pass" : "Failed"}</h2>
                 </div>
-                <div className="overalScore">
+                <div className="overal-score">
                     <span>Overal score: </span> <span>{overalScore}%</span>
                 </div>
-                <div className="requiredScore">
+                <div className="required-score">
                     <span>Required score: </span> <span>{requiredScore}%</span>
                 </div>
                 <div className="correct">
                     <span>Correct: </span> <span>{correct}</span>
                 </div>
-                <div className="questionsAsked">
+                <div className="questions-asked">
                     <span>Incorrect: </span> <span>{incorrect}</span>
                 </div>
             </div>
             : null
             }
             
-            <div className="testQuestions" ref={testRef}>
+            <div className="test-questions" ref={testRef}>
             {
                 props.questions.map(q=>
-                    <article className= {`testQuestionWrapper ${props.examFinished ? (!isCorrect(q._id) ? "redBorder" : "greenBorder") : "defaultBorder"}`} ref={testRef}>
-                        <section className="testQuestion">
+                    <article className= {`test-question-wrapper ${props.examFinished ? (!isCorrect(q._id) ? "redBorder" : "greenBorder") : "defaultBorder"}`} ref={testRef}>
+                        <section className="test-question">
                             <span>Term</span>
                             <label htmlFor={q._id}>{q.serb} {q.eng}</label>
                         </section>
-                        <section className="testAnswer">
-                            <span>
+                        <section className="test-answer">
+                            <div className="test-answer-label">
                                 {!props.examFinished ? 
                                     "Your Answer" : 
                                     isCorrect(q._id) ? "Correct!" : "Wrong!"
                                 }
-                            </span> 
-                            <Input
-                                id={q._id}
-                                type="textarea"
-                                onInput={inputHandler}
-                                validators = {[VALIDATOR_TASK(q.eng)]}
-                                title="eng"
-                                class="inputDefault"
-                            />
-                            {props.examFinished ? 
-                                <span className="resultSign"> {isCorrect(q._id) ? <GrCheckmark/> : <GrClose/>} </span> 
-                            : null}
+                            </div> 
+                            <div className="test-answer-text">
+                                <Input
+                                    id={q._id}
+                                    type="textarea"
+                                    onInput={inputHandler}
+                                    validators = {[VALIDATOR_TASK(q.eng)]}
+                                    title="eng"
+                                    class="inputDefault"
+                                />
+                                {props.examFinished ? 
+                                    <span className="result-sign"> {isCorrect(q._id) ? <GrCheckmark/> : <GrClose/>} </span> 
+                                : null}
+                            </div>
                         </section>
                         {props.examFinished && !isCorrect(q._id) && 
-                        <section className="correctAnswer">
+                        <section className="correct-answer">
                             <span>Correct Answer</span>
                             <span>{q.eng}</span>
                         </section>
@@ -93,10 +94,10 @@ const Exam = (props)=>{
                 )
             } 
             </div>
-            <div className="testResult">
+            <div className="test-result">
             {
             !props.examFinished ? 
-                <Button type="submit">End Test</Button>
+                <Button xl type="submit">End Test</Button>
                 : null                 
             }
             </div>

@@ -1,8 +1,9 @@
-.testQuestions{
+.test-questions{
     min-width: 200px;
     max-width: 1000px;
     min-height: 600px;
-    margin: auto;
+    margin: 1rem auto;
+    margin-bottom: 2rem;
     display: flex;
     flex-direction: column;
     gap: 25px;
@@ -11,24 +12,30 @@
 // testQuestion
 // testAnswer
 
-.testQuestionWrapper{
+.test-question-wrapper{
     border-radius: 10px;
     box-sizing: border-box;
     padding: 20px;
     display: flex;
     flex-direction: column; 
     text-align: left;
-    gap: 50px; 
+    gap: 50px;
+    background-color: white;
+    .test-answer{
+        .test-answer-text{
+            border: 1px solid rgb(220, 220, 220);
+            padding: 10px;
+            padding-bottom: 0px;
+        }
+    }
     section{
         width: 100%;
         display: flex;
         flex-direction: column;
         gap:5px;
-        span:first-child{
-            color: grey;
-        }
     }
-    .resultSign{
+    .result-sign{
         text-align: right;
     }
+
 }

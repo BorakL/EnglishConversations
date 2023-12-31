@@ -15,6 +15,7 @@ const Dictaphone = (props) => {
     return (
         <div className="dictaphone">
           <Button
+            type="button"
             onClick={handleMicrophone}
             icon
             active={props.isMicrophoneTurn}
