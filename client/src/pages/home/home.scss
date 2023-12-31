@@ -25,7 +25,7 @@
                 text-transform: uppercase;
                 .main{
                     display: block;
-                    font-size: 60px;
+                    font-size: 40px;
                     font-weight: 400;
                     letter-spacing: 35px;
                     animation-name: moveInLeft;
@@ -42,6 +42,33 @@
             }
         }
         
+    }
+    &-description{
+        height: 95vh;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+        padding: 40px;
+        &-textBox{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+        }
+        &-imgBox{
+            span{ 
+                min-width: 100px;
+                width: 250px;
+                display: inline-block;
+                margin: 1rem;
+                img{
+                    width: 100%;
+                }
+            }
+        }
     }
 }
 

@@ -102,7 +102,7 @@ const TestInputField = (props)=>{
     
     return(
         <form onSubmit={handleSubmit}>
-            <div className="questionContainer">
+            <div className="question-container">
                 <div> {props.id} </div> 
                 <Button  
                     type="button" 
@@ -114,7 +114,7 @@ const TestInputField = (props)=>{
                 </Button>  
             </div>
 
-            <div className="answerContainer">
+            <div className="answer-container">
                  
                 <textarea
                     value={value}
@@ -136,7 +136,7 @@ const TestInputField = (props)=>{
             
             </div>
 
-            <div className="answerButton"> 
+            <div className="answer-button"> 
                 <Button
                     disabled={!value}
                     type="submit"

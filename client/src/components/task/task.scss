@@ -23,13 +23,13 @@
         padding: 2rem 1rem;
         background-color: white;
 
-        .questionContainer{
+        .question-container{
             display: flex;
             flex-direction: row;
             justify-content: space-between;
             min-height: 100px;
         }
-        .answerContainer{
+        .answer-container{
             display: flex;
             flex-direction: row; 
             justify-content:flex-start;
@@ -41,15 +41,16 @@
                 border-bottom: 2px solid grey;
                 background-color: transparent;
                 outline: none;
+                padding: 5px;
             } 
         }
-        .answerButton{
+        .answer-button{
             width: 200px;
             margin: auto;
         }
 
-        .resultContainer{
-            .resultsSection{
+        .result-container{
+            .results-section{
                 >div{
                     border-bottom: 1px solid rgb(235, 235, 235);
                 }

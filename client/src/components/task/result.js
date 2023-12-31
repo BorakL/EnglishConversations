@@ -3,13 +3,13 @@ import Button from "../button/button";
 const Result = (props)=>{
 
     return(
-        <div className="resultContainer">
+        <div className="result-container">
             <h2>{!props.dontKnow && ( props.currentQuestion.correctRound>0 ? 
                                     <span className="correctAnswer">Correct</span> :
                                     <span className="wrongAnswer">Study this one!</span>
                                     ) }
             </h2>
-            <div className="resultsSection">
+            <div className="results-section">
                 <div className="definition">
                     <h6>Serbian</h6>
                     <p>{props.dontKnow ? props.serb : props.currentQuestion.serb }</p>
