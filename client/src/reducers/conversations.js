@@ -56,7 +56,6 @@ export default (state=initialState, action) => {
         }
         case REMOVE_SINGLE_CONVERSATION_SENTENCE: {
             if(
-                action.payload && 
                 action.payload &&
                 state.singleConversation &&
                 state.singleConversation.conversation

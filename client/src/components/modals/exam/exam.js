@@ -15,8 +15,8 @@ const Exam = (props)=>{
         inputHandler,
         submitHandler,
         formState
-    } = useForm({},(values)=>{
-        document.querySelector(".full-screen-modal").scrollTo({top: 0, behavior:'smooth'})
+    } = useForm({},()=>{
+        document.querySelector(".fullScreenModal").scrollTo({top: 0, behavior:'smooth'})
         alert("Did you finish the exam?")
         props.setExamFinished(true);
     })

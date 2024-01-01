@@ -1,3 +1,5 @@
+import { similarity } from "./similarity";
+
 const VALIDATOR_TYPE_REQUIRE = "REQUIRE";
 const VALIDATOR_TYPE_MAXLENGTH = "MAXLENGTH";
 const VALIDATOR_TYPE_MINLENGTH = "MINLENGTH";
@@ -56,7 +58,7 @@ export const valid = (value, validators)=>{
             isValid = isValid && value > validator.value
         }
         if(validator.type===VALIDATOR_TYPE_TASK){
-            isValid = isValid && value.trim()===validator.value
+            isValid = similarity(value,validator.value) > 90
         }
         if(validator.type===VALIDATOR_TYPE_CHANGED){
             isValid = isValid && value.trim()===validator.value
