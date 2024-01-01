@@ -79,6 +79,7 @@ const Topics = (props)=>{
                 useWindow={false}
                 threshold={250} 
                 getScrollParent={()=>props.scrollParentRef.current}
+                className="topics-container"
             >
                 {topics.map( t=> <TopicItem key={t._id} topic={t} /> )}
             </InfiniteScroll>

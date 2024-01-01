@@ -4,12 +4,13 @@
     align-items: center;
     justify-content: space-evenly;
     margin-bottom: 1.5em;
-    .btn-content{
-        display: flex;
-        flex-direction: row;
-        gap: 5px;
+    gap: 5px;
+
+    @media screen and (max-width: 768px) {
+        flex-direction: column;
         align-items: center;
         justify-content: center;
-        font-size: 1.2rem;
     }
+
 }
+
