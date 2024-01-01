@@ -1,5 +1,6 @@
 import { useState } from "react"
 import Modal from "../uiElements/modal"
+import Button from "../button/button"
 
 const FinishedRound = (props)=>{
     //correctAnswersTotal
@@ -22,7 +23,7 @@ const FinishedRound = (props)=>{
             header={<h2>Last Question</h2>}
         > 
             <p>Overall Progress: {`${props.correctAnswersTotal}/${props.results.length}`}</p>
-            <button onClick={closeHandler}>Next round</button>
+            <Button onClick={closeHandler}>Next round</Button>
 
             <div>
             {

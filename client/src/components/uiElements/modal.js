@@ -8,7 +8,7 @@ const ModalOverlay = props => {
     const content = (
         <div className={`${props.fullScreen ? "fullScreenModal" : "modal"} ${props.className || ''}`}>
             {props.header ? <header>{props.header}</header> : null}
-            <div className={`modalContent ${props.contentClass || ''}`}>
+            <div className={`modal-content ${props.contentClass || ''}`}>
                 <div>{props.children}</div>
             </div>
             {props.footer ? <footer>{props.footer}</footer> : null}

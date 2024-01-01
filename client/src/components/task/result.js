@@ -15,13 +15,13 @@ const Result = (props)=>{
                     <p>{props.dontKnow ? props.serb : props.currentQuestion.serb }</p>
                 </div>
                 {!props.dontKnow ? 
-                <div className="yourAnswer">
+                <div className="your-answer">
                     <h6>YOU SAID</h6>
                     <p>{props.answer}</p>
                 </div>
                 :
                 null}
-                <div>
+                <div className="correct-answer">
                     <h6>Correct answer</h6>
                     <p>{props.dontKnow ? props.eng : props.currentQuestion.eng }</p>
                 </div>
@@ -37,7 +37,15 @@ const Result = (props)=>{
             </div>
             {!props.dontKnow && <div>
                 <div>
-                    <a onClick={props.overrideHandler}>Override: I was correct</a>
+                    {/* <a >Override: I was correct</a> */}
+                    <Button
+                        type="text"  
+                        icon
+                        text
+                        onClick={props.overrideHandler}
+                    >
+                        Override: I was correct
+                    </Button>
                 </div>
             </div>}
         </div>
