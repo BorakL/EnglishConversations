@@ -68,7 +68,7 @@ export const protect = async (req,res,next)=>{
             throw new Error("You are not logged in! Please log in to get access")
         }
         const decoded = await promisify(jwt.verify)(token,process.env.JWT_SECRET)
-        const currentUser = await User.findById(decoded.id);
+        const currentUser = await User.findById(decoded.user._id);
         if(!currentUser){
             throw new Error("The user belonging to this token does no longer exist.")
         }

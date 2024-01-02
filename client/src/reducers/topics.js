@@ -13,15 +13,14 @@ export default (state=initState, action) => {
             let update = [];
             if(!action.payload.clear){
                 for(let i=0; i<action.payload.data.length; i++){
-                    let topic = action.payload.data[i]
-                    if(state.topics.find(t=>t.id===topic.id)){
+                    let topic = action.payload.data[i] 
+                    if(!state.topics.find(t=>t._id===topic._id)){
                         update.push(topic)
                     }
                 }
             }else{
                 update = action.payload.data
             }
-            
             return {
                 ...state,
                 topics: action.payload.clear

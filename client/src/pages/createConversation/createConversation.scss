@@ -1,0 +1,28 @@
+.create-conversation-form{
+    &-details{
+        display: flex;
+        flex-direction: column; 
+        gap: 20px;
+        input,select{
+            width: 100%;
+            height: 2rem;
+            padding: 5px;
+            margin: 0;
+            outline: none;
+            width: 200px;  
+        }
+        &-name{
+            
+            // input[type=text]{
+            //     width: 100%;
+            //     height: 2rem;
+            //     padding: 0;
+            //     margin: 0;
+            //     outline: none;
+            // }
+        }
+        &-topic{
+            
+        }
+    }
+}

@@ -126,7 +126,6 @@ const useForm = (inputs, action) => {
     }
 
     const resetHandler = (inputs)=>{
-        console.log("inputs",inputs)
         dispatch({
             type:"RESET",
             payload: inputs

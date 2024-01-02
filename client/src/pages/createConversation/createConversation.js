@@ -2,14 +2,22 @@ import { useEffect, useMemo, useState } from "react";
 import Button from "../../components/button/button";
 import Sentence from "../../components/sentence/sentence";
 import useForm from "../../hooks/useForm"
-import { createConversation } from "../../services/api";
+import { createConversation, getTopics } from "../../services/api";
 import { v4 as uuidv4 } from 'uuid';
 import Loader from "../../components/loader/loader";
+import Input from "../../components/input/input";
+import { useDispatch, useSelector } from "react-redux";
+import { SET_TOPICS } from "../../reducers/topics";
+import "./createConversation.scss"
 
 const CreateConversation = ()=>{
     const[newStudySet,setNewStudySet]=useState([]);
     const[loading,setLoading]=useState(false)
-
+    const[topic,setTopic]=useState(null)
+    const dispatch = useDispatch()
+    const{topics} = useSelector(({topics}) => ({
+        topics: topics.topics
+    })) 
 
     const addCardHandler = ()=>{ 
         setNewStudySet(prev=>[...prev, uuidv4()])
@@ -21,8 +29,25 @@ const CreateConversation = ()=>{
         removeHandler([`${id}-eng`,`${id}-serb`])
     }
 
+    const loadTopics = async()=>{
+        try{
+            setLoading(true)
+            const topicsData = await getTopics()
+            dispatch({
+                type: SET_TOPICS,
+                payload: {
+                    data: topicsData.data.data
+                }
+            })
+            setLoading(false)
+        }catch(error){
+            setLoading(false)
+            console.log("error",error)
+        }
+    }
+
     const createStudySet = async(values)=>{
-        if(values.isValid && Object.keys(values.inputs).length>0){
+        if(values.isValid && Object.keys(values.inputs).length>0 && topic && values.inputs["title"]){
             setLoading(true)
             const data = newStudySet.map(c => {
                 if(values.inputs[`${c}-eng`] && values.inputs[`${c}-serb`]){
@@ -33,8 +58,9 @@ const CreateConversation = ()=>{
                     return c
                 }
             })
+            const title = values.inputs["title"].value
             try{
-                await createConversation(data)
+                await createConversation({conversation:data,title,topic})
                 setLoading(false)
             }catch(error){
                 setLoading(false)
@@ -54,6 +80,10 @@ const CreateConversation = ()=>{
         submitHandler
     } = useForm({},createStudySet)
 
+    useEffect(()=>{
+        loadTopics()
+    },[])
+
     return(
         <div className="create-conversation-page page-wrapper">
             <div className="create-conversation-header">
@@ -61,8 +91,19 @@ const CreateConversation = ()=>{
                     <h1>Create Study Set</h1>
                 </div>
             </div>
-            <div className="create-conversation-page-form">
+            <div className="create-conversation-form">
                 <form onSubmit={submitHandler}>
+                    <div className="create-conversation-form-details">
+                        <div className="create-conversation-form-details-name">
+                            <Input onInput={inputHandler} type="text" id="title" name="title" placeholder="Title"/>
+                        </div>
+                        <div className="create-conversation-form-details-topic">
+                            
+                            <select onChange={(e)=>setTopic(e.target.value)} name="topic" id="topic">
+                                {topics.map(topic => <option value={topic._id} >{topic.title}</option>)}
+                            </select>
+                        </div>
+                    </div>
                     <div className="conversation-wrapper-content">
                         {newStudySet.map(c=>
                             <Sentence
