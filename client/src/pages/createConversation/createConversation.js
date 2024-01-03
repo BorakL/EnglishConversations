@@ -100,7 +100,7 @@ const CreateConversation = ()=>{
                         <div className="create-conversation-form-details-topic">
                             
                             <select onChange={(e)=>setTopic(e.target.value)} name="topic" id="topic">
-                                {topics.map(topic => <option value={topic._id} >{topic.title}</option>)}
+                                {topics.map(topic => <option key={topic._id} value={topic._id} >{topic.title}</option>)}
                             </select>
                         </div>
                     </div>

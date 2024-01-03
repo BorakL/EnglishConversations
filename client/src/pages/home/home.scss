@@ -2,7 +2,7 @@
     &-hero{
         height: 95vh;
         width:100%;
-        background-image: linear-gradient(to right bottom, rgba(126,213,111,0.8), rgba(40,180,131,0.8)), url("./../../../public/hero.jpg");
+        background-image: linear-gradient(to right bottom, rgba(147, 182, 215, 0.8), rgba(96, 132, 162, 0.8)), url("./../../../public/hero.jpg");
         background-size: cover;
         background-position: top;  
         clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
@@ -27,9 +27,16 @@
                     display: block;
                     font-size: 40px;
                     font-weight: 400;
-                    letter-spacing: 35px;
+                    letter-spacing: 25px;
                     animation-name: moveInLeft;
                     animation-duration: 1s;
+                    @media screen and (max-width:1024px){
+                        letter-spacing: 5px
+                    }
+                    @media screen and (max-width:480px){
+                        font-size: 22px;
+                        letter-spacing: 1px;
+                    }
                 }
                 .sub{
                     display: block;
@@ -40,6 +47,7 @@
                     animation-duration: 1s;
                 }
             }
+            
         }
         
     }
@@ -67,7 +75,14 @@
                 img{
                     width: 100%;
                 }
+                @media screen and (max-width: 768px) {
+                    margin: 10px;
+                }
             }
+        }
+        @media screen and (max-width: 768px) {
+            flex-direction: column;
+            padding-top: 80px;
         }
     }
 }
