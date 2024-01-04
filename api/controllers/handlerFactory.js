@@ -46,9 +46,8 @@ export const deleteOne = Model =>
         })  
     })
 
-export const getAll = (Model, setQuery, lookupOptions=[]) => catchAsync(async(req,res)=>{
+export const getAll = (Model, setQuery) => catchAsync(async(req,res)=>{
     let query = setQuery ? setQuery(req) : {};
-    console.log("req.query",req.query)
     const sort = {};
     if(req.query.sort){
         const sortBy = req.query.sort.trim();
@@ -58,7 +57,6 @@ export const getAll = (Model, setQuery, lookupOptions=[]) => catchAsync(async(re
     }
     let limit = req.query.limit*1 || 12;
     let skip = req.query.skip*1 || 0;
-    let lookup = lookupOptions.length>0 ? [...lookupOptions] : []
     let data = await Model.aggregate([
     {
         $facet:{
@@ -66,8 +64,7 @@ export const getAll = (Model, setQuery, lookupOptions=[]) => catchAsync(async(re
                 {$match: query},
                 {$sort: sort},
                 {$skip: skip},
-                {$limit: limit},
-                ...lookup
+                {$limit: limit}
             ],
             total: [
                 {$match: query},

@@ -19,7 +19,7 @@ const defaultTopicUrl = `${process.env.REACT_APP_BASE_URL}/default-image.jpg`;
                     <img src={topicUrl} onError={()=>setTopicUrl(defaultTopicUrl)}/>
                 </div>
                 <div className="topicTitle">
-                    {topic.title}
+                    {topic.title} ({topic.conversationCount})
                 </div>
             </div>
         </Link>

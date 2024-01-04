@@ -74,20 +74,9 @@ export const setUserResults = async(req,res,next)=>{
             {$group: {_id: "$conversation", latest: {$first: "$$ROOT"} }},
             {$project: {conversation:"$latest.conversation", result:"$latest.result"}}
         ])
-        // const cookiesOptions = {
-        //     expires: new Date(new Date() + process.env.JWT_COOKIE_EXPIRES_IN*24*60*60*1000)
-        // }
         res.cookie("results",JSON.stringify(results),{maxAge:360000})
         next();
     }catch(error){
         console.log(error.message)
     }
 }
-
-// db.test.aggregate([
-//     { $sort: { "date": -1 } },
-//     { $group: { _id: "$type", latest: { $first: "$$ROOT" } }},
-//     { $project : {_id : 0, id : "$latest.id", type : "$latest.type", date : "$latest.date", firstName : "$latest.firstName", lastName : "$latest.lastName", }},
-//     { $sort: { "type": 1 } }
-// ])
-

@@ -18,8 +18,7 @@ const Topics = (props)=>{
     const {
         topics,
         topicsTotal,
-        initRender,
-        scrollPosition
+        initRender
     } = useSelector(({topics,app})=>({
         topics: topics.topics,
         topicsTotal: topics.topicsTotal,
