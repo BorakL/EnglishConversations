@@ -52,17 +52,23 @@
         }
 
         .result-container{
+            .correct-answer{
+                color:green;
+            }
+            .wrong-answer{
+                color:red;
+            }
             .results-section{
                 >div{
                     border-bottom: 1px solid rgb(235, 235, 235);
                     margin-bottom: 1.5em;
                 }
             }
-            .correct-answer{
-                color:green;
-            }
-            .wrong-answer{
-                color:red;
+            .answer-message{
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
             }
         }
     }

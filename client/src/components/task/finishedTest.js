@@ -1,9 +1,9 @@
+import Button from "../button/button";
+import "./taskInfo.scss"
+
 const FinishedTest = (props)=>{
-    //results
-    //round
-    //getAllResults
     return(
-        <div>
+        <div className="taskInfo">
             <h1>The end</h1>
             <div>
             {
@@ -14,6 +14,9 @@ const FinishedTest = (props)=>{
                     </div>
                 )
             }
+            </div>
+            <div className="taskInfo-button">
+                <Button >Start again</Button>
             </div>
         </div>
     )

@@ -15,6 +15,10 @@ import { RESET_SINGLE_CONVERSATION, SET_SINGLE_CONVERSATION_TEST } from "../../r
 import Exam from "../modals/exam/exam";
 import Options from "../modals/options/options";
 import { IoIosOptions } from "react-icons/io";
+import { MdClose } from "react-icons/md";
+import { MdCheck } from "react-icons/md";
+
+
 
 const Task = (props)=>{ 
 
@@ -113,9 +117,9 @@ const Task = (props)=>{
             allResults.push(results.map(
                 r => {
                     if(r.correctRound===i){
-                        return <div key={i}>Correct {r.serb}</div>
+                        return <div key={i}><MdCheck/> {r.serb}</div>
                     }else if(r.correctRound>i){
-                        return <div key={i}>Incorrect {r.serb}</div>
+                        return <div key={i}><MdClose/> {r.serb}</div>
                     }
                     return null
                 }
@@ -187,7 +191,6 @@ const Task = (props)=>{
     const finishedRound = <FinishedRound
                             correctAnswersTotal={correctAnswersTotal}
                             results={props.results}
-                            // nextRound={nextRound}
                             setNextRoundMessage={setNextRoundMessage}
                         />
 

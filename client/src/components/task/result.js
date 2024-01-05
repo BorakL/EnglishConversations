@@ -1,12 +1,14 @@
 import Button from "../button/button";
+import { CgSmileMouthOpen } from "react-icons/cg";
+import { CgSmileNeutral } from "react-icons/cg";
 
 const Result = (props)=>{
 
     return(
         <div className="result-container">
-            <h2>{!props.dontKnow && ( props.currentQuestion.correctRound>0 ? 
-                                    <span className="correctAnswer">Correct</span> :
-                                    <span className="wrongAnswer">Study this one!</span>
+            <h2 className="answer-message">{!props.dontKnow && ( props.currentQuestion.correctRound>0 ? 
+                                    <span className="correct-answer"><CgSmileMouthOpen/> Correct</span> :
+                                    <span className="wrong-answer"><CgSmileNeutral/> Study this one! </span>
                                     ) }
             </h2>
             <div className="results-section">
