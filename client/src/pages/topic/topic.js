@@ -85,7 +85,12 @@ const Topic = ()=>{
                 </div>
             </div>
             <div className="conversations-container">
-                {conversations.map(c=> <ConversationItem key={c._id} conversation={c} />)}
+                {conversations.length>0 
+                    ? 
+                    conversations.map(c=> <ConversationItem key={c._id} conversation={c} />) 
+                    : 
+                    <p>There are still no conversations on this topic</p>
+                }
             </div>
         </>
         : 

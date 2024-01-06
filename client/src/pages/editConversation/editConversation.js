@@ -9,6 +9,7 @@ import { useOutletContext } from "react-router";
 import Loader from "../../components/loader/loader";
 import Modal from "../../components/uiElements/modal";
 import { AuthContext } from "../../context/authContext";
+import { v4 as uuidv4 } from 'uuid';
 
 const EditConversation = ()=>{
     const{conversationData, conversationId} = useSelector(({conversations})=>({
@@ -41,7 +42,7 @@ const EditConversation = ()=>{
     }
 
     const addSentenceHandler = ()=>{
-        const id=Math.random()*1000
+        const id=uuidv4();
         dispatch({
             type: SET_SINGLE_CONVERSATION,
             payload: {conversation: [...conversationData, {serb:"", eng:"", _id:id}]}
