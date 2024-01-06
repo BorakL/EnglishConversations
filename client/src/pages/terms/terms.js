@@ -36,6 +36,7 @@ const Terms = ()=>{
             removeFormHandler={removeHandler}
             editingFields={outletContext.editingFields}
             setEditingFields={outletContext.setEditingFields}
+            soundButton={true}
         />
     )
 

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import Button from "../../components/button/button";
 import Sentence from "../../components/sentence/sentence";
 import useForm from "../../hooks/useForm"
@@ -9,11 +9,16 @@ import Input from "../../components/input/input";
 import { useDispatch, useSelector } from "react-redux";
 import { SET_TOPICS } from "../../reducers/topics";
 import "./createConversation.scss"
+import Modal from "../../components/uiElements/modal";
+import { AuthContext } from "../../context/authContext";
 
 const CreateConversation = ()=>{
     const[newStudySet,setNewStudySet]=useState([]);
     const[loading,setLoading]=useState(false)
     const[topic,setTopic]=useState(null)
+    const[isModalOptionsOpen,setIsModalOptionsOpen]=useState(false)
+    const{loggedIn}=useContext(AuthContext)
+
     const dispatch = useDispatch()
     const{topics} = useSelector(({topics}) => ({
         topics: topics.topics
@@ -47,7 +52,10 @@ const CreateConversation = ()=>{
     }
 
     const createStudySet = async(values)=>{
-        if(values.isValid && Object.keys(values.inputs).length>0 && topic && values.inputs["title"]){
+        if(!loggedIn){
+            setIsModalOptionsOpen(true)
+        }
+        else if(values.isValid && Object.keys(values.inputs).length>0 && topic && values.inputs["title"]){
             setLoading(true)
             const data = newStudySet.map(c => {
                 if(values.inputs[`${c}-eng`] && values.inputs[`${c}-serb`]){
@@ -95,11 +103,11 @@ const CreateConversation = ()=>{
                 <form onSubmit={submitHandler}>
                     <div className="create-conversation-form-details">
                         <div className="create-conversation-form-details-name">
-                            <Input onInput={inputHandler} type="text" id="title" name="title" placeholder="Title"/>
+                            <Input onInput={inputHandler} initValue="" type="text" id="title" name="title" placeholder="Title"/>
                         </div>
                         <div className="create-conversation-form-details-topic">
                             
-                            <select onChange={(e)=>setTopic(e.target.value)} name="topic" id="topic">
+                            <select defaultValue={ topics && topics[0] ? topics[0]._id : "" } onChange={(e)=>setTopic(e.target.value)} name="topic" id="topic">
                                 {topics.map(topic => <option key={topic._id} value={topic._id} >{topic.title}</option>)}
                             </select>
                         </div>
@@ -112,7 +120,7 @@ const CreateConversation = ()=>{
                                 serb=""
                                 eng=""
                                 inputFormHandler={inputHandler}
-                                removeSentenceHandler={removeCardHandler}
+                                removeSentenceHandler={newStudySet.length>1 ? removeCardHandler : null}
                                 isEditing={true}
                             />
                         )}
@@ -137,6 +145,19 @@ const CreateConversation = ()=>{
                 </form>
                 {loading ? <Loader/> : null}
             </div>
+            {
+                <Modal
+                    show={isModalOptionsOpen} 
+                    closeHandler={()=>setIsModalOptionsOpen(false)}
+                    header={<h2></h2>}
+                >
+                    <Button
+                        to="/login"
+                    >
+                        Login
+                    </Button>
+                </Modal>
+            }
         </div>
     )
 }

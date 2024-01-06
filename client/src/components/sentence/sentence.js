@@ -1,7 +1,7 @@
 import { useSpeechSynthesis } from "react-speech-kit";
 import "./sentence.scss"
 import Button from "../button/button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Input from "../input/input";
 import { VALIDATOR_REQUIRE } from "../../utils/valid";
 import {RxSpeakerLoud} from 'react-icons/rx';
@@ -10,7 +10,6 @@ import { GoTrash } from "react-icons/go";
 
 const Sentence = (props)=>{ 
     const[isReading,setIsReading] = useState(false) 
-    
     const { speak } = useSpeechSynthesis({
         onEnd: ()=>{setIsReading(false)}
     });
@@ -78,18 +77,26 @@ const Sentence = (props)=>{
                 }
             </div>
             <div className="sentenceTools">
-                <Button
-                    onClick={soundHandler}
-                    icon
-                    active={isReading}
-                >
-                    <RxSpeakerLoud/>
-                </Button>
+                {
+                    props.soundButton ? 
+                    <Button
+                        onClick={soundHandler}
+                        type="button"
+                        icon
+                        active={isReading}
+                        disabled = {!props.serb || !props.eng}
+                    >
+                        <RxSpeakerLoud/>
+                    </Button>    
+                    :
+                    null
+                }
                 {
                     props.editingFields && !props.isEditing ?
                     <Button
                         onClick={editHandler}
                         icon
+                        type="button"
                         active={indx>=0}
                     >
                         <FiEdit2/>
@@ -101,6 +108,7 @@ const Sentence = (props)=>{
                     <Button 
                         onClick={()=>props.removeSentenceHandler(props.id)}
                         icon
+                        type="button" 
                     >
                         <GoTrash/>
                     </Button>
