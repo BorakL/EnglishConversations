@@ -5,8 +5,6 @@ import { useState } from "react";
 const TopicItem = ({topic})=>{
 const location = useLocation();
 
-const host = "http://localhost:3001/img/topics"
-
 const[topicUrl,setTopicUrl] = useState(`${process.env.REACT_APP_API_BASE_URL}/img/topics/${topic.title}.jpg`)
 
 // const topicUrl = `${process.env.REACT_APP_API_BASE_URL}/img/topics/${topic.title}.jpg`;

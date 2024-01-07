@@ -11,7 +11,8 @@ const app = express();
 app.use(express.json())
 app.use(cookieParser())
 app.use(express.static('public'))
-app.use(cors({origin: 'http://localhost:3000'}))
+app.use(express.static(path.join(__dirname, '../client/build')));
+app.use(cors({origin:process.env.REACT_APP_BASE_URL}))
 
 app.use("/api/v1/users", userRouter)
 app.use("/api/v1/topics", topicRouter)
