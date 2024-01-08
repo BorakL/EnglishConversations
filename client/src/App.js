@@ -29,18 +29,18 @@ function App() {
   
   const getRoutes = (l)=> <Routes location={l}>
                   <Route path="/" element={<Home/>} />
-                  <Route path="/topics" element={<Topics scrollParentRef={scrollParentRef}/>} />
-                  <Route path="/topics/:id" element={<Topic/>} /> 
+                  <Route path="/topics" exact element={<Topics scrollParentRef={scrollParentRef}/>} />
+                  <Route path="/topics/:id" exact element={<Topic/>} /> 
                   <Route path="/conversations/:conversation" exact={false} element={<Conversation/>} >
                     <Route path="/flashcards" exact element={<FlashCards/>}/>
                     <Route path="/terms" exact element={<Terms/>}/>
                     <Route path="/practice" exact element={<Practice/>}/>
                     <Route path="/terms/edit" exact element={<EditConversation/>}/>
                   </Route> 
-                  <Route path="/login" element={<Login/>}/>
-                  <Route path="/signup" element={<Signup/>}/>
-                  <Route path="/create-conversation" element={<CreateConversation/>}/>
-                  <Route path="/user-profile" element={<UserProfile/>}/>
+                  <Route path="/login" exact element={<Login/>}/>
+                  <Route path="/signup" exact element={<Signup/>}/>
+                  <Route path="/create-conversation" exact element={<CreateConversation/>}/>
+                  <Route path="/user-profile" exact element={<UserProfile/>}/>
                   <Route path="*" element={<PageNotFound/>}/>
                 </Routes>
 
