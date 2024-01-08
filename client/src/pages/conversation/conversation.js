@@ -37,6 +37,7 @@ const Conversation = ()=>{
             })
             setInitLoading(false)
         }catch(error){
+            setInitLoading(false)
             console.log(error)
         }
     }
