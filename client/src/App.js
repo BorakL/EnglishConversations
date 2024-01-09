@@ -2,12 +2,12 @@ import './App.scss';
 import Home from './pages/home/home';
 import Topics from './pages/topics/topics';
 import Topic from './pages/topic/topic'; 
-import { useLocation } from 'react-router';  
+import { Route, Routes, useLocation } from 'react-router';  
 import Conversation from './pages/conversation/conversation';
 import MainNavigation from './components/navigation/mainNavigation';
 import { useMemo, useRef } from 'react'; 
 import Terms from './pages/terms/terms';
-import {useNavigationType, Route, Routes} from 'react-router-dom';
+import {useNavigationType} from 'react-router-dom';
 import { AppContextProvider } from './context/appContext';
 import EditConversation from './pages/editConversation/editConversation';
 import Login from './pages/login/login'; 
@@ -21,7 +21,6 @@ import UserProfile from './pages/userProfile/userProfile';
 import Footer from './components/footer/footer';
 
 function App() {
-
   const scrollParentRef = useRef()
 
   const location = useLocation();
@@ -29,18 +28,18 @@ function App() {
   
   const getRoutes = (l)=> <Routes location={l}>
                   <Route path="/" element={<Home/>} />
-                  <Route path="/topics" exact element={<Topics scrollParentRef={scrollParentRef}/>} />
-                  <Route path="/topics/:id" exact element={<Topic/>} /> 
-                  <Route path="/conversations/:conversation" exact={false} element={<Conversation/>} >
-                    <Route path="/flashcards" exact element={<FlashCards/>}/>
-                    <Route path="/terms" exact element={<Terms/>}/>
-                    <Route path="/practice" exact element={<Practice/>}/>
-                    <Route path="/terms/edit" exact element={<EditConversation/>}/>
+                  <Route path="topics" element={<Topics scrollParentRef={scrollParentRef}/>} />
+                  <Route path="topics/:id" element={<Topic/>} /> 
+                  <Route path="conversations/:conversation" exact={false} element={<Conversation/>} >
+                    <Route path="flashcards" exact element={<FlashCards/>}/>
+                    <Route path="terms" exact element={<Terms/>}/>
+                    <Route path="practice" exact element={<Practice/>}/>
+                    <Route path="terms/edit" exact element={<EditConversation/>}/>
                   </Route> 
-                  <Route path="/login" exact element={<Login/>}/>
-                  <Route path="/signup" exact element={<Signup/>}/>
-                  <Route path="/create-conversation" exact element={<CreateConversation/>}/>
-                  <Route path="/user-profile" exact element={<UserProfile/>}/>
+                  <Route path="login" element={<Login/>}/>
+                  <Route path="signup" element={<Signup/>}/>
+                  <Route path="create-conversation" element={<CreateConversation/>}/>
+                  <Route path="user-profile" element={<UserProfile/>}/>
                   <Route path="*" element={<PageNotFound/>}/>
                 </Routes>
 
