@@ -1,6 +1,6 @@
 import axios from "axios";
 
-axios.defaults.baseURL = proces.env.CYCLIC_URL
+axios.defaults.baseURL = "http://127.0.0.1:3001/api/v1/"
 
 const token = localStorage.getItem("token");
 const headers = {

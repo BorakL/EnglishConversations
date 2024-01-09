@@ -25,22 +25,22 @@ app.get("/", (req,res,next)=>{
     })
 })
 
-app.use("/api/v1/users", userRouter)
-app.use("/api/v1/topics", topicRouter)
-app.use("/api/v1/conversations", conversationRouter)
-app.use("/api/v1/tests", testRouter)
+// app.use("/api/v1/users", userRouter)
+// app.use("/api/v1/topics", topicRouter)
+// app.use("/api/v1/conversations", conversationRouter)
+// app.use("/api/v1/tests", testRouter)
 
-app.use(express.static(path.join(__dirname, '../client/build'))); 
+// app.use(express.static(path.join(__dirname, '../client/build'))); 
 
-app.use("*", (req,res)=>{  
-    res.sendFile(path.join(__dirname,'../client/build','index.html'))
-})
+// app.use("*", (req,res)=>{  
+//     res.sendFile(path.join(__dirname,'../client/build','index.html'))
+// })
 
-app.use((err,req,res,next)=>{
-    res.status(404).json({
-        status:"fail",
-        message:err.message
-    })
-})
+// app.use((err,req,res,next)=>{
+//     res.status(404).json({
+//         status:"fail",
+//         message:err.message
+//     })
+// })
 
 export default app;
