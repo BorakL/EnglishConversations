@@ -60,7 +60,7 @@ const Topic = ()=>{
         loadTopic(params.id)
     },[query])
 
-    const topicUrl = `/https://tiny-tan-cygnet-gear.cyclic.app/img/topics/${topic.title}.jpg`;
+    const topicUrl = `https://tiny-tan-cygnet-gear.cyclic.app/img/topics/${topic.title}.jpg`;
 
     return(
         <>
