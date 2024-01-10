@@ -1,19 +1,16 @@
 import {Link, useLocation} from "react-router-dom"
 import "./topicItem.scss"
-import { useState } from "react";
 
 const TopicItem = ({topic})=>{
 const location = useLocation();
 
-const[topicUrl,setTopicUrl] = useState(`${process.env.CYCLIC_URL}/img/topics/${topic.title}.jpg`)
-
-const defaultTopicUrl = `${process.env.CYCLIC_URL}/default-image.jpg`;
+const topicImg = `${process.env.CYCLIC_URL}/img/topics/${topic.title}.jpg`;
 
     return(
         <Link to={topic._id} state={{backgroundLocation:location}}>
             <div className="topicItem">
                 <div className="topicImg">
-                    <img src={topicUrl} onError={()=>setTopicUrl(defaultTopicUrl)}/>
+                    <img src={topicImg} alt={topic.title}/>
                 </div>
                 <div className="topicTitle">
                     {topic.title} ({topic.conversationCount})
