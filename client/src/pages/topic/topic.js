@@ -60,7 +60,7 @@ const Topic = ()=>{
         loadTopic(params.id)
     },[query])
 
-    const topicUrl = `${process.env.REACT_APP_API_BASE_URL}/img/topics/${topic.title}.jpg`;
+    const topicUrl = `${process.env.CYCLIC_URL}/img/topics/${topic.title}.jpg`;
 
     return(
         <>
