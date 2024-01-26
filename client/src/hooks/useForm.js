@@ -75,7 +75,9 @@ const formReducer = (state, action) => {
             }
         case "RESET" :
             return {
-                inputs: action.payload,
+                inputs: {
+                    ...state.inputs
+                },
                 isValid: false,
                 isChanged: false,
                 isTouched: false
@@ -125,10 +127,9 @@ const useForm = (inputs, action) => {
         })
     }
 
-    const resetHandler = (inputs)=>{
+    const resetHandler = ()=>{
         dispatch({
-            type:"RESET",
-            payload: inputs
+            type:"RESET"
         })
     }
 
