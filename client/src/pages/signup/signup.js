@@ -1,16 +1,17 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import Button from "../../components/button/button"
 import Input from "../../components/input/input"
 import useForm from "../../hooks/useForm"
 import { VALIDATOR_CHANGED, VALIDATOR_MINLENGTH, VALIDATOR_REGEX, VALIDATOR_REQUIRE } from "../../utils/valid" 
 import { signupUser } from "../../services/api" 
 import Loader from "../../components/loader/loader"
-import { redirect } from "react-router"
+import { useNavigate } from "react-router"
 
 const Signup = ()=>{
     const[loading,setLoading] = useState(false)
     const[errorMessage,setErrorMessage] = useState("")
     const[resetFields,setResetFields] = useState(false)
+    const navigate = useNavigate()
 
     const signupHandler = async(data)=>{
         let newUser = {
@@ -25,8 +26,8 @@ const Signup = ()=>{
             setErrorMessage("")
             await signupUser(newUser);
             setLoading(false)
-            resetHandler(); 
-            redirect("/user");
+            resetHandler();
+            navigate("/login")
         }catch(error){
             setResetFields(false)
             setLoading(false)
@@ -44,10 +45,6 @@ const Signup = ()=>{
         inputHandler,
         resetHandler
     } = useForm({}, signupHandler)
-
-    useEffect(()=>{
-        console.log("formState",formState)
-    },[formState])
     
     return(
          <div className="login-page page-wrapper">
@@ -65,6 +62,7 @@ const Signup = ()=>{
                             placeholder="Username" 
                             isRequired={true}
                             resetField={resetFields}
+                            initValue=""
                         />
                         <Input
                             type="email"
@@ -76,6 +74,7 @@ const Signup = ()=>{
                             isRequired={true}
                             errorMessage={"Invalid email."}
                             resetField={resetFields}
+                            initValue=""
                         />
                         <Input
                             type="password"
@@ -86,7 +85,8 @@ const Signup = ()=>{
                             validators={[VALIDATOR_MINLENGTH(5)]}
                             errorMessage={"Password is too weak."}
                             isRequired={true}
-                            resetField={resetFields}                            
+                            resetField={resetFields}
+                            initValue=""
                         />
                         <Input
                             type="password"
@@ -98,7 +98,8 @@ const Signup = ()=>{
                             errorMessage={"confirm password."}
                             isRequired={true}
                             disabled={!formState?.inputs?.password?.value || !formState?.inputs?.password?.isValid}
-                            resetField={resetFields} 
+                            resetField={resetFields}
+                            initValue=""
                         /> 
                     </div>
                     <Button

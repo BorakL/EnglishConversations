@@ -58,7 +58,11 @@ const Exam = (props)=>{
             <div className="test-questions" ref={testRef}>
             {
                 props.questions.map(q=>
-                    <article className= {`test-question-wrapper ${props.examFinished ? (!isCorrect(q._id) ? "redBorder" : "greenBorder") : "defaultBorder"}`} ref={testRef}>
+                    <article 
+                        className= {`test-question-wrapper ${props.examFinished ? (!isCorrect(q._id) ? "redBorder" : "greenBorder") : "defaultBorder"}`} 
+                        ref={testRef}
+                        key={q._id}
+                    >
                         <section className="test-question">
                             <span>Term</span>
                             <label htmlFor={q._id}>{q.serb} {q.eng}</label>

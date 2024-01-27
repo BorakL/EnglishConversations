@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getTopics } from "../../services/api";
 import InfiniteScroll from 'react-infinite-scroller';
 import TopicItem from "../../components/topicItem/topicItem";
@@ -6,7 +6,7 @@ import './topics.scss'
 import { useDispatch, useSelector } from "react-redux";
 import { SET_TOPICS } from "../../reducers/topics";
 import { useNavigationType } from 'react-router-dom'; 
-import { SET_INITIAL_RENDER, SET_SCROLL_POSITION } from "../../reducers/app";
+import { SET_INITIAL_RENDER } from "../../reducers/app";
 
 const Topics = (props)=>{ 
     const[query,setQuery] = useState({limit:24})
@@ -46,16 +46,7 @@ const Topics = (props)=>{
 
  
     useEffect(()=>{
-        loadTopics()  
-        if(initRender){ 
-            // 
-            console.log("učitava se na init load")
-        }else{ 
-            if(navigationType!=="POP"){
-                // loadTopics();
-            }
-            // props.scrollParentRef.current.scrollTo(0,scrollPosition)
-        }
+        loadTopics()
         return ()=>{ 
             dispatch({
                 type: SET_INITIAL_RENDER,

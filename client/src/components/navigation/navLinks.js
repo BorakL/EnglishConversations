@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 
 import './navLinks.scss';
 import { AuthContext } from '../../context/authContext';
+import { FaCircleUser } from "react-icons/fa6";
 
 const NavLinks = props => {
   const{loggedIn,user}=useContext(AuthContext)
@@ -26,7 +27,7 @@ const NavLinks = props => {
       </>
       :
       <li>
-        <NavLink to="/user-profile">{user?.name}</NavLink>
+        <NavLink to="/user-profile"><FaCircleUser/> {user?.username}</NavLink>
       </li>
     }
   </ul>

@@ -18,7 +18,7 @@ const ProgressBar = (props)=>{
     const progressBarTitleStyle = {
         "display":"flex",
         "flexDirection":"row",
-        "justify-content":"space-between"
+        "justifyContent":"space-between"
     }
 
     return(

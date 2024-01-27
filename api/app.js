@@ -14,8 +14,15 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(express.urlencoded({extended:true}))
 const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-app.use(cors())
+const __dirname = path.dirname(__filename) 
+const corsOptions = {
+    //origin: 'http://localhost:3000',
+    origin: process.env.CYCLIC_URL,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    optionsSuccessStatus: 204,
+  };
+  app.use(cors(corsOptions));
 
 app.use(express.static(path.join(__dirname, 'build'))); 
 app.use(express.static(path.join(__dirname, 'public')))
@@ -25,13 +32,14 @@ app.use("/api/v1/topics", topicRouter)
 app.use("/api/v1/conversations", conversationRouter)
 app.use("/api/v1/tests", testRouter)
 
-app.use("*", (req,res)=>{  
+app.use("*", (req,res)=>{
     res.sendFile(path.join(__dirname,'build','index.html'))
 })
 
 app.use((err,req,res,next)=>{
     res.status(404).json({
         status:"fail",
+        code: err.code, 
         message:err.message
     })
 })

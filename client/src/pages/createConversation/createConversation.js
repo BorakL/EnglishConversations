@@ -11,6 +11,7 @@ import { SET_TOPICS } from "../../reducers/topics";
 import "./createConversation.scss"
 import Modal from "../../components/uiElements/modal";
 import { AuthContext } from "../../context/authContext";
+import { useNavigate } from "react-router-dom";
 
 const CreateConversation = ()=>{
     const[newStudySet,setNewStudySet]=useState([]);
@@ -18,6 +19,7 @@ const CreateConversation = ()=>{
     const[topic,setTopic]=useState(null)
     const[isModalOptionsOpen,setIsModalOptionsOpen]=useState(false)
     const{loggedIn}=useContext(AuthContext)
+    const navigate = useNavigate();
 
     const dispatch = useDispatch()
     const{topics} = useSelector(({topics}) => ({
@@ -69,6 +71,7 @@ const CreateConversation = ()=>{
             const title = values.inputs["title"].value
             try{
                 await createConversation({conversation:data,title,topic})
+                navigate("/topics")
                 setLoading(false)
             }catch(error){
                 setLoading(false)
