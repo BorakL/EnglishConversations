@@ -1,5 +1,5 @@
 {
-  "name": "english-conversations",
+  "name": "englishconversations",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -54,5 +54,5 @@
   "devDependencies": {
     "sass": "^1.66.1"
   },
-  "homepage": "http://english-conversations.cyclic.app"
+  "homepage": "https://englishconversations.onrender.com"
 }

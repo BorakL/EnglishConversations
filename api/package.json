@@ -1,7 +1,7 @@
 {
-  "name": "english-conversations",
+  "name": "englishconversations",
   "version": "1.0.0",
-  "description": "english-conversations",
+  "description": "englishconversations",
   "main": "index.js",
   "type": "module",
   "scripts": {
