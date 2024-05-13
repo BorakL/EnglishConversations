@@ -33,7 +33,9 @@ app.use("/api/v1/conversations", conversationRouter)
 app.use("/api/v1/tests", testRouter)
 
 app.use("*", (req,res)=>{
-    res.sendFile(path.join(__dirname,'build','index.html'))
+    res.status(200).json({
+        "message": "Hello World"
+    })
 })
 
 app.use((err,req,res,next)=>{
