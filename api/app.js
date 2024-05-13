@@ -24,7 +24,6 @@ const corsOptions = {
   };
   app.use(cors(corsOptions));
 
-app.use(express.static(path.join(__dirname, 'build'))); 
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.use("/api/v1/users", userRouter)
