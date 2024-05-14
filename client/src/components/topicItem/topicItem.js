@@ -4,7 +4,7 @@ import "./topicItem.scss"
 const TopicItem = ({topic})=>{
 const location = useLocation();
 
-const topicImg = `https://tiny-tan-cygnet-gear.cyclic.app/img/topics/${topic.title}.jpg`;
+const topicImg = `${process.env.REACT_APP_BASE_URL}/img/topics/${topic.title}.jpg`;
 
     return(
         <Link to={topic._id} state={{backgroundLocation:location}}>
