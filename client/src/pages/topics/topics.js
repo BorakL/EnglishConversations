@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { SET_TOPICS } from "../../reducers/topics";
 import { useNavigationType } from 'react-router-dom'; 
 import { SET_INITIAL_RENDER } from "../../reducers/app";
+import Loader from "../../components/loader/loader";
 
 const Topics = (props)=>{ 
     const[query,setQuery] = useState({limit:24})
@@ -57,22 +58,30 @@ const Topics = (props)=>{
 
     return(
         <div className="explore-page page-wrapper">
-            <div className="explore-header">
+            {
+                !loading ?
+                <>
+                <div className="explore-header">
                 <div className="explore-header-title header-title left-title">
                     <h1>Topics</h1> 
                 </div>
-            </div>
-            <InfiniteScroll
-                pageStart={0}
-                loadMore={() => loadTopics(false,topics.length)}
-                hasMore={topicsTotal>topics.length && !loading} 
-                useWindow={false}
-                threshold={250} 
-                getScrollParent={()=>props.scrollParentRef.current}
-                className="topics-container"
-            >
-                {topics.map( t=> <TopicItem key={t._id} topic={t} /> )}
-            </InfiniteScroll>
+                </div>
+                <InfiniteScroll
+                    pageStart={0}
+                    loadMore={() => loadTopics(false,topics.length)}
+                    hasMore={topicsTotal>topics.length && !loading} 
+                    useWindow={false}
+                    threshold={250} 
+                    getScrollParent={()=>props.scrollParentRef.current}
+                    className="topics-container"
+                >
+                    {topics.map( t=> <TopicItem key={t._id} topic={t} /> )}
+                </InfiniteScroll>
+                </>
+                :
+                <Loader/>
+            }
+            
         </div>
     )
 }

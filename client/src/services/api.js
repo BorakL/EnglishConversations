@@ -1,6 +1,5 @@
 import axios from "axios";
 
-// axios.defaults.baseURL = "http://127.0.0.1:8000/api/v1/"
 axios.defaults.baseURL = process.env.REACT_APP_ONRENDER_URL;
 
 

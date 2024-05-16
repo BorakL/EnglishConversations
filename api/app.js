@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors"
 import path from 'path'
 import { fileURLToPath } from "url";
+import dotenv from 'dotenv';
 
 const app = express();
 
@@ -14,7 +15,8 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(express.urlencoded({extended:true}))
 const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename) 
+const __dirname = path.dirname(__filename)
+dotenv.config({ path: `${__dirname}/config.env` })
 const corsOptions = {
     //origin: 'http://localhost:3000',
     origin: process.env.ONRENDER_URL,
