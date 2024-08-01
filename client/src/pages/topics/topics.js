@@ -41,7 +41,8 @@ const Topics = (props)=>{
             })
 			setLoading(false);
         }catch(error){
-            console.log("error",error.message)
+            setLoading(false);
+            console.error("error",error.message)
         }
     }
 
